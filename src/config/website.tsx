@@ -69,14 +69,6 @@ export const websiteConfig: WebsiteConfig = {
       },
     },
   },
-  blog: {
-    enable: true,
-    paginationSize: 6,
-    relatedPostsSize: 3,
-  },
-  docs: {
-    enable: true,
-  },
   mail: {
     enable: true,
     provider: 'resend',

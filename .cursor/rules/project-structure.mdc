@@ -28,10 +28,6 @@ alwaysApply: false
 - `tsconfig.json`: TypeScript configuration
 - `components.json`: UI components configuration
 
-## Content Management
-- `content/`: MDX content files
-- `source.config.ts`: Fumadocs source configuration
-
 ## Environment
-- `env.example`: Environment variables template
+- `.dev.vars.example`: OpenNext Cloudflare local environment template
 - `global.d.ts`: Global TypeScript declarations

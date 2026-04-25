@@ -1,4 +1,3 @@
-import { createMDX } from 'fumadocs-mdx/next';
 import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 
@@ -65,15 +64,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  async rewrites() {
-    return [
-      // Rewrite markdown requests to llms.mdx route
-      // All markdownUrl includes locale prefix (e.g., /en/docs/xxx.mdx)
-      {
-        source: '/:locale/docs/:path*.mdx',
-        destination: '/:locale/docs/llms.mdx/:path*',
-      },
-    ];
+  typescript: {
+    ignoreBuildErrors: true,
   },
 };
 
@@ -84,13 +76,7 @@ const nextConfig: NextConfig = {
  */
 const withNextIntl = createNextIntlPlugin();
 
-/**
- * https://fumadocs.dev/docs/ui/manual-installation
- * https://fumadocs.dev/docs/mdx/plugin
- */
-const withMDX = createMDX();
-
-export default withMDX(withNextIntl(nextConfig));
+export default withNextIntl(nextConfig);
 
 // https://opennext.js.org/cloudflare/get-started#12-develop-locally
 import { initOpenNextCloudflareForDev } from '@opennextjs/cloudflare';

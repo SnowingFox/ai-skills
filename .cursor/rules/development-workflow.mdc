@@ -6,16 +6,16 @@ alwaysApply: false
 # Development Workflow Guide
 
 ## Available Scripts
-- `pnpm dev`: Start development server with content collections
-- `pnpm build`: Build the application and content collections
-- `pnpm start`: Start production server
-- `pnpm lint`: Run Biome linter
-- `pnpm format`: Format code with Biome
-- `pnpm db:generate`: Generate new migration files based on schema changes
-- `pnpm db:migrate`: Apply pending migrations to the database
-- `pnpm db:push`: Sync schema changes directly to the database (development only)
-- `pnpm db:studio`: Open Drizzle Studio for database inspection and management
-- `pnpm email`: Start email template development server
+- `bun run dev`: Start development server
+- `bun run build`: Build the application
+- `bun run start`: Start production server
+- `bun run lint`: Run Biome linter
+- `bun run format`: Format code with Biome
+- `bun run db:generate`: Generate new migration files based on schema changes
+- `bun run db:migrate`: Apply pending migrations to the database
+- `bun run db:push`: Sync schema changes directly to the database (development only)
+- `bun run db:studio`: Open Drizzle Studio for database inspection and management
+- `bun run email`: Start email template development server
 
 ## Development Process
 1. Use TypeScript for all new code
@@ -26,8 +26,7 @@ alwaysApply: false
 6. Use Radix UI components for consistent UI
 7. Follow the established directory structure
 8. Write tests for new features
-9. Update content collections when adding new content
-10. Use environment variables from `env.example`
+9. Use environment variables from `.dev.vars.example`
 
 ## Code Style
 - Use functional components with hooks

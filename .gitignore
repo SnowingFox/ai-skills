@@ -54,12 +54,6 @@ certificates
 *.tsbuildinfo
 next-env.d.ts
 
-# content collections
-.content-collections
-
-# fumadocs
-.source
-
 # OpenNext build output
 .open-next
 

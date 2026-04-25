@@ -11,7 +11,7 @@ import Image from 'next/image';
 
 /**
  * https://nsui.irung.me/features
- * pnpm dlx shadcn@canary add https://nsui.irung.me/r/features-5.json
+ * bunx shadcn@canary add https://nsui.irung.me/r/features-5.json
  */
 export default function Features2Section() {
   const t = useTranslations('HomePage.features2');

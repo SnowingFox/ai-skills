@@ -1,4 +1,4 @@
-import { LOCALES, routing } from '@/i18n/routing';
+import { routing } from '@/i18n/routing';
 import type { Locale } from 'next-intl';
 
 const baseUrl =
@@ -104,26 +104,6 @@ export function getImageUrl(image: string): string {
     return `${getBaseUrl()}${image}`;
   }
   return `${getBaseUrl()}/${image}`;
-}
-
-/**
- * Normalize URL by removing any existing locale prefix and adding the current locale
- * Used for building markdown URLs for LLM endpoints
- * @param url - The URL that might contain a locale prefix (e.g., /zh/docs/comparisons or /docs/what-is-fumadocs)
- * @param locale - The current locale to use
- * @returns The normalized URL with current locale prefix and .mdx extension (e.g., /en/docs/what-is-fumadocs.mdx)
- */
-export function getMarkdownUrlWithLocale(url: string, locale: Locale): string {
-  // Remove any existing locale prefix from the URL using regex
-  // Match pattern: /:locale/... and remove the locale part
-  const localePattern = new RegExp(`^/(${LOCALES.join('|')})/`);
-  const normalizedUrl = url.replace(localePattern, '/');
-  // Ensure URL starts with /
-  const urlWithSlash = normalizedUrl.startsWith('/')
-    ? normalizedUrl
-    : `/${normalizedUrl}`;
-  // Add current locale prefix and .mdx extension
-  return `/${locale}${urlWithSlash}.mdx`;
 }
 
 /**

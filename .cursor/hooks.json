@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "sh -c 'if ! command -v story >/dev/null 2>&1; then exit 0; fi; exec story hooks cursor session-start'"
+      }
+    ],
+    "sessionEnd": [
+      {
+        "command": "sh -c 'if ! command -v story >/dev/null 2>&1; then exit 0; fi; exec story hooks cursor session-end'"
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "sh -c 'if ! command -v story >/dev/null 2>&1; then exit 0; fi; exec story hooks cursor before-submit-prompt'"
+      }
+    ],
+    "stop": [
+      {
+        "command": "sh -c 'if ! command -v story >/dev/null 2>&1; then exit 0; fi; exec story hooks cursor stop'"
+      }
+    ],
+    "preCompact": [
+      {
+        "command": "sh -c 'if ! command -v story >/dev/null 2>&1; then exit 0; fi; exec story hooks cursor pre-compact'"
+      }
+    ],
+    "subagentStart": [
+      {
+        "command": "sh -c 'if ! command -v story >/dev/null 2>&1; then exit 0; fi; exec story hooks cursor subagent-start'"
+      }
+    ],
+    "subagentStop": [
+      {
+        "command": "sh -c 'if ! command -v story >/dev/null 2>&1; then exit 0; fi; exec story hooks cursor subagent-stop'"
+      }
+    ]
+  }
+}

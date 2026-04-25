@@ -4,26 +4,32 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Development Commands
 
-- `pnpm dev` - Start Next.js dev server
-- `pnpm build` - Production build
-- `pnpm lint` - Biome linter (auto-fixes with `--write`)
-- `pnpm format` - Biome formatter
-- `pnpm db:generate` - Generate Drizzle migration files from schema changes
-- `pnpm db:migrate` - Apply pending migrations
-- `pnpm db:push` - Push schema directly to DB (dev only)
-- `pnpm db:studio` - Open Drizzle Studio GUI
-- `pnpm email` - Email template preview server on port 3333
-- `pnpm content` - Rebuild fumadocs MDX content collections
-- `pnpm knip` - Find unused exports, dependencies, and files
-- `pnpm auth:schema:generate` - Regenerate Better Auth schema to `src/db/auth.schema.ts`
+- `bun run dev` - Start Next.js dev server
+- `bun run build` - Production build
+- `bun run preview` - Build and preview with OpenNext Cloudflare locally
+- `bun run deploy` - Build and deploy with OpenNext Cloudflare
+- `bun run lint` - Biome linter (auto-fixes with `--write`)
+- `bun run format` - Biome formatter
+- `bun run db:generate` - Generate Drizzle migration files from schema changes
+- `bun run db:migrate` - Apply pending migrations
+- `bun run db:push` - Push schema directly to DB (dev only)
+- `bun run db:studio` - Open Drizzle Studio GUI
+- `bun run email` - Email template preview server on port 3333
+- `bun run knip` - Find unused exports, dependencies, and files
+- `bun run auth:schema:generate` - Regenerate Better Auth schema to `src/db/auth.schema.ts`
 
-No automated test suite exists. Validate changes with `pnpm build`, `pnpm lint`, and manual QA.
+Use Bun for package management and scripts. Prefer `bun run <script>`,
+`bun add <package>`, and `bunx <package>`; do not introduce npm, pnpm, or
+yarn workflows.
+
+No automated test suite exists. Validate changes with `bun run build`,
+`bun run lint`, and manual QA.
 
 ## Architecture Overview
 
 ### Routing & i18n
 - App Router with `[locale]` dynamic segment using `next-intl` (as-needed prefix strategy — default locale omitted from URL)
-- Route groups inside `[locale]`: `(marketing)` for public pages, `(protected)` for authenticated pages, `auth` for login/signup, `docs` for documentation
+- Route groups inside `[locale]`: `(marketing)` for public pages, `(protected)` for authenticated pages, `auth` for login/signup
 - API routes at `src/app/api/` (outside locale segment)
 - Translation files: `messages/en.json`, `messages/zh.json`
 - i18n routing config: `src/i18n/routing.ts`; middleware: `src/middleware.ts`
@@ -61,7 +67,7 @@ No automated test suite exists. Validate changes with `pnpm build`, `pnpm lint`,
 - Core logic in `src/credits/`
 - 7 transaction types: `MONTHLY_REFRESH`, `REGISTER_GIFT`, `PURCHASE_PACKAGE`, `SUBSCRIPTION_RENEWAL`, `LIFETIME_MONTHLY`, `USAGE`, `EXPIRE`
 - Credits tracked in `userCredit` table with history in `creditTransaction`
-- Monthly distribution via `pnpm distribute-credits` script
+- Monthly distribution via `bun run distribute-credits` script
 
 ### Provider Pattern (used throughout)
 All external integrations follow a pluggable provider pattern with factory functions:
@@ -77,14 +83,10 @@ All external integrations follow a pluggable provider pattern with factory funct
 - React Query for async data on client
 - Forms use React Hook Form + Zod validation
 
-### Content
-- Fumadocs for documentation (`content/docs/`), MDX blog (`content/blog/`)
-- Source config: `source.config.ts`; rebuild with `pnpm content`
-
 ### Configuration
 - Centralized app config with feature flags: `src/config/website.tsx`
 - Demo mode: `NEXT_PUBLIC_DEMO_WEBSITE` env var (enables Crisp chat, Turnstile CAPTCHA, looser admin checks)
-- Environment template: `env.example`
+- Environment template: `.dev.vars.example`; copy it to ignored `.dev.vars` for local OpenNext/Cloudflare development
 
 ## Code Style
 

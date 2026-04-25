@@ -275,37 +275,6 @@
       "and": " and "
     }
   },
-  "BlogPage": {
-    "title": "Blog",
-    "description": "Latest news and updates from our team",
-    "subtitle": "Latest news and updates from our team",
-    "author": "Author",
-    "categories": "Categories",
-    "tableOfContents": "Table of Contents",
-    "readTime": "{minutes} min read",
-    "all": "All",
-    "noPostsFound": "No posts found",
-    "allPosts": "All Posts",
-    "morePosts": "More Posts"
-  },
-  "DocsPage": {
-    "toc": "Table of Contents",
-    "search": "Search docs",
-    "lastUpdate": "Last updated on",
-    "searchNoResult": "No results",
-    "previousPage": "Previous",
-    "nextPage": "Next",
-    "chooseLanguage": "Select language",
-    "title": "MkSaaS Docs",
-    "homepage": "Homepage",
-    "PageActions": {
-      "copyMarkdown": "Copy Markdown",
-      "open": "Open",
-      "openInChatGPT": "Open in ChatGPT",
-      "openInClaude": "Open in Claude",
-      "queryHint": "Read {url}, I want to ask questions about it."
-    }
-  },
   "PremiumContent": {
     "title": "Unlock Premium Content",
     "description": "Subscribe to our Pro plan to access all premium content and exclusive content.",
@@ -327,12 +296,6 @@
       "pricing": {
         "title": "Pricing"
       },
-      "blog": {
-        "title": "Blog"
-      },
-      "docs": {
-        "title": "Docs"
-      },
       "pages": {
         "title": "Pages",
         "items": {
@@ -347,10 +310,6 @@
           "waitlist": {
             "title": "Waitlist",
             "description": "Join our waitlist for latest news and updates"
-          },
-          "changelog": {
-            "title": "Changelog",
-            "description": "See the latest updates to our products"
           },
           "roadmap": {
             "title": "Roadmap",
@@ -384,9 +343,6 @@
       "resources": {
         "title": "Resources",
         "items": {
-          "blog": "Blog",
-          "docs": "Documentation",
-          "changelog": "Changelog",
           "roadmap": "Roadmap"
         }
       },

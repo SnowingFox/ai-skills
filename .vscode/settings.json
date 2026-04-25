@@ -22,7 +22,6 @@
   "search.exclude": {
     "**/node_modules": true,
     ".next": true,
-    ".source": true,
     ".wrangler": true,
     ".open-next": true,
     ".vscode": true,

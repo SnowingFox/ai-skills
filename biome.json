@@ -18,7 +18,6 @@
       "!.kiro",
       "!.conductor",
       "!.vscode",
-      "!.source",
       "!node_modules",
       "!dist",
       "!build",

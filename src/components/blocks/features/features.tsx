@@ -22,7 +22,7 @@ import { useState } from 'react';
 
 /**
  * https://nsui.irung.me/features
- * pnpm dlx shadcn@canary add https://nsui.irung.me/r/features-12.json
+ * bunx shadcn@canary add https://nsui.irung.me/r/features-12.json
  */
 export default function FeaturesSection() {
   const t = useTranslations('HomePage.features');

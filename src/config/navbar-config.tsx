@@ -35,7 +35,6 @@ import {
   WandSparklesIcon,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { websiteConfig } from './website';
 
 /**
  * Get navbar config with translations
@@ -61,24 +60,6 @@ export function useNavbarLinks(): NestedMenuItem[] {
       href: Routes.Pricing,
       external: false,
     },
-    ...(websiteConfig.blog.enable
-      ? [
-          {
-            title: t('blog.title'),
-            href: Routes.Blog,
-            external: false,
-          },
-        ]
-      : []),
-    ...(websiteConfig.docs.enable
-      ? [
-          {
-            title: t('docs.title'),
-            href: Routes.Docs,
-            external: false,
-          },
-        ]
-      : []),
     {
       title: t('pages.title'),
       items: [
@@ -108,13 +89,6 @@ export function useNavbarLinks(): NestedMenuItem[] {
           description: t('pages.items.roadmap.description'),
           icon: <SquareKanbanIcon className="size-4 shrink-0" />,
           href: Routes.Roadmap,
-          external: false,
-        },
-        {
-          title: t('pages.items.changelog.title'),
-          description: t('pages.items.changelog.description'),
-          icon: <ListChecksIcon className="size-4 shrink-0" />,
-          href: Routes.Changelog,
           external: false,
         },
         {

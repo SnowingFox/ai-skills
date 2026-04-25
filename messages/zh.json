@@ -275,37 +275,6 @@
       "and": " 和 "
     }
   },
-  "BlogPage": {
-    "title": "博客",
-    "description": "来自我们的团队最新新闻和更新",
-    "subtitle": "来自我们的团队最新新闻和更新",
-    "author": "作者",
-    "categories": "分类",
-    "tableOfContents": "目录",
-    "readTime": "{minutes} 分钟阅读",
-    "all": "全部",
-    "noPostsFound": "没有找到文章",
-    "allPosts": "全部文章",
-    "morePosts": "更多文章"
-  },
-  "DocsPage": {
-    "toc": "目录",
-    "search": "搜索文档",
-    "lastUpdate": "最后更新于",
-    "searchNoResult": "没有结果",
-    "previousPage": "上一页",
-    "nextPage": "下一页",
-    "chooseLanguage": "选择语言",
-    "title": "MkSaaS文档",
-    "homepage": "首页",
-    "PageActions": {
-      "copyMarkdown": "复制 Markdown",
-      "open": "打开",
-      "openInChatGPT": "在 ChatGPT 中打开",
-      "openInClaude": "在 Claude 中打开",
-      "queryHint": "阅读 {url}，我想根据它的内容进行提问。"
-    }
-  },
   "PremiumContent": {
     "title": "解锁付费内容",
     "description": "订阅我们的付费计划，访问所有付费内容和独家内容。",
@@ -327,12 +296,6 @@
       "pricing": {
         "title": "价格"
       },
-      "blog": {
-        "title": "博客"
-      },
-      "docs": {
-        "title": "文档"
-      },
       "pages": {
         "title": "内置页面",
         "items": {
@@ -347,10 +310,6 @@
           "waitlist": {
             "title": "邮件列表",
             "description": "加入我们的邮件列表，获取最新消息和更新"
-          },
-          "changelog": {
-            "title": "更新日志",
-            "description": "查看我们产品的更新历史，查看最新动态"
           },
           "roadmap": {
             "title": "路线图",
@@ -384,9 +343,6 @@
       "resources": {
         "title": "资源",
         "items": {
-          "blog": "博客",
-          "docs": "文档",
-          "changelog": "更新日志",
           "roadmap": "路线图"
         }
       },
