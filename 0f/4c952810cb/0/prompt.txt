@@ -1,0 +1,17 @@
+<timestamp>Sunday, Apr 26, 2026, 12:53 AM (UTC+8)</timestamp>
+
+ @env.example 也改成 .dev.vars 吧，改成 open nextjs 的样子，并且修改 @CLAUDE.md ，我们用 bun 了
+
+以及这个是不是修了来着？@/Users/bytedance/.cursor/projects/Users-bytedance-dev-ai-skills/terminals/1.txt:7-194
+
+---
+
+<timestamp>Sunday, Apr 26, 2026, 12:59 AM (UTC+8)</timestamp>
+
+删掉 shiki 相关的组件，这些都是不需要的，docs 全删了
+
+---
+
+<timestamp>Sunday, Apr 26, 2026, 1:04 AM (UTC+8)</timestamp>
+
+所有 mdx 都删掉，这只是一个模板，我不需要这些
