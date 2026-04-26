@@ -1,0 +1,44 @@
+/shadcn 重新设置一下整个页面的样式，删掉非 shadcn 组件，重置 shadcn 样式，现有的我觉得挺丑的，你用 bun 整整吧
+
+把 blog、affiliate chatbox custom contact dice ui docs 什么的都删了，admin 保留一下，我想要一个干净的 template，保留 stripe 这些，有基本的功能，有问题可以问我，其他的联盟啊。blog 啊有点业务相关的就删了吧
+
+可以问我确认范围
+
+---
+
+你就把 shadcn 的组件，或者说 @/components/ui 下的组件重新装一遍，样式重置，用默认的黑白色，用最新的版本，下面的也是
+
+@components.json (24-29) 
+
+这些也保留吧，不过也读读他们的文档，更新一下 + 配色重置一下，现在的有点小丑了
+以及这些能不能丢到 @/components/ui/animate-ui 这种里面去，而不是放 @/components 下面
+
+看看吧，有没有必要开 subagent 完成，你自己评估，开始吧
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+fix it
