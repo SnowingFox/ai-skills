@@ -39,31 +39,11 @@ export function useFooterLinks(): NestedMenuItem[] {
       ],
     },
     {
-      title: t('resources.title'),
-      items: [
-        {
-          title: t('resources.items.roadmap'),
-          href: Routes.Roadmap,
-          external: false,
-        },
-      ],
-    },
-    {
       title: t('company.title'),
       items: [
         {
           title: t('company.items.about'),
           href: Routes.About,
-          external: false,
-        },
-        {
-          title: t('company.items.contact'),
-          href: Routes.Contact,
-          external: false,
-        },
-        {
-          title: t('company.items.waitlist'),
-          href: Routes.Waitlist,
           external: false,
         },
       ],

@@ -34,66 +34,44 @@ export default async function AboutPage() {
 
   return (
     <Container className="py-16 px-4">
-      <div className="max-w-4xl mx-auto space-y-8">
-        {/* about section */}
-        <div className="relative max-w-(--breakpoint-md) mx-auto mb-24 mt-8 md:mt-16">
-          <div className="mx-auto flex flex-col justify-between">
-            <div className="grid gap-8 sm:grid-cols-2">
-              {/* avatar and name */}
-              <div className="flex items-center gap-8">
-                <Avatar className="size-32 p-0.5">
-                  <AvatarImage
-                    className="rounded-full border-4 border-gray-200"
-                    src="/logo.png"
-                    alt="Avatar"
-                  />
-                  <AvatarFallback>
-                    <div className="size-32 text-muted-foreground" />
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <h1 className="text-4xl text-foreground">
-                    {t('authorName')}
-                  </h1>
-                  <p className="text-base text-muted-foreground mt-2">
-                    {t('authorBio')}
-                  </p>
-                </div>
-              </div>
+      <div className="mx-auto flex max-w-4xl flex-col gap-8">
+        <div className="mx-auto grid max-w-3xl gap-8 rounded-xl border bg-card p-8 sm:grid-cols-[auto_1fr]">
+          <div className="flex items-center gap-6">
+            <Avatar className="size-24">
+              <AvatarImage src="/logo.png" alt="Avatar" />
+              <AvatarFallback>MK</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col gap-2">
+              <h1 className="font-semibold text-3xl text-foreground">
+                {t('authorName')}
+              </h1>
+              <p className="text-muted-foreground">{t('authorBio')}</p>
+            </div>
+          </div>
 
-              {/* introduction */}
-              <div>
-                <p className="mb-8 text-base text-muted-foreground">
-                  {t('introduction')}
-                </p>
+          <div className="flex flex-col gap-6">
+            <p className="text-muted-foreground">{t('introduction')}</p>
 
-                <div className="flex items-center gap-4">
-                  {websiteConfig.metadata.social?.twitter && (
-                    <a
-                      href={websiteConfig.metadata.social.twitter}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={cn(
-                        buttonVariants({ variant: 'outline' }),
-                        'rounded-lg'
-                      )}
-                    >
-                      <TwitterIcon className="mr-1 size-4" />
-                      {t('followMe')}
-                    </a>
-                  )}
-                  {websiteConfig.mail.supportEmail && (
-                    <div className="flex items-center gap-4">
-                      <Button className="rounded-lg">
-                        <MailIcon className="mr-1 size-4" />
-                        <a href={`mailto:${websiteConfig.mail.supportEmail}`}>
-                          {t('talkWithMe')}
-                        </a>
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              </div>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              {websiteConfig.metadata.social?.twitter && (
+                <a
+                  href={websiteConfig.metadata.social.twitter}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(buttonVariants({ variant: 'outline' }))}
+                >
+                  <TwitterIcon data-icon="inline-start" />
+                  {t('followMe')}
+                </a>
+              )}
+              {websiteConfig.mail.supportEmail && (
+                <Button asChild>
+                  <a href={`mailto:${websiteConfig.mail.supportEmail}`}>
+                    <MailIcon data-icon="inline-start" />
+                    {t('talkWithMe')}
+                  </a>
+                </Button>
+              )}
             </div>
           </div>
         </div>

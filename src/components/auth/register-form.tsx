@@ -147,15 +147,6 @@ export const RegisterForm = ({
           // sign up success, user information stored in ctx.data
           // console.log("register, success:", ctx.data);
           setSuccess(t('checkEmail'));
-
-          // add affonso affiliate when provider is affonso
-          // https://affonso.io/app/affiliate-program/connect
-          if (
-            websiteConfig.affiliates?.enable &&
-            websiteConfig.affiliates.provider === 'affonso'
-          ) {
-            window.Affonso.signup(values.email);
-          }
         },
         onError: (ctx) => {
           // sign up fail, display the error message
@@ -195,6 +186,7 @@ export const RegisterForm = ({
                         {...field}
                         disabled={isPending}
                         placeholder="name"
+                        autoComplete="name"
                       />
                     </FormControl>
                     <FormMessage />
@@ -213,6 +205,8 @@ export const RegisterForm = ({
                         disabled={isPending}
                         placeholder="name@example.com"
                         type="email"
+                        autoComplete="email"
+                        spellCheck={false}
                       />
                     </FormControl>
                     <FormMessage />
@@ -233,6 +227,7 @@ export const RegisterForm = ({
                           placeholder="******"
                           type={showPassword ? 'text' : 'password'}
                           className="pr-10"
+                          autoComplete="new-password"
                         />
                         <Button
                           type="button"
@@ -241,6 +236,9 @@ export const RegisterForm = ({
                           className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                           onClick={togglePasswordVisibility}
                           disabled={isPending}
+                          aria-label={
+                            showPassword ? t('hidePassword') : t('showPassword')
+                          }
                         >
                           {showPassword ? (
                             <EyeOffIcon className="size-4 text-muted-foreground" />

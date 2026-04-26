@@ -143,10 +143,10 @@
   },
   "AboutPage": {
     "title": "About",
-    "description": "This is MkSaaS, an AI SaaS template built with modern technologies, helping you build your SaaS faster and better.",
+    "description": "A clean SaaS template with authentication, payments, admin, and settings ready to customize.",
     "authorName": "MkSaaS",
-    "authorBio": "AI SaaS Boilerplate",
-    "introduction": "👋 Hi there! This is MkSaaS, an AI SaaS template built with modern technologies, helping you build your SaaS faster and better. If you have any questions, welcome to contact me.",
+    "authorBio": "SaaS Starter Template",
+    "introduction": "A focused starter for shipping a SaaS product with authentication, Stripe billing, user settings, admin tools, email, and i18n already wired together.",
     "talkWithMe": "Talk with me",
     "followMe": "Follow me on X"
   },
@@ -154,47 +154,6 @@
     "title": "Changelog",
     "description": "Stay up to date with the latest changes in our product",
     "subtitle": "Stay up to date with the latest changes in our product"
-  },
-  "RoadmapPage": {
-    "title": "Roadmap",
-    "description": "Explore our future plans and upcoming features",
-    "subtitle": "Explore our future plans and upcoming features"
-  },
-  "ContactPage": {
-    "title": "Contact",
-    "description": "We'll help you find the right plan for your business",
-    "subtitle": "We'll help you find the right plan for your business",
-    "form": {
-      "title": "Contact Us",
-      "description": "If you have any questions or feedback, please reach out to our team",
-      "name": "Name",
-      "email": "Email",
-      "message": "Message",
-      "submit": "Submit",
-      "submitting": "Submitting...",
-      "success": "Message sent successfully",
-      "fail": "Failed to send message",
-      "nameMinLength": "Name must be at least 3 characters",
-      "nameMaxLength": "Name must not exceed 30 characters",
-      "emailValidation": "Please enter a valid email address",
-      "messageMinLength": "Message must be at least 10 characters",
-      "messageMaxLength": "Message must not exceed 500 characters"
-    }
-  },
-  "WaitlistPage": {
-    "title": "Waitlist",
-    "description": "Join our waitlist for the launch of our product",
-    "subtitle": "Join our waitlist for the launch of our product",
-    "form": {
-      "title": "Join Our Waitlist",
-      "description": "We will notify you when we launch our product",
-      "email": "Email",
-      "subscribe": "Subscribe",
-      "subscribing": "Subscribing...",
-      "success": "Subscribed successfully",
-      "fail": "Failed to subscribe",
-      "emailValidation": "Please enter a valid email address"
-    }
   },
   "Newsletter": {
     "title": "Newsletter",
@@ -303,18 +262,6 @@
             "title": "About",
             "description": "Learn more about our company, mission, and values"
           },
-          "contact": {
-            "title": "Contact",
-            "description": "Get in touch with our team for support or inquiries"
-          },
-          "waitlist": {
-            "title": "Waitlist",
-            "description": "Join our waitlist for latest news and updates"
-          },
-          "roadmap": {
-            "title": "Roadmap",
-            "description": "Explore our future plans and upcoming features"
-          },
           "cookiePolicy": {
             "title": "Cookie Policy",
             "description": "How we use the cookies on our website"
@@ -340,18 +287,10 @@
           "faq": "FAQ"
         }
       },
-      "resources": {
-        "title": "Resources",
-        "items": {
-          "roadmap": "Roadmap"
-        }
-      },
       "company": {
         "title": "Company",
         "items": {
-          "about": "About",
-          "contact": "Contact",
-          "waitlist": "Waitlist"
+          "about": "About"
         }
       },
       "legal": {
@@ -688,23 +627,17 @@
     "subscribeNewsletter": {
       "body": "Thank you for subscribing to the newsletter. We will keep you updated with the latest news and updates.",
       "subject": "Thanks for subscribing"
-    },
-    "contactMessage": {
-      "name": "Name: {name}",
-      "email": "Email: {email}",
-      "message": "Message: {message}",
-      "subject": "Contact Message from Website"
     }
   },
   "HomePage": {
     "title": "MkSaaS",
     "description": "Make AI SaaS in days, simply and effortlessly",
     "hero": {
-      "title": "Make AI SaaS in days, simply and effortlessly",
-      "description": "The is a demo website built with MkSaaS, a Next.js SaaS boilerplate to help you build your AI SaaS faster and better.",
-      "introduction": "Introducing MkSaaS Boilerplate",
+      "title": "A clean SaaS template for your next product",
+      "description": "Start with the essentials: auth, Stripe payments, admin, settings, email, i18n, and a neutral shadcn interface that is easy to customize.",
+      "introduction": "Clean shadcn SaaS template",
       "primary": "Get Started",
-      "secondary": "See Demo"
+      "secondary": "About template"
     },
     "logocloud": {
       "title": "Your favorite companies are our partners"
@@ -748,25 +681,25 @@
       "secondaryButton": "See Demo"
     },
     "features": {
-      "title": "Features",
-      "subtitle": "The features of your product",
-      "description": "Write the description of your product here",
+      "title": "Core features",
+      "subtitle": "Everything you need before product-specific code",
+      "description": "Keep the template small, practical, and ready to brand.",
       "items": {
         "item-1": {
-          "title": "Product Feature One",
-          "description": "Please write the detailed description of feature one here, make it as detailed as possible, make it more attractive to users"
+          "title": "Authentication",
+          "description": "Better Auth with email/password, social login, protected routes, and user settings."
         },
         "item-2": {
-          "title": "Product Feature Two",
-          "description": "Please write the detailed description of feature two here, make it as detailed as possible, make it more attractive to users"
+          "title": "Stripe billing",
+          "description": "Plans, checkout, customer portal, webhooks, subscriptions, and one-time payments."
         },
         "item-3": {
-          "title": "Product Feature Three",
-          "description": "Please write the detailed description of feature three here, make it as detailed as possible, make it more attractive to users"
+          "title": "Dashboard and admin",
+          "description": "A protected app shell with profile, billing, credits, API keys, and admin user management."
         },
         "item-4": {
-          "title": "Product Feature Four",
-          "description": "Please write the detailed description of feature four here, make it as detailed as possible, make it more attractive to users"
+          "title": "Clean UI foundation",
+          "description": "Latest shadcn components, neutral tokens, dark mode, and simple marketing pages."
         }
       }
     },
@@ -812,28 +745,28 @@
     },
     "pricing": {
       "title": "Pricing",
-      "subtitle": "Pricing",
-      "description": "Choose the plan that works best for you"
+      "subtitle": "Stripe-ready plans",
+      "description": "Use the included pricing model as a starting point for your own product."
     },
     "faqs": {
       "title": "FAQ",
       "subtitle": "Frequently Asked Questions",
       "items": {
         "item-1": {
-          "question": "Do you offer a free trial?",
-          "answer": "Yes, we offer a 7-day free trial."
+          "question": "What is included in this template?",
+          "answer": "Authentication, Stripe payments, protected dashboard pages, admin user management, email templates, i18n, and a shadcn UI foundation."
         },
         "item-2": {
-          "question": "How do I cancel my subscription?",
-          "answer": "You can cancel your subscription by visiting the billing page."
+          "question": "Can I change the pricing model?",
+          "answer": "Yes. Plans and credit packages are centralized in the website config and Stripe price IDs are read from environment variables."
         },
         "item-3": {
-          "question": "Can I change my plan?",
-          "answer": "Yes, you can change your plan at any time by visiting the billing page."
+          "question": "Does it include admin pages?",
+          "answer": "Yes. The admin area includes user management and keeps server-side auth validation in protected layouts."
         },
         "item-4": {
-          "question": "What is the refund policy?",
-          "answer": "We offer a 30-day money-back guarantee if you are not happy with our product."
+          "question": "Is the UI tied to a custom brand?",
+          "answer": "No. The theme uses neutral black and white shadcn tokens so you can apply your own brand later."
         },
         "item-5": {
           "question": "Can't find what you're looking for?",

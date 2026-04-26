@@ -9,7 +9,6 @@ export type WebsiteConfig = {
   ui: UiConfig;
   metadata: MetadataConfig;
   features: FeaturesConfig;
-  affiliates?: AffiliatesConfig;
   analytics: AnalyticsConfig;
   apikeys: ApiKeysConfig;
   auth: AuthConfig;
@@ -70,17 +69,10 @@ export interface SocialConfig {
  * Website features
  */
 export interface FeaturesConfig {
-  enableCrispChat?: boolean;          // Whether to enable the crisp chat
   enableUpgradeCard?: boolean;        // Whether to enable the upgrade card in the sidebar
   enableUpdateAvatar?: boolean;       // Whether to enable the update avatar in settings
   enableDatafastRevenueTrack?: boolean;   // Whether to enable datafast revenue tracking
   enableTurnstileCaptcha?: boolean;   // Whether to enable turnstile captcha
-}
-
-/** Affiliates configuration */
-export interface AffiliatesConfig {
-  enable: boolean;                     // Whether to enable the affiliates
-  provider?: 'affonso' | 'promotekit'; // The affiliate provider
 }
 
 /**
@@ -206,14 +198,3 @@ export type NestedMenuItem = MenuItem & {
   items?: MenuItem[];                // The items to display in the nested menu
 };
 
-/**
- * Blog Category
- *
- * we can not pass CategoryType from server component to client component
- * so we need to define a new type, and use it in the client component
- */
-export type BlogCategory = {
-  slug: string;
-  name: string;
-  description: string;
-};

@@ -34,12 +34,7 @@ export const websiteConfig: WebsiteConfig = {
     enableUpgradeCard: true,
     enableUpdateAvatar: true,
     enableDatafastRevenueTrack: false,
-    enableCrispChat: process.env.NEXT_PUBLIC_DEMO_WEBSITE === 'true',
     enableTurnstileCaptcha: process.env.NEXT_PUBLIC_DEMO_WEBSITE === 'true',
-  },
-  affiliates: {
-    enable: false,
-    provider: 'affonso',
   },
   analytics: {
     enableVercelAnalytics: false,

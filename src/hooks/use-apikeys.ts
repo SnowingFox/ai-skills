@@ -33,11 +33,11 @@ export function useApiKeys(pageIndex: number, pageSize: number) {
         throw new Error(result.error.message || 'Failed to fetch API keys');
       }
 
-      // API returns array directly
-      const items = (result.data || []) as ApiKey[];
+      const apiKeys = result.data?.apiKeys ?? [];
+      const items = apiKeys as unknown as ApiKey[];
       return {
         items,
-        total: items.length,
+        total: result.data?.total ?? items.length,
       };
     },
     placeholderData: keepPreviousData,

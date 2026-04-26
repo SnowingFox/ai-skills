@@ -143,10 +143,10 @@
   },
   "AboutPage": {
     "title": "关于我们",
-    "description": "MkSaaS 是一个使用最先进的技术栈构建的 AI SaaS 模板，它可以帮助你更快更好地构建你的 SaaS。如果你有任何问题，欢迎联系我。",
+    "description": "一个干净的 SaaS 模板，内置认证、支付、后台、设置等基础能力。",
     "authorName": "MkSaaS",
-    "authorBio": "最好的 AI SaaS 模板",
-    "introduction": "👋 你好，这里是 MkSaaS，一个使用最先进的技术栈构建的 AI SaaS 模板，它可以帮助你更快更好地构建你的 SaaS。如果你有任何问题，欢迎联系我。",
+    "authorBio": "SaaS 启动模板",
+    "introduction": "一个聚焦基础能力的 SaaS 启动模板，已经接好认证、Stripe 账单、用户设置、后台管理、邮件和国际化。",
     "talkWithMe": "联系我",
     "followMe": "关注我"
   },
@@ -154,47 +154,6 @@
     "title": "更新日志",
     "description": "查看我们产品的最新动态",
     "subtitle": "查看我们产品的最新动态"
-  },
-  "RoadmapPage": {
-    "title": "路线图",
-    "description": "探索我们的未来计划和即将推出的功能",
-    "subtitle": "探索我们的未来计划和即将推出的功能"
-  },
-  "ContactPage": {
-    "title": "联系我们",
-    "description": "我们帮助您找到合适的计划",
-    "subtitle": "我们帮助您找到合适的计划",
-    "form": {
-      "title": "联系我们",
-      "description": "如果您有任何问题或反馈，请随时联系我们的团队",
-      "name": "姓名",
-      "email": "邮箱",
-      "message": "消息",
-      "submit": "提交",
-      "submitting": "提交中...",
-      "success": "消息发送成功",
-      "fail": "消息发送失败",
-      "nameMinLength": "姓名必须至少包含 3 个字符",
-      "nameMaxLength": "姓名必须不超过 30 个字符",
-      "emailValidation": "请输入有效的邮箱地址",
-      "messageMinLength": "消息必须至少包含 10 个字符",
-      "messageMaxLength": "消息必须不超过 500 个字符"
-    }
-  },
-  "WaitlistPage": {
-    "title": "等待队列",
-    "description": "加入等待队列，及时获取最新消息和更新",
-    "subtitle": "加入等待队列，及时获取最新消息和更新",
-    "form": {
-      "title": "加入等待队列",
-      "description": "我们将在产品发布时及时通知您",
-      "email": "邮箱",
-      "subscribe": "加入等待队列",
-      "subscribing": "加入等待队列中...",
-      "success": "加入等待队列成功",
-      "fail": "加入等待队列失败",
-      "emailValidation": "请输入有效的邮箱地址"
-    }
   },
   "Newsletter": {
     "title": "邮件列表",
@@ -303,18 +262,6 @@
             "title": "关于我们",
             "description": "了解更多关于我们的公司、使命和价值观"
           },
-          "contact": {
-            "title": "联系我们",
-            "description": "与我们的团队联系，以获取支持或咨询"
-          },
-          "waitlist": {
-            "title": "邮件列表",
-            "description": "加入我们的邮件列表，获取最新消息和更新"
-          },
-          "roadmap": {
-            "title": "路线图",
-            "description": "探索我们的未来计划和即将推出的功能"
-          },
           "cookiePolicy": {
             "title": "Cookie 政策",
             "description": "关于我们如何在网站上使用 Cookie 的信息"
@@ -340,18 +287,10 @@
           "faq": "常见问题"
         }
       },
-      "resources": {
-        "title": "资源",
-        "items": {
-          "roadmap": "路线图"
-        }
-      },
       "company": {
         "title": "公司",
         "items": {
-          "about": "关于我们",
-          "contact": "联系我们",
-          "waitlist": "邮件列表"
+          "about": "关于我们"
         }
       },
       "legal": {
@@ -688,23 +627,17 @@
     "subscribeNewsletter": {
       "body": "感谢您订阅我们的邮件列表，我们将为您提供最新的新闻和更新。",
       "subject": "感谢您的订阅"
-    },
-    "contactMessage": {
-      "name": "姓名: {name}",
-      "email": "邮箱: {email}",
-      "message": "消息: {message}",
-      "subject": "来自网站的联系消息"
     }
   },
   "HomePage": {
     "title": "MkSaaS",
-    "description": "使用 MkSaaS 在几天内轻松构建您的 AI SaaS 产品",
+    "description": "一个干净的 SaaS 启动模板",
     "hero": {
-      "title": "使用 MkSaaS 轻松构建您的 AI SaaS 产品",
-      "description": "MkSaaS 是构建 AI SaaS 的最佳模板，内置 AI、身份验证、全球支付、博客、文档、邮件订阅、SEO、多彩主题、丰富组件等。",
-      "introduction": "介绍 MkSaaS 模板",
+      "title": "一个干净的 SaaS 启动模板",
+      "description": "从必要能力开始：认证、Stripe 支付、后台、设置、邮件、国际化，以及易于定制的中性 shadcn 界面。",
+      "introduction": "干净的 shadcn SaaS 模板",
       "primary": "开始使用",
-      "secondary": "查看演示"
+      "secondary": "了解模板"
     },
     "logocloud": {
       "title": "您最爱公司都是我们的合作伙伴"
@@ -748,25 +681,25 @@
       "secondaryButton": "查看演示"
     },
     "features": {
-      "title": "功能",
-      "subtitle": "您的 SaaS 产品功能",
-      "description": "请在这里介绍您的 SaaS 产品的特色功能的信息",
+      "title": "核心能力",
+      "subtitle": "在编写业务代码之前需要的基础能力",
+      "description": "让模板保持小而实用，方便继续替换成你的品牌。",
       "items": {
         "item-1": {
-          "title": "产品特色功能一",
-          "description": "请在这里详细描述您的产品特色功能一，尽可能详细，使其更吸引用户，提高落地页的转化率"
+          "title": "认证系统",
+          "description": "Better Auth 邮箱密码、社交登录、受保护路由和用户设置。"
         },
         "item-2": {
-          "title": "产品特色功能二",
-          "description": "请在这里详细描述您的产品特色功能二，尽可能详细，使其更吸引用户，提高落地页的转化率"
+          "title": "Stripe 账单",
+          "description": "计划、Checkout、客户门户、Webhook、订阅和一次性付款。"
         },
         "item-3": {
-          "title": "产品特色功能三",
-          "description": "请在这里详细描述您的产品特色功能三，尽可能详细，使其更吸引用户，提高落地页的转化率"
+          "title": "仪表盘和后台",
+          "description": "受保护应用外壳，包含资料、账单、积分、API Key 和用户管理。"
         },
         "item-4": {
-          "title": "产品特色功能四",
-          "description": "请在这里详细描述您的产品特色功能四，尽可能详细，使其更吸引用户，提高落地页的转化率"
+          "title": "干净 UI 基础",
+          "description": "最新 shadcn 组件、中性 token、暗色模式和简洁营销页。"
         }
       }
     },
@@ -812,28 +745,28 @@
     },
     "pricing": {
       "title": "价格",
-      "subtitle": "价格",
-      "description": "选择最适合您的付费计划"
+      "subtitle": "已接入 Stripe 的计划",
+      "description": "以当前价格模型为基础，继续替换成你的产品套餐。"
     },
     "faqs": {
       "title": "常见问题",
       "subtitle": "如果您有任何问题，请随时联系我们",
       "items": {
         "item-1": {
-          "question": "你们提供免费试用吗？",
-          "answer": "是的，我们提供7天的免费试用。"
+          "question": "这个模板包含哪些内容？",
+          "answer": "认证、Stripe 支付、受保护仪表盘、后台用户管理、邮件模板、国际化和 shadcn UI 基础。"
         },
         "item-2": {
-          "question": "如何取消我的订阅？",
-          "answer": "您可以通过访问账单页面取消您的订阅。"
+          "question": "我可以修改价格模型吗？",
+          "answer": "可以。计划和积分套餐集中在网站配置中，Stripe price id 从环境变量读取。"
         },
         "item-3": {
-          "question": "我可以更改我的计划吗？",
-          "answer": "是的，您可以随时通过访问账单页面更改您的计划。"
+          "question": "是否保留后台页面？",
+          "answer": "是的。后台保留用户管理，并在受保护 layout 中进行服务端认证校验。"
         },
         "item-4": {
-          "question": "你们的退款政策是什么？",
-          "answer": "是的，我们提供30天的退款保证。"
+          "question": "UI 是否绑定了特定品牌？",
+          "answer": "没有。主题使用中性黑白 shadcn token，后续可以直接替换成你的品牌。"
         },
         "item-5": {
           "question": "找不到您想问的问题？",

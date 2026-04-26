@@ -1,6 +1,5 @@
 import type { MailConfig } from '@/types';
 import type { Locale, Messages } from 'next-intl';
-import ContactMessage from './templates/contact-message';
 import ForgotPassword from './templates/forgot-password';
 import SubscribeNewsletter from './templates/subscribe-newsletter';
 import VerifyEmail from './templates/verify-email';
@@ -15,7 +14,6 @@ export const EmailTemplates = {
   forgotPassword: ForgotPassword,
   verifyEmail: VerifyEmail,
   subscribeNewsletter: SubscribeNewsletter,
-  contactMessage: ContactMessage,
 } as const;
 
 /**

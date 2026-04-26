@@ -6,7 +6,7 @@ import type { Locale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 
-const content = {
+const content: Record<string, { title: string; description: string }> = {
   en: {
     title: 'Cookie Policy',
     description: 'Add your cookie policy before launching this template.',
@@ -41,7 +41,7 @@ export default async function CookiePolicyPage(props: NextPageProps) {
   }
 
   const locale = params.locale as string;
-  const page = content[locale as Locale] ?? content.en;
+  const page = content[locale] ?? content.en;
 
   if (!page) {
     notFound();
