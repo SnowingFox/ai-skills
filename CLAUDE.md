@@ -97,3 +97,36 @@ All external integrations follow a pluggable provider pattern with factory funct
 - Tailwind CSS v4 with tokens in `src/styles/`
 - UI primitives from Radix UI; icons from `lucide-react`
 - Conventional Commits: `feat:`, `fix:`, `chore:`
+
+## File Editing Rules (Strict)
+
+These rules apply to every code change, not just the first iteration.
+
+- Never overwrite or rewrite source files via shell heredocs, scripted writes,
+  or one-shot file dumps. The following patterns are forbidden:
+  - `python3 - <<'PY' ... p.write_text(...)` or any equivalent Python/Node
+    heredoc that pipes a full file body into `Path(...).write_text`,
+    `Bun.write`, `fs.writeFile`, etc.
+  - `cat > path/to/file <<'EOF' ... EOF`, `echo "..." > file`,
+    `sed -i 's/.../.../' file` for content edits.
+  - Inline `bun -e "await Bun.write(...)"` or similar one-liners that produce
+    or replace TypeScript/TSX/JSON sources.
+- Use the `StrReplace` tool for targeted edits, the `Write` tool only when
+  creating a brand-new file from scratch, and the `Delete` tool to remove a
+  file. Read the file first when context is needed; do not guess.
+- For batch edits across files, run `StrReplace` per file with `replace_all`
+  when appropriate, instead of generating files via shell scripts.
+- Only `bun` (or its CLI equivalents like `bun run`, `bunx --bun`) may run
+  package or build commands. Do not introduce ad-hoc shell text-mangling
+  utilities to mutate project sources.
+
+## UI Component Rules
+
+- Always prefer shadcn/ui primitives in `src/components/ui` over hand-rolled
+  markup. When a component is missing, install via
+  `bunx --bun shadcn@latest add <name>` instead of building a custom div.
+- Do not commit non-shadcn registry mirrors (e.g. raw `magicui`, `tailark`,
+  `animate-ui`, `diceui` source dumps). If a registry component is needed,
+  install it on-demand and edit the resulting `src/components/ui/*` file.
+- Reuse the project layout primitives: `Container`, `SiteHeader`, `SiteFooter`
+  for marketing/public pages; `DashboardSidebar` for protected pages.
