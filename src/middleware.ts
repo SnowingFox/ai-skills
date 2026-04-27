@@ -32,6 +32,14 @@ export default async function middleware(req: NextRequest) {
   const { nextUrl } = req;
   console.log('>> middleware start, pathname', nextUrl.pathname);
 
+  if (
+    nextUrl.pathname === '/skills' ||
+    nextUrl.pathname.startsWith('/skills/')
+  ) {
+    console.log('<< middleware end, registry route, skipping intlMiddleware');
+    return NextResponse.next();
+  }
+
   // Cookie-based session check for fast redirection
   // WARNING: This only checks cookie existence, NOT validity
   // Actual validation happens in protected layouts and API routes
