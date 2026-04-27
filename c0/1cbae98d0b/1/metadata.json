@@ -1,0 +1,140 @@
+{
+  "checkpoint_id": "c01cbae98d0b",
+  "session_id": "c4ed483d-d6a6-4d17-99b6-7e20c4a07250",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-27T06:49:46.042Z",
+  "branch": "main",
+  "checkpoints_count": 9,
+  "files_touched": [
+    "bun.lock",
+    "package.json",
+    "src/app/(registry)/layout.tsx",
+    "src/app/(registry)/skills/[owner]/[repo]/[skillId]/page.tsx",
+    "src/app/[locale]/(marketing)/(home)/page.tsx",
+    "src/app/api/skills/all-time/[page]/route.ts",
+    "src/components/skills/skill-markdown.tsx",
+    "src/components/skills/skills-leaderboard.tsx",
+    "src/lib/skills-api.ts",
+    "src/lib/skills.ts",
+    "src/middleware.ts",
+    "tsconfig.json"
+  ],
+  "agent": "Cursor",
+  "model": "gpt-5.5-extra-high",
+  "turn_id": "4241236e13ef",
+  "is_task": false,
+  "tool_use_id": "",
+  "transcript_identifier_at_start": "",
+  "checkpoint_transcript_start": 0,
+  "transcript_lines_at_start": 0,
+  "session_metrics": {
+    "duration_ms": 0,
+    "turn_count": 10,
+    "context_tokens": 0,
+    "context_window_size": 0
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-27T06:49:45.994Z",
+    "agent_lines": 924,
+    "agent_removed": 66,
+    "human_added": 0,
+    "human_modified": 94,
+    "human_removed": 6,
+    "total_committed": 1017,
+    "total_lines_changed": 1090,
+    "agent_percentage": 90.82568807339449,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 101,
+      "user_lines_removed": 98,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "src/app/[locale]/(marketing)/(home)/page.tsx": 101
+      },
+      "user_removed_per_file": {
+        "src/app/[locale]/(marketing)/(home)/page.tsx": 98
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 101,
+      "agent_lines_removed": 98,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 101,
+      "agent_lines_removed": 98,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 92,
+      "user_lines_removed": 0,
+      "agent_lines_added": 101,
+      "agent_lines_removed": 98,
+      "user_added_per_file": {
+        "src/app/api/skills/all-time/[page]/route.ts": 20,
+        "src/lib/skills-api.ts": 72
+      },
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1125,
+      "agent_lines_removed": 165,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1131,
+      "agent_lines_removed": 165,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1131,
+      "agent_lines_removed": 165,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 9,
+      "user_lines_added": 1,
+      "user_lines_removed": 1,
+      "agent_lines_added": 1127,
+      "agent_lines_removed": 165,
+      "user_added_per_file": {
+        "src/components/skills/skills-leaderboard.tsx": 1
+      },
+      "user_removed_per_file": {
+        "src/components/skills/skills-leaderboard.tsx": 1
+      }
+    }
+  ]
+}
