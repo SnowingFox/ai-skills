@@ -1,0 +1,17 @@
+https://skills.sh/api/skills/all-time 请求一下这个接口，作为首页的数据来源
+
+https://skills.sh/api/skills/all-time/0 这样
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+下滑可以拉取更多 skills，以及上下边距再大一点点就行了，现在的很紧凑
+
+---
+
+你不应该用 react-query 吗？为什么要这样封装这么多？
