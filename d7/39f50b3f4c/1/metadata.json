@@ -1,0 +1,53 @@
+{
+  "checkpoint_id": "d739f50b3f4c",
+  "session_id": "0ec071c4-8d8c-458e-bcec-9b2211728d6e",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-29T14:59:50.556Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Cursor",
+  "model": "gpt-5.5-extra-high",
+  "turn_id": "f939e7b00047",
+  "is_task": false,
+  "tool_use_id": "",
+  "transcript_identifier_at_start": "",
+  "checkpoint_transcript_start": 0,
+  "transcript_lines_at_start": 0,
+  "session_metrics": {
+    "duration_ms": 0,
+    "turn_count": 2,
+    "context_tokens": 0,
+    "context_window_size": 0
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 418,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".gitignore": 8,
+        ".agents/skills/grille-me/_s_k_i_l_l.md": 10,
+        ".agents/skills/improve-codebase-architecture/_d_e_e_p_e_n_i_n_g.md": 37,
+        ".agents/skills/improve-codebase-architecture/_i_n_t_e_r_f_a_c_e-_d_e_s_i_g_n.md": 44,
+        ".agents/skills/improve-codebase-architecture/_l_a_n_g_u_a_g_e.md": 53,
+        ".agents/skills/improve-codebase-architecture/_s_k_i_l_l.md": 71,
+        ".idea/workspace.xml": 89,
+        "docs/ai-package-skills.md": 95,
+        "skills-lock.json": 11
+      },
+      "user_removed_per_file": {}
+    }
+  ]
+}
