@@ -1,8 +1,8 @@
 {
   "Metadata": {
-    "name": "MkSaaS Demo",
-    "title": "MkSaaS - 最好的 AI SaaS 模板",
-    "description": "MkSaaS 是构建 AI SaaS 的最佳模板，使用 MkSaaS 可以在几天内轻松构建您的 AI SaaS，简单且毫不费力。"
+    "name": "AI-SKILLS",
+    "title": "AI SKILLS - The agents kit registry",
+    "description": "AI SKILLS 是面向 Agent Kit、可复用 Skills、Workspace 自动化和测评流程的注册中心。"
   },
   "Common": {
     "premium": "付费文章",
@@ -46,8 +46,8 @@
   },
   "PricingPage": {
     "title": "价格",
-    "description": "选择最适合您的付费计划",
-    "subtitle": "选择最适合您的付费计划",
+    "description": "面向 Workspace、Skills 测评和 Agent Kit 分发的付费方案",
+    "subtitle": "Workspace 与测评付费",
     "monthly": "月付",
     "yearly": "年付",
     "PricingCard": {
@@ -70,46 +70,46 @@
   },
   "PricePlans": {
     "free": {
-      "name": "免费版",
-      "description": "适用于个人使用的基本功能",
+      "name": "Starter",
+      "description": "探索公共 Skills，并运行轻量级本地测评",
       "features": {
-        "feature-1": "最多3个项目",
-        "feature-2": "1GB存储空间",
-        "feature-3": "基础分析功能",
-        "feature-4": "社区支持"
+        "feature-1": "浏览公共 Agent Kit 注册中心",
+        "feature-2": "发布个人 Skills",
+        "feature-3": "运行本地冒烟测评",
+        "feature-4": "社区发现与支持"
       },
       "limits": {
-        "limit-1": "不支持自定义域名",
-        "limit-2": "不支持自定义品牌",
-        "limit-3": "不支持终身更新"
+        "limit-1": "私有 Workspace 注册中心",
+        "limit-2": "定时 Benchmark 套件",
+        "limit-3": "团队治理控制"
       }
     },
     "pro": {
-      "name": "专业版",
-      "description": "专业人士的高级功能",
+      "name": "Workspace",
+      "description": "面向团队的私有 Agent Kit 注册中心与测评流程",
       "features": {
-        "feature-1": "无限项目",
-        "feature-2": "10GB存储空间",
-        "feature-3": "高级分析功能",
-        "feature-4": "优先支持",
-        "feature-5": "自定义域名"
+        "feature-1": "私有 Workspace Skills 注册中心",
+        "feature-2": "团队角色、评审流程和审计记录",
+        "feature-3": "定时 Skills 测评和评分卡",
+        "feature-4": "跨 Agent 与代码仓库的使用分析",
+        "feature-5": "Workspace 初始化优先支持"
       },
       "limits": {
-        "limit-1": "不支持自定义品牌",
-        "limit-2": "不支持终身更新"
+        "limit-1": "托管企业级落地",
+        "limit-2": "定制 Benchmark 设计"
       }
     },
     "lifetime": {
-      "name": "终身版",
-      "description": "一次性付款获得所有高级功能",
+      "name": "Evaluation Lab",
+      "description": "托管测评包、定制 Benchmark 设计和上线支持",
       "features": {
-        "feature-1": "所有专业版功能",
-        "feature-2": "100GB存储空间",
-        "feature-3": "专属支持",
-        "feature-4": "企业级安全",
-        "feature-5": "高级集成",
-        "feature-6": "自定义品牌",
-        "feature-7": "终身更新"
+        "feature-1": "包含 Workspace 全部能力",
+        "feature-2": "定制 Skills Benchmark 套件",
+        "feature-3": "Agent 工作流回归检查",
+        "feature-4": "Workspace 迁移方案梳理",
+        "feature-5": "专属测评 Review Session",
+        "feature-6": "私有分发与合规建议",
+        "feature-7": "上线落地支持"
       }
     }
   },
@@ -143,12 +143,12 @@
   },
   "AboutPage": {
     "title": "关于我们",
-    "description": "一个干净的 SaaS 模板，内置认证、支付、后台、设置等基础能力。",
-    "authorName": "MkSaaS",
-    "authorBio": "SaaS 启动模板",
-    "introduction": "一个聚焦基础能力的 SaaS 启动模板，已经接好认证、Stripe 账单、用户设置、后台管理、邮件和国际化。",
-    "talkWithMe": "联系我",
-    "followMe": "关注我"
+    "description": "AI SKILLS 帮助团队打包、发现、测评并分发 AI Agents 的可复用能力。",
+    "authorName": "AI-SKILLS",
+    "authorBio": "The agents kit registry",
+    "introduction": "我们正在构建 Agent Kit 注册中心：将可复用 Skills、Workspace 治理、测评评分卡和可重复执行的流程组织起来，让团队里的 Agents 更可靠。",
+    "talkWithMe": "联系我们",
+    "followMe": "关注动态"
   },
   "ChangelogPage": {
     "title": "更新日志",
@@ -745,28 +745,28 @@
     },
     "pricing": {
       "title": "价格",
-      "subtitle": "已接入 Stripe 的计划",
-      "description": "以当前价格模型为基础，继续替换成你的产品套餐。"
+      "subtitle": "Workspace 与测评方案",
+      "description": "为私有 Workspace、Skills 测评和 Agent Kit 托管落地付费。"
     },
     "faqs": {
-      "title": "常见问题",
-      "subtitle": "如果您有任何问题，请随时联系我们",
+      "title": "FAQ",
+      "subtitle": "常见问题",
       "items": {
         "item-1": {
-          "question": "这个模板包含哪些内容？",
-          "answer": "认证、Stripe 支付、受保护仪表盘、后台用户管理、邮件模板、国际化和 shadcn UI 基础。"
+          "question": "Workspace 包含什么？",
+          "answer": "私有 Skills 注册中心、团队角色、评审流程、使用可见性，以及一个跨组织分发 Agent Kit 的共享空间。"
         },
         "item-2": {
-          "question": "我可以修改价格模型吗？",
-          "answer": "可以。计划和积分套餐集中在网站配置中，Stripe price id 从环境变量读取。"
+          "question": "Skills 测评如何工作？",
+          "answer": "测评会用可重复任务运行 Skills，记录得分，并帮助团队在大范围分发前发现回归问题。"
         },
         "item-3": {
-          "question": "是否保留后台页面？",
-          "answer": "是的。后台保留用户管理，并在受保护 layout 中进行服务端认证校验。"
+          "question": "内部 Skills 可以保持私有吗？",
+          "answer": "可以。Workspace 方案支持私有分发、评审门禁和团队范围内的受控共享。"
         },
         "item-4": {
-          "question": "UI 是否绑定了特定品牌？",
-          "answer": "没有。主题使用中性黑白 shadcn token，后续可以直接替换成你的品牌。"
+          "question": "支持定制 Benchmark 吗？",
+          "answer": "支持。Evaluation Lab 提供定制 Benchmark 设计、回归套件和面向 Agent 工作流的评审支持。"
         },
         "item-5": {
           "question": "找不到您想问的问题？",

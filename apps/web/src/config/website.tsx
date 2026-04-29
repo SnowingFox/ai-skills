@@ -67,8 +67,8 @@ export const websiteConfig: WebsiteConfig = {
   mail: {
     enable: true,
     provider: 'resend',
-    fromEmail: 'MkSaaS <support@example.com>',
-    supportEmail: 'MkSaaS <support@example.com>',
+    fromEmail: 'AI-SKILLS <support@example.com>',
+    supportEmail: 'support@example.com',
   },
   newsletter: {
     enable: true,

@@ -1,8 +1,8 @@
 {
   "Metadata": {
-    "name": "MkSaaS Demo",
-    "title": "MkSaaS - The Best AI SaaS Boilerplate",
-    "description": "MkSaaS is the best AI SaaS boilerplate. Make AI SaaS in days, simply and effortlessly"
+    "name": "AI-SKILLS",
+    "title": "AI SKILLS - The agents kit registry",
+    "description": "AI SKILLS is a registry for agent kits, reusable skills, workspace automation, and evaluation workflows."
   },
   "Common": {
     "premium": "Premium",
@@ -46,8 +46,8 @@
   },
   "PricingPage": {
     "title": "Pricing",
-    "description": "Choose the plan that works best for you",
-    "subtitle": "Choose the plan that works best for you",
+    "description": "Plans for workspaces, skill evaluations, and managed agent-kit distribution",
+    "subtitle": "Workspace and evaluation pricing",
     "monthly": "Monthly",
     "yearly": "Yearly",
     "PricingCard": {
@@ -70,46 +70,46 @@
   },
   "PricePlans": {
     "free": {
-      "name": "Free",
-      "description": "Basic features for personal use",
+      "name": "Starter",
+      "description": "Explore public skills and run lightweight local evaluations",
       "features": {
-        "feature-1": "Up to 3 projects",
-        "feature-2": "1 GB storage",
-        "feature-3": "Basic analytics",
-        "feature-4": "Community support"
+        "feature-1": "Browse the public agent-kit registry",
+        "feature-2": "Publish personal skills",
+        "feature-3": "Run local smoke evaluations",
+        "feature-4": "Community discovery and support"
       },
       "limits": {
-        "limit-1": "Custom domains",
-        "limit-2": "Custom branding",
-        "limit-3": "Lifetime updates"
+        "limit-1": "Private workspace registry",
+        "limit-2": "Scheduled benchmark suites",
+        "limit-3": "Team governance controls"
       }
     },
     "pro": {
-      "name": "Pro",
-      "description": "Advanced features for professionals",
+      "name": "Workspace",
+      "description": "Private agent-kit registry and evaluation workflows for teams",
       "features": {
-        "feature-1": "Unlimited projects",
-        "feature-2": "10 GB storage",
-        "feature-3": "Advanced analytics",
-        "feature-4": "Priority support",
-        "feature-5": "Custom domains"
+        "feature-1": "Private workspace skill registry",
+        "feature-2": "Team roles, review flows, and audit history",
+        "feature-3": "Scheduled skill evaluations and scorecards",
+        "feature-4": "Usage analytics across agents and repos",
+        "feature-5": "Priority support for workspace setup"
       },
       "limits": {
-        "limit-1": "Custom branding",
-        "limit-2": "Lifetime updates"
+        "limit-1": "Managed enterprise rollout",
+        "limit-2": "Custom benchmark design"
       }
     },
     "lifetime": {
-      "name": "Lifetime",
-      "description": "Premium features with one-time payment",
+      "name": "Evaluation Lab",
+      "description": "Managed evaluation packs, custom benchmark design, and rollout support",
       "features": {
-        "feature-1": "All Pro features",
-        "feature-2": "100 GB storage",
-        "feature-3": "Dedicated support",
-        "feature-4": "Enterprise-grade security",
-        "feature-5": "Advanced integrations",
-        "feature-6": "Custom branding",
-        "feature-7": "Lifetime updates"
+        "feature-1": "Everything in Workspace",
+        "feature-2": "Custom skill benchmark suites",
+        "feature-3": "Regression checks for agent workflows",
+        "feature-4": "Curated workspace migration plan",
+        "feature-5": "Dedicated evaluation review sessions",
+        "feature-6": "Private distribution and compliance guidance",
+        "feature-7": "Hands-on launch support"
       }
     }
   },
@@ -143,12 +143,12 @@
   },
   "AboutPage": {
     "title": "About",
-    "description": "A clean SaaS template with authentication, payments, admin, and settings ready to customize.",
-    "authorName": "MkSaaS",
-    "authorBio": "SaaS Starter Template",
-    "introduction": "A focused starter for shipping a SaaS product with authentication, Stripe billing, user settings, admin tools, email, and i18n already wired together.",
-    "talkWithMe": "Talk with me",
-    "followMe": "Follow me on X"
+    "description": "AI SKILLS helps teams package, discover, evaluate, and distribute reusable capabilities for AI agents.",
+    "authorName": "AI-SKILLS",
+    "authorBio": "The agents kit registry",
+    "introduction": "We are building a registry for agent kits: reusable skills, workspace governance, evaluation scorecards, and repeatable procedures that make agents more reliable across teams.",
+    "talkWithMe": "Contact us",
+    "followMe": "Follow updates"
   },
   "ChangelogPage": {
     "title": "Changelog",
@@ -745,28 +745,28 @@
     },
     "pricing": {
       "title": "Pricing",
-      "subtitle": "Stripe-ready plans",
-      "description": "Use the included pricing model as a starting point for your own product."
+      "subtitle": "Workspace and evaluation plans",
+      "description": "Pay for private workspaces, skill evaluations, and managed agent-kit rollout support."
     },
     "faqs": {
       "title": "FAQ",
       "subtitle": "Frequently Asked Questions",
       "items": {
         "item-1": {
-          "question": "What is included in this template?",
-          "answer": "Authentication, Stripe payments, protected dashboard pages, admin user management, email templates, i18n, and a shadcn UI foundation."
+          "question": "What is included in a workspace?",
+          "answer": "A private skill registry, team roles, review flows, usage visibility, and a shared place to distribute agent kits across your organization."
         },
         "item-2": {
-          "question": "Can I change the pricing model?",
-          "answer": "Yes. Plans and credit packages are centralized in the website config and Stripe price IDs are read from environment variables."
+          "question": "How do skill evaluations work?",
+          "answer": "Evaluation runs check skills against repeatable tasks, score the results, and help teams catch regressions before rolling skills out broadly."
         },
         "item-3": {
-          "question": "Does it include admin pages?",
-          "answer": "Yes. The admin area includes user management and keeps server-side auth validation in protected layouts."
+          "question": "Can we keep internal skills private?",
+          "answer": "Yes. Workspace plans are designed for private distribution, review gates, and controlled sharing across teams."
         },
         "item-4": {
-          "question": "Is the UI tied to a custom brand?",
-          "answer": "No. The theme uses neutral black and white shadcn tokens so you can apply your own brand later."
+          "question": "Do you support custom benchmarks?",
+          "answer": "Yes. Evaluation Lab adds custom benchmark design, regression suites, and guided review sessions for your agent workflows."
         },
         "item-5": {
           "question": "Can't find what you're looking for?",

@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+**/node_modules
 /.pnp
 .pnp.*
 .yarn/*
@@ -15,10 +16,12 @@
 
 # next.js
 /.next/
+**/.next/
 /out/
 
 # production
 /build
+**/build
 
 # misc
 .DS_Store
@@ -56,9 +59,11 @@ next-env.d.ts
 
 # OpenNext build output
 .open-next
+**/.open-next
 
 # wrangler files
 .wrangler
+**/.wrangler
 .dev.vars
 .dev.vars*
 !.dev.vars.example

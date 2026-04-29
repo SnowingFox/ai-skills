@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
 
 This repository is a Bun workspace. The Next.js app lives in `apps/web`,
 and the Bun CLI starter workspace lives in `apps/cli`.

@@ -3,7 +3,7 @@
  * https://developers.cloudflare.com/workers/wrangler/configuration/
  */
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
+  "$schema": "../../node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
   "name": "mksaas-template-cloudflare",
   "compatibility_date": "2025-10-08",

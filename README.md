@@ -6,7 +6,7 @@ The complete Next.js boilerplate for building profitable SaaS, with auth, paymen
 
 ## Branches
 
-- [main](https://github.com/MkSaaSHQ/mksaas-template): The `main` branch can be deployed on Vercel or with Docker, and uses Postgres as database by default, you can check out this [deployment guide](https://mksaas.com/zh/docs/deployment/vercel) for more details.
+- [main](https://github.com/MkSaaSHQ/mksaas-template): The `main` branch can be deployed on Vercel, and uses Postgres as database by default, you can check out this [deployment guide](https://mksaas.com/zh/docs/deployment/vercel) for more details.
 - [cloudflare](https://github.com/MkSaaSHQ/mksaas-template/tree/cloudflare): The `cloudflare` branch can be deployed on Cloudflare Worker, and uses Postgres as database by default, you can check out this [deployment guide](https://mksaas.com/zh/docs/deployment/cloudflare) for more details.
 - [cloudflare-d1](https://github.com/MkSaaSHQ/mksaas-template/tree/cloudflare-d1): The `cloudflare-d1` branch can be deployed on Cloudflare Worker, and uses Cloudflare D1 as database by default, you can check out this [deployment guide](https://mksaas.com/zh/docs/deployment/cloudflare-d1) for more details.
 

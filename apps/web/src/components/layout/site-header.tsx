@@ -9,7 +9,6 @@ import { LocaleLink, useLocalePathname } from '@/i18n/navigation';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 import { Routes } from '@/routes';
-import { TriangleIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
@@ -34,22 +33,24 @@ export function SiteHeader() {
   useEffect(() => setMounted(true), []);
 
   return (
-    <header className="sticky top-0 z-50 border-b bg-background/85 backdrop-blur supports-backdrop-filter:bg-background/60">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
+      <div className="mx-auto grid h-11 max-w-6xl animate-in grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 fade-in slide-in-from-top-2 duration-500 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3">
           <LocaleLink
             href={Routes.Root}
             aria-label="Home"
-            className="flex items-center gap-2 rounded outline-none focus-visible:outline-focus"
+            className="group flex items-center rounded outline-none focus-visible:outline-focus"
           >
-            <TriangleIcon className="size-4 fill-foreground text-foreground" />
-            <span className="text-base font-medium tracking-tight">
-              {t('Metadata.name')}
+            <span className="font-mono text-[13px] font-semibold uppercase tracking-[-0.02em] transition-opacity group-hover:opacity-80">
+              AI-SKILLS
             </span>
           </LocaleLink>
         </div>
 
-        <nav aria-label="Primary" className="hidden items-center gap-6 md:flex">
+        <nav
+          aria-label="Primary"
+          className="hidden items-center gap-6 justify-self-center md:flex"
+        >
           {NAV_ITEMS.map((item) => {
             const isActive =
               item.href === Routes.Root
@@ -60,8 +61,8 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'text-sm text-muted-foreground transition-colors hover:text-foreground',
-                  isActive && 'text-foreground'
+                  'relative py-1 text-[13px] text-muted-foreground transition-colors after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-foreground after:transition-transform hover:text-foreground hover:after:scale-x-100',
+                  isActive && 'text-foreground after:scale-x-100'
                 )}
               >
                 {item.label}
@@ -70,7 +71,7 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-end gap-2">
           <ModeSwitcher />
           {!mounted || isPending ? (
             <Skeleton className="size-8 rounded-full" />

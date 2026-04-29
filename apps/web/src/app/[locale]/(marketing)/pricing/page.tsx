@@ -11,10 +11,23 @@ import { getTranslations } from 'next-intl/server';
 
 export default async function PricingPage() {
   const t = await getTranslations('HomePage');
+  const pt = await getTranslations('PricingPage');
   const faqs = ['item-1', 'item-2', 'item-3', 'item-4'] as const;
 
   return (
-    <Container className="flex max-w-6xl flex-col gap-16 px-4 py-16">
+    <Container className="flex max-w-6xl flex-col gap-14 px-4 py-14 sm:py-16">
+      <section className="mx-auto flex max-w-3xl flex-col items-center gap-4 text-center">
+        <Badge variant="secondary" className="font-mono uppercase">
+          AI-SKILLS
+        </Badge>
+        <h1 className="text-balance font-semibold text-4xl tracking-tight sm:text-5xl">
+          {pt('subtitle')}
+        </h1>
+        <p className="text-balance text-lg text-muted-foreground">
+          {pt('description')}
+        </p>
+      </section>
+
       <PricingTable />
 
       <section className="mx-auto flex w-full max-w-3xl flex-col gap-8">

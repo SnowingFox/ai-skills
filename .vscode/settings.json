@@ -1,7 +1,7 @@
 {
   "i18n-ally.localesPaths": [
-    "messages",
-    "src/i18n"
+    "apps/web/messages",
+    "apps/web/src/i18n"
   ],
   "i18n-ally.keystyle": "nested",
   "editor.defaultFormatter": "biomejs.biome",
@@ -22,8 +22,11 @@
   "search.exclude": {
     "**/node_modules": true,
     ".next": true,
+    "apps/web/.next": true,
     ".wrangler": true,
+    "apps/web/.wrangler": true,
     ".open-next": true,
+    "apps/web/.open-next": true,
     ".vscode": true,
     ".cursor": true,
     ".claude": true,

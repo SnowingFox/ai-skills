@@ -1,5 +1,6 @@
 import Container from '@/components/layout/container';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { websiteConfig } from '@/config/website';
 import { constructMetadata } from '@/lib/metadata';
@@ -33,15 +34,19 @@ export default async function AboutPage() {
   const t = await getTranslations('AboutPage');
 
   return (
-    <Container className="py-16 px-4">
-      <div className="mx-auto flex max-w-4xl flex-col gap-8">
-        <div className="mx-auto grid max-w-3xl gap-8 rounded-xl border bg-card p-8 sm:grid-cols-[auto_1fr]">
+    <Container className="px-4 py-14 sm:py-16">
+      <div className="mx-auto flex max-w-5xl flex-col gap-8">
+        <div className="mx-auto grid max-w-4xl gap-8 rounded-xl border bg-card p-8 sm:grid-cols-[auto_1fr]">
           <div className="flex items-center gap-6">
-            <Avatar className="size-24">
-              <AvatarImage src="/logo.png" alt="Avatar" />
-              <AvatarFallback>MK</AvatarFallback>
+            <Avatar className="size-24 rounded-md border bg-background">
+              <AvatarFallback className="rounded-md font-mono text-2xl">
+                AI
+              </AvatarFallback>
             </Avatar>
             <div className="flex flex-col gap-2">
+              <Badge variant="secondary" className="w-fit font-mono uppercase">
+                Registry
+              </Badge>
               <h1 className="font-semibold text-3xl text-foreground">
                 {t('authorName')}
               </h1>
@@ -74,6 +79,38 @@ export default async function AboutPage() {
               )}
             </div>
           </div>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          {[
+            {
+              title: 'Workspace',
+              description:
+                'Private registries, team review flows, and controlled skill distribution.',
+            },
+            {
+              title: 'Evaluation',
+              description:
+                'Repeatable benchmark runs and scorecards for agent workflow quality.',
+            },
+            {
+              title: 'Agent Kits',
+              description:
+                'Reusable procedures that install into agents with a predictable command.',
+            },
+          ].map((item) => (
+            <div
+              key={item.title}
+              className="rounded-xl border bg-card p-5 transition-colors hover:bg-accent/40"
+            >
+              <h2 className="font-mono text-sm font-medium uppercase">
+                {item.title}
+              </h2>
+              <p className="mt-3 text-sm text-muted-foreground">
+                {item.description}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </Container>
