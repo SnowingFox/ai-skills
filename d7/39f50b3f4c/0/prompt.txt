@@ -1,0 +1,71 @@
+为什么 [SKILL.md](.agents/skills/grille-me/SKILL.md) 没有被 codex 正确识别？
+
+---
+
+读读 https://developers.openai.com/codex/skills
+
+---
+
+[$grill-me](/Users/bytedance/dev/ai-skills/.agents/skills/grille-me/SKILL.md) 参考 @submodule/skills  [index.ts](submodule/plugins/index.ts) 我们打算做一个 ai-pkgs 来安装和分发这些 skills/plugins
+
+ai-package.json 相当于 skills 的 skills-lock.json，但是 skills-lock.json 和 plugins 可能后续会发展的 plugins-lock.json
+
+我感觉很不对劲，所以我想 ai-package.json 可以来管理这些，我们先聊聊 ai-package.json 的格式，再来参考 skills 和 plugins 源码做分发
+
+---
+
+[$grill-me](/Users/bytedance/dev/ai-skills/.agents/skills/grille-me/SKILL.md)  [$improve-codebase-architecture](/Users/bytedance/dev/ai-skills/.agents/skills/improve-codebase-architecture/SKILL.md) 
+我想想，plugins 的 ai-package.json 可以参考 @submodule/tiktok-skills 来，然后安装还是遵循 @submodule/plugins 吧
+
+当然先参考 ai-package.json
+
+---
+
+刚刚点错了，重新问
+
+---
+
+把这些决策总结到 docs/ 里面去吧，我后面会继续聊的
+
+---
+
+PLEASE IMPLEMENT THIS PLAN:
+# 记录 Skills `ai-package.json` 决策
+
+**Summary**
+- 新增文档：`/Users/bytedance/dev/ai-skills/docs/ai-package-skills.md`
+- 若根目录 `docs/` 不存在，先创建。
+- 文档只记录 skills v1 决策，plugins 明确标记为后续再聊。
+
+**Document Content**
+- 说明 `ai-package.json` 是用户可编辑的 manifest，优先于 `skills-lock.json`。
+- 顶层使用 `skills`，不用 tiktok 当前的单数 `skill`。
+- 每个 skill entry 使用：
+```json
+{
+  "source": "github:owner/repo",
+  "version": "main@commitSha",
+  "path": "skills/example-skill"
+}
+```
+- `source` 是 locator string，v1 支持 `github:`、`gitlab:`、`marketplace:`、`file:`。
+- `version` 对远程源必填，格式为 `<ref>@<commitSha>`；安装以 commit sha 为准。
+- `path` 必填，显式指向包含 `SKILL.md` 的目录，不做自动发现。
+- skill name 来自 `skills` map 的 key，可以和源码目录名不同。
+
+**Important Notes**
+- `skills-lock.json` 后续只作为兼容或安装状态记录，不作为主配置。
+- tiktok 旧版 `ai-package.md` 偏 stateful，不采用。
+- tiktok `ai-package-v2.md` 的 ownership/ejected 设计暂不进入 v1。
+- plugins 暂不纳入本轮 schema，避免提前污染 skills 的 Interface。
+
+**Validation Examples**
+- 合法：`github:vercel-labs/skills` + `main@sha` + `skills/find-skills`
+- 合法：`file:.` + `.agents/skills/grille-me`
+- 非法：远程源缺少 `version`
+- 非法：缺少 `path`
+- 非法：`path/SKILL.md` 不存在
+
+---
+
+submodule 加到 ignore 里面去，永远不提交 submodule 这个文件夹
