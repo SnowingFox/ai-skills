@@ -78,3 +78,6 @@ next-env.d.ts
 .worktrees/
 .security-key
 logs/security/
+
+# Local reference submodules
+submodule/
