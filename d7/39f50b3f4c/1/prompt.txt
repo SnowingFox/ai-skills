@@ -34,3 +34,7 @@ pricing 页面也改改，改成 workspace、测评等付费
 尤其是 header，先对齐 header，加上合适的动画吧
 
 Available for these agents 也滚动
+
+---
+
+Execute the selected diff-tab commit action.
