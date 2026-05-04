@@ -1,0 +1,63 @@
+{
+  "checkpoint_id": "41eec4e3b9f2",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".cursor/skills/caveman/SKILL.md",
+    ".cursor/skills/design-an-interface/SKILL.md",
+    ".cursor/skills/diagnose/SKILL.md",
+    ".cursor/skills/diagnose/scripts/hitl-loop.template.sh",
+    ".cursor/skills/edit-article/SKILL.md",
+    ".cursor/skills/git-guardrails-claude-code/SKILL.md",
+    ".cursor/skills/git-guardrails-claude-code/scripts/block-dangerous-git.sh",
+    ".cursor/skills/grill-me/SKILL.md",
+    ".cursor/skills/grill-with-docs/ADR-FORMAT.md",
+    ".cursor/skills/grill-with-docs/CONTEXT-FORMAT.md",
+    ".cursor/skills/grill-with-docs/SKILL.md",
+    ".cursor/skills/improve-codebase-architecture/DEEPENING.md",
+    ".cursor/skills/improve-codebase-architecture/INTERFACE-DESIGN.md",
+    ".cursor/skills/improve-codebase-architecture/LANGUAGE.md",
+    ".cursor/skills/improve-codebase-architecture/SKILL.md",
+    ".cursor/skills/migrate-to-shoehorn/SKILL.md",
+    ".cursor/skills/obsidian-vault/SKILL.md",
+    ".cursor/skills/qa/SKILL.md",
+    ".cursor/skills/request-refactor-plan/SKILL.md",
+    ".cursor/skills/scaffold-exercises/SKILL.md",
+    ".cursor/skills/setup-matt-pocock-skills/SKILL.md",
+    ".cursor/skills/setup-matt-pocock-skills/domain.md",
+    ".cursor/skills/setup-matt-pocock-skills/issue-tracker-github.md",
+    ".cursor/skills/setup-matt-pocock-skills/issue-tracker-gitlab.md",
+    ".cursor/skills/setup-matt-pocock-skills/issue-tracker-local.md",
+    ".cursor/skills/setup-matt-pocock-skills/triage-labels.md",
+    ".cursor/skills/setup-pre-commit/SKILL.md",
+    ".cursor/skills/tdd/SKILL.md",
+    ".cursor/skills/tdd/deep-modules.md",
+    ".cursor/skills/tdd/interface-design.md",
+    ".cursor/skills/tdd/mocking.md",
+    ".cursor/skills/tdd/refactoring.md",
+    ".cursor/skills/tdd/tests.md",
+    ".cursor/skills/to-issues/SKILL.md",
+    ".cursor/skills/to-prd/SKILL.md",
+    ".cursor/skills/ubiquitous-language/SKILL.md",
+    ".cursor/skills/write-a-skill/SKILL.md",
+    ".cursor/skills/zoom-out/SKILL.md",
+    "AGENTS.md",
+    "ai-package.json"
+  ],
+  "sessions": [
+    {
+      "metadata": "/41/eec4e3b9f2/0/metadata.json",
+      "prompt": "/41/eec4e3b9f2/0/prompt.txt",
+      "transcript": "/41/eec4e3b9f2/0/full.jsonl",
+      "content_hash": "/41/eec4e3b9f2/0/content_hash.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 16204054,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 15754496,
+    "output_tokens": 89147,
+    "api_call_count": 127
+  }
+}
