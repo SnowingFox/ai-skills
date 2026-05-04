@@ -56,6 +56,9 @@ describe('buildCli', () => {
         'add',
         'owner/repo',
         '--install-only',
+        '--all',
+        '--global',
+        '--refresh',
         '--agent',
         'cursor',
       ],
@@ -66,7 +69,34 @@ describe('buildCli', () => {
     expect(cli.args).toEqual(['add', 'owner/repo']);
     expect(cli.options).toMatchObject({
       installOnly: true,
+      all: true,
+      global: true,
+      refresh: true,
       agent: 'cursor',
+    });
+  });
+
+  it('parses cache clear options through the cache dispatcher', () => {
+    const cli = buildCli(createInstallCommandRuntime('/repo'));
+    cli.parse(
+      [
+        'node',
+        'ai-pkgs',
+        'cache',
+        'clear',
+        '--provider',
+        'github',
+        '--source',
+        'owner/repo',
+      ],
+      { run: false }
+    );
+
+    expect(cli.matchedCommandName).toBe('cache');
+    expect(cli.args).toEqual(['clear']);
+    expect(cli.options).toMatchObject({
+      provider: 'github',
+      source: 'owner/repo',
     });
   });
 

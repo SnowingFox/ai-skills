@@ -14,11 +14,13 @@ describe('cli/help', () => {
     expect(output).toContain('█████╗ ██╗');
     expect(output).toContain('╚═╝  ╚═╝╚═╝');
     expect(output).toContain('Composable skills for AI agents.');
+    expect(output).toContain('v0.0.5');
     expect(output).toContain('Usage:');
     expect(output).toContain('ai-pkgs <command>');
     expect(output).toContain('Commands:');
     expect(output).toContain('install');
     expect(output).toContain('skills add');
+    expect(output).toContain('cache clear');
     expect(output).toContain('help');
     expect(output).toContain('Global flags:');
     expect(output).toContain('--help');
@@ -26,6 +28,7 @@ describe('cli/help', () => {
     expect(output).toContain('AI/automation');
     expect(output).toContain('Detailed help:');
     expect(output).toContain('ai-pkgs skills -h');
+    expect(output).toContain('ai-pkgs help cache clear');
     expect(output).toContain('Show grouped AI/skills usage');
   });
 
@@ -61,6 +64,9 @@ describe('cli/help', () => {
     expect(output).toContain('Add skills from a source');
     expect(output).toContain('--registry');
     expect(output).toContain('--install-only');
+    expect(output).toContain('--all');
+    expect(output).toContain('--global');
+    expect(output).toContain('--refresh');
     expect(output).toContain('--ai');
     expect(output).toContain('Global flags:');
     expect(output).toContain('--help');
@@ -93,11 +99,25 @@ describe('cli/help', () => {
     expect(output).toContain('Source selection');
     expect(output).toContain('Install behavior');
     expect(output).toContain('--install-only');
+    expect(output).toContain('--all');
+    expect(output).toContain('--project');
+    expect(output).toContain('--global');
     expect(output).toContain('--ai');
     expect(output).toContain('Install only (no manifest writes)');
     expect(output).toContain('AI/automation mode');
     expect(output).toContain('ai-pkgs skills add vercel-labs/skills');
     expect(output).toContain('ai-pkgs install --agent cursor --force');
+  });
+
+  it('renders cache clear help', () => {
+    const cli = buildHelpCli();
+    const output = stripAnsi(renderHelp(cli, 'cache clear'));
+
+    expect(output).toContain('ai-pkgs cache clear');
+    expect(output).toContain('Clear cached Git repositories');
+    expect(output).toContain('--provider');
+    expect(output).toContain('--source');
+    expect(output).toContain('ai-pkgs cache clear --provider github');
   });
 
   it('falls back to root help for unknown commands', () => {
@@ -127,6 +147,7 @@ describe('cli/help', () => {
     expect(output).toContain('ai-pkgs');
     expect(output).toContain('install');
     expect(output).toContain('skills add');
+    expect(output).toContain('cache clear');
     expect(output).not.toContain('Global flags:');
   });
 
@@ -148,6 +169,9 @@ const buildHelpCli = () => {
   cli
     .command('help [...command]', 'Show help for a command')
     .usage('help [command]');
+  cli
+    .command('cache [...args]', 'Manage ai-pkgs cache')
+    .usage('cache <clear> [options]');
   cli
     .command('install', 'Install skills from ai-package.json')
     .usage('install [options]')

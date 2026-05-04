@@ -8,6 +8,7 @@ export type SearchMultiselectItem<T> = {
   label: string;
   value: T;
   hint?: string;
+  separatorAfter?: boolean;
 };
 
 export type SearchMultiselectOptions<T> = {
@@ -16,6 +17,7 @@ export type SearchMultiselectOptions<T> = {
   initialSelected?: T[];
   maxVisible?: number;
   required?: boolean;
+  enableToggleAll?: boolean;
 };
 
 const silentOutput = new Writable({
@@ -38,6 +40,7 @@ export const searchMultiselect = async <T>({
   initialSelected = [],
   maxVisible = 12,
   required = false,
+  enableToggleAll = false,
 }: SearchMultiselectOptions<T>): Promise<T[] | typeof cancelSymbol> => {
   return new Promise((resolve) => {
     const rl = readline.createInterface({
@@ -98,9 +101,10 @@ export const searchMultiselect = async <T>({
         lines.push(
           `${pc.dim('│')}  ${pc.dim('Search:')} ${query}${pc.inverse(' ')}`
         );
-        lines.push(
-          `${pc.dim('│')}  ${pc.dim('Type to filter, ↑↓ move, space select, enter confirm')}`
-        );
+        const hint = enableToggleAll
+          ? 'Type to filter, ↑↓ move, space select, a toggle all, enter confirm'
+          : 'Type to filter, ↑↓ move, space select, enter confirm';
+        lines.push(`${pc.dim('│')}  ${pc.dim(hint)}`);
         lines.push(pc.dim('│'));
 
         const start = Math.max(
@@ -111,6 +115,7 @@ export const searchMultiselect = async <T>({
           )
         );
         const page = visible.slice(start, start + maxVisible);
+        const showSeparators = query.trim().length === 0;
 
         if (page.length === 0) {
           lines.push(`${pc.dim('│')}  ${pc.dim('No matches found')}`);
@@ -125,6 +130,11 @@ export const searchMultiselect = async <T>({
               actualIndex === cursor ? pc.underline(item.label) : item.label;
             const hint = item.hint ? pc.dim(` (${item.hint})`) : '';
             lines.push(`${pc.dim('│')} ${pointer} ${checkbox} ${label}${hint}`);
+            if (showSeparators && item.separatorAfter) {
+              lines.push(
+                `${pc.dim('│')}  ${pc.dim('─────────────────────────────────')}`
+              );
+            }
           }
         }
 
@@ -198,6 +208,23 @@ export const searchMultiselect = async <T>({
             selected.delete(item.value);
           } else {
             selected.add(item.value);
+          }
+        }
+        render();
+        return;
+      }
+      if (enableToggleAll && key.name === 'a') {
+        const visibleValues = visible.map((item) => item.value);
+        const allVisibleSelected =
+          visibleValues.length > 0 &&
+          visibleValues.every((value) => selected.has(value));
+        if (allVisibleSelected) {
+          for (const value of visibleValues) {
+            selected.delete(value);
+          }
+        } else {
+          for (const value of visibleValues) {
+            selected.add(value);
           }
         }
         render();

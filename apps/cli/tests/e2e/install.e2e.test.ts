@@ -82,6 +82,37 @@ describe('ai-pkgs install e2e', () => {
     ).rejects.toThrow();
   });
 
+  it('installs all discovered skills into project scope', async () => {
+    const projectDir = join(tempRoot, 'all-project');
+    const sourceDir = join(tempRoot, 'all-source');
+    await mkdir(projectDir, { recursive: true });
+    await mkdir(join(sourceDir, 'skills/one'), { recursive: true });
+    await mkdir(join(sourceDir, 'skills/two'), { recursive: true });
+    await writeFile(join(sourceDir, 'skills/one/SKILL.md'), '# One');
+    await writeFile(join(sourceDir, 'skills/two/SKILL.md'), '# Two');
+
+    const result = await runCliProcess(projectDir, {}, [
+      'skills',
+      'add',
+      sourceDir,
+      '--install-only',
+      '--all',
+      '--project',
+      '--yes',
+      '--agent',
+      'cursor',
+      '--force',
+    ]);
+
+    expect(result.code).toBe(0);
+    await expect(
+      readFile(join(projectDir, '.cursor/skills/one/SKILL.md'), 'utf-8')
+    ).resolves.toBe('# One');
+    await expect(
+      readFile(join(projectDir, '.cursor/skills/two/SKILL.md'), 'utf-8')
+    ).resolves.toBe('# Two');
+  });
+
   it('fails ai mode installs that would need agent selection', async () => {
     const projectDir = join(tempRoot, 'ai-mode-project');
     const sourceDir = join(tempRoot, 'ai-mode-source');
@@ -185,6 +216,97 @@ describe('ai-pkgs install e2e', () => {
     expect(result.code).toBe(0);
     expect(stripAnsi(result.output)).toContain('◇  Installing skills');
     expect(stripAnsi(result.output)).toContain('◆  Installed 1 skill(s)');
+  });
+
+  it('prints static clone progress for ai mode skills add from git', async () => {
+    const githubRepo = join(tempRoot, 'ai-github-repo');
+    const projectDir = join(tempRoot, 'ai-git-project');
+    await mkdir(projectDir, { recursive: true });
+    await createGitRepo(githubRepo, 'skills/github-skill', '# GitHub Skill');
+
+    const gitConfigPath = join(tempRoot, 'ai-gitconfig');
+    await writeFile(
+      gitConfigPath,
+      [
+        `[url "${pathToFileURL(githubRepo).href}"]`,
+        '\tinsteadOf = https://github.com/acme/skills.git',
+        '',
+      ].join('\n')
+    );
+
+    const result = await runCliProcess(
+      projectDir,
+      {
+        GIT_CONFIG_GLOBAL: gitConfigPath,
+      },
+      [
+        '--ai',
+        'skills',
+        'add',
+        'acme/skills',
+        '--install-only',
+        '--yes',
+        '--skill',
+        'github-skill',
+        '--agent',
+        'cursor',
+        '--force',
+      ]
+    );
+
+    const output = stripAnsi(result.output);
+    expect(result.code).toBe(0);
+    expect(output).toContain('◇  resolving remote ref: HEAD');
+    expect(output).toContain('◇  resolving git pin: main@');
+    expect(output).toContain(
+      '◇  cloning repository: https://github.com/acme/skills.git'
+    );
+    expect(output).toContain('◇  checking out commit:');
+    expect(output).toContain('◇  stored Git cache:');
+    expect(output).toContain('◆  Repository cloned (main@');
+    await expect(
+      readFile(
+        join(projectDir, '.cursor/skills/github-skill/SKILL.md'),
+        'utf-8'
+      )
+    ).resolves.toBe('# GitHub Skill');
+
+    const cachedResult = await runCliProcess(
+      projectDir,
+      {
+        GIT_CONFIG_GLOBAL: gitConfigPath,
+      },
+      [
+        '--ai',
+        'skills',
+        'add',
+        'acme/skills',
+        '--install-only',
+        '--yes',
+        '--skill',
+        'github-skill',
+        '--agent',
+        'cursor',
+        '--force',
+      ]
+    );
+
+    const cachedOutput = stripAnsi(cachedResult.output);
+    expect(cachedResult.code).toBe(0);
+    expect(cachedOutput).toContain('◇  reusing Git cache');
+    expect(cachedOutput).toContain('source: github:acme/skills');
+    expect(cachedOutput).toContain('cache-home/ai-pkgs/git');
+
+    const clearResult = await runCliProcess(projectDir, {}, [
+      'cache',
+      'clear',
+      '--provider',
+      'github',
+      '--source',
+      'acme/skills',
+    ]);
+    expect(clearResult.code).toBe(0);
+    expect(clearResult.output).toContain('Cleared 1 Git cache entry');
   });
 
   it('installs pinned github and gitlab skills through the CLI', async () => {
@@ -305,7 +427,11 @@ const runCommand = async (
   new Promise((resolve, reject) => {
     const child = spawn(command, args, {
       cwd,
-      env: { ...process.env, ...env },
+      env: {
+        ...process.env,
+        AI_PKGS_CACHE_HOME: join(tempRoot, 'cache-home'),
+        ...env,
+      },
       stdio: ['ignore', 'pipe', 'pipe'],
     });
 

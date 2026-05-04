@@ -1,5 +1,6 @@
 import { join } from 'node:path';
 import { assertSkillDirectory, resolveInside } from './discovery/discover';
+import type { GitProgressEvent } from './git';
 import { installPlan } from './installer/install';
 import { createRegistries, getRegistry } from './registries';
 import type {
@@ -23,7 +24,9 @@ type InstallSkillsOptions = {
   conflict?: ConflictPolicy;
   canPrompt?: boolean;
   cloneSource?: CloneSource;
+  refresh?: boolean;
   onProgress?: (progress: InstallProgress) => void;
+  onGitProgress?: (progress: GitProgressEvent) => void;
 };
 
 type InstallSkillsResult = {
@@ -57,7 +60,9 @@ export const installSkills = async ({
   conflict = 'overwrite',
   canPrompt = false,
   cloneSource,
+  refresh = false,
   onProgress,
+  onGitProgress,
 }: InstallSkillsOptions): Promise<InstallSkillsResult> => {
   const selectedSkills: SelectedSkill[] = [];
   const materializedSources: MaterializedSource[] = [];
@@ -94,7 +99,10 @@ export const installSkills = async ({
               }).then((cloned) =>
                 typeof cloned === 'string' ? { rootDir: cloned } : cloned
               )
-            : registry.materialize(skill);
+            : registry.materialize(skill, {
+                refresh,
+                onProgress: onGitProgress,
+              });
         materializedCache.set(cacheKey, materialized);
       }
       const source = await materialized;

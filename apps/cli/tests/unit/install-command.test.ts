@@ -5,6 +5,7 @@ import {
   buildConfirmMessage,
   createInstallCommandRuntime,
   formatInstallError,
+  formatGitProgress,
   formatProgress,
   formatSkillSummary,
   resolveConflictPolicy,
@@ -80,6 +81,16 @@ describe('install command helpers', () => {
     );
     expect(formatInstallError(new Error('boom'))).toBe('boom');
     expect(formatInstallError('plain failure')).toBe('plain failure');
+    expect(
+      formatGitProgress({
+        status: 'cache-hit',
+        provider: 'github',
+        packageId: 'acme/skills',
+        ref: 'main',
+        commitSha: 'abcdef1234567890',
+        cachePath: '/cache/acme/skills/abcdef1234567890',
+      })
+    ).toContain('reusing Git cache');
   });
 
   it('normalizes install command runtime dependencies', () => {

@@ -3,7 +3,14 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { GitCommandError, cloneRemoteSource } from '../../src/git';
+import {
+  GitCommandError,
+  classifyGitError,
+  cloneRemoteSource,
+  cloneRepository,
+  resolveRemoteRef,
+  type GitProgressEvent,
+} from '../../src/git';
 
 let tempRoot: string;
 
@@ -41,16 +48,62 @@ describe('cloneRemoteSource', () => {
     }
   });
 
-  it('throws GitCommandError for clone failures', async () => {
+  it('emits clone progress events', async () => {
+    const repo = join(tempRoot, 'source-with-progress');
+    await createRepo(repo);
+    const events: GitProgressEvent[] = [];
+
+    const cloned = await cloneRepository({
+      cloneUrl: pathToFileURL(repo).href,
+      ref: 'main',
+      onProgress: (event) => events.push(event),
+    });
+
+    expect(events.map((event) => event.status)).toEqual([
+      'created-temp-dir',
+      'cloning',
+      'checking-out',
+    ]);
+    expect(events[1]).toMatchObject({
+      status: 'cloning',
+      cloneUrl: pathToFileURL(repo).href,
+      ref: 'main',
+    });
+    await cloned.cleanup?.();
+  });
+
+  it('resolves remote default branch pins without cloning', async () => {
+    const repo = join(tempRoot, 'source-remote-ref');
+    const commitSha = await createRepo(repo);
+
     await expect(
-      cloneRemoteSource({
-        provider: 'gitlab',
-        packageId: 'missing/repo',
-        cloneUrl: join(tempRoot, 'missing.git'),
-        ref: 'main',
-        commitSha: 'abcdef1234567890abcdef1234567890abcdef12',
-      })
-    ).rejects.toBeInstanceOf(GitCommandError);
+      resolveRemoteRef({ cloneUrl: pathToFileURL(repo).href })
+    ).resolves.toEqual({ ref: 'main', commitSha });
+  });
+
+  it('throws GitCommandError for clone failures', async () => {
+    await cloneRemoteSource({
+      provider: 'gitlab',
+      packageId: 'missing/repo',
+      cloneUrl: join(tempRoot, 'missing.git'),
+      ref: 'main',
+      commitSha: 'abcdef1234567890abcdef1234567890abcdef12',
+    }).catch((error: unknown) => {
+      expect(error).toBeInstanceOf(GitCommandError);
+      expect((error as GitCommandError).kind).toBe('not-found');
+    });
+  });
+
+  it('classifies common git failures', () => {
+    expect(classifyGitError(['clone'], 'Operation timed out')).toBe('timeout');
+    expect(classifyGitError(['clone'], 'Authentication failed')).toBe('auth');
+    expect(classifyGitError(['clone'], 'Repository not found')).toBe(
+      'not-found'
+    );
+    expect(classifyGitError(['checkout'], 'pathspec main did not match')).toBe(
+      'ref'
+    );
+    expect(classifyGitError(['clone'], 'spawn git ENOENT')).toBe('git-missing');
   });
 });
 

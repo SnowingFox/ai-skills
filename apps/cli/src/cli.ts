@@ -1,5 +1,3 @@
-import { resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
 import { updateSettings } from '@clack/core';
 import cac, { type CAC } from 'cac';
 import {
@@ -40,18 +38,8 @@ export const buildCli = (runtime: InstallCommandRuntime): CAC => {
 
   return cli;
 };
+
+const exitCode = await runCli();
+process.exitCode = exitCode;
+
 export { formatCliError, resolveCliResult };
-
-if (isCliEntryPoint()) {
-  const exitCode = await runCli();
-  process.exitCode = exitCode;
-}
-
-function isCliEntryPoint(): boolean {
-  const entry = process.argv[1];
-  if (!entry) {
-    return false;
-  }
-
-  return pathToFileURL(resolve(entry)).href === import.meta.url;
-}

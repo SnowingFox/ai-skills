@@ -79,4 +79,5 @@ export type InstallProgress = {
     | 'linking'
     | 'skipped'
     | 'installed';
+  detail?: string;
 };

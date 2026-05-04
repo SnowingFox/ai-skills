@@ -5,8 +5,8 @@ const SKILLS_GROUP_EXAMPLES: HelpExampleGroup[] = [
     title: 'Add and save to ai-package.json',
     examples: [
       [
-        'ai-pkgs skills add vercel-labs/skills --agent cursor',
-        'Use the default GitHub registry, save selected skills, then install to Cursor.',
+        'ai-pkgs skills add vercel-labs/skills --all --agent cursor --project',
+        'Use the default GitHub registry, save all discovered skills, then install to project Cursor.',
       ],
       [
         'ai-pkgs skills add https://github.com/mattpocock/skills --path skills --skill tdd',
@@ -26,8 +26,8 @@ const SKILLS_GROUP_EXAMPLES: HelpExampleGroup[] = [
         'Directly install local skills without creating or updating ai-package.json.',
       ],
       [
-        'ai-pkgs skills add vercel-labs/skills --install-only --agent cursor --force',
-        'One-off install from GitHub into Cursor, overwriting existing target folders.',
+        'ai-pkgs skills add vercel-labs/skills --install-only --global --agent cursor --force',
+        'One-off global install from GitHub into Cursor, overwriting existing target folders.',
       ],
     ],
   },
@@ -35,7 +35,7 @@ const SKILLS_GROUP_EXAMPLES: HelpExampleGroup[] = [
     title: 'AI/automation mode',
     examples: [
       [
-        'ai-pkgs --ai skills add vercel-labs/skills --install-only --skill tdd --agent cursor --force --yes',
+        'ai-pkgs --ai skills add vercel-labs/skills --install-only --all --agent cursor --force --yes',
         'Run without prompts; every decision that could require interaction is passed explicitly.',
       ],
     ],
@@ -73,11 +73,11 @@ const SKILLS_ADD_EXAMPLES: HelpExampleGroup[] = [
     title: 'GitHub and GitLab sources',
     examples: [
       [
-        'ai-pkgs skills add vercel-labs/skills --agent cursor',
-        'Default GitHub shorthand. Saves to ai-package.json and installs to Cursor.',
+        'ai-pkgs skills add vercel-labs/skills --all --agent cursor --project',
+        'Default GitHub shorthand. Saves every discovered skill and installs to project Cursor.',
       ],
       [
-        'ai-pkgs skills add https://github.com/mattpocock/skills --path skills --skill tdd',
+        'ai-pkgs skills add https://github.com/mattpocock/skills --path skills --skill tdd --global',
         'Explicit GitHub URL with a source subdirectory and selected skill.',
       ],
       [
@@ -107,7 +107,7 @@ const SKILLS_ADD_EXAMPLES: HelpExampleGroup[] = [
         'Direct local install without creating or updating ai-package.json.',
       ],
       [
-        'ai-pkgs skills add vercel-labs/skills --install-only --agent cursor --force',
+        'ai-pkgs skills add vercel-labs/skills --install-only --all --agent cursor --force',
         'One-off GitHub install into Cursor, overwriting existing targets.',
       ],
     ],
@@ -116,7 +116,7 @@ const SKILLS_ADD_EXAMPLES: HelpExampleGroup[] = [
     title: 'AI/automation mode',
     examples: [
       [
-        'ai-pkgs --ai skills add ./local-skills --registry file --skill tdd --install-only --agent cursor --skip-existing --yes',
+        'ai-pkgs --ai skills add ./local-skills --registry file --all --install-only --agent cursor --skip-existing --yes',
         'Strict non-interactive install where source, skill, target, and conflict policy are all explicit.',
       ],
     ],
@@ -216,6 +216,8 @@ export const SKILLS_GROUP_COMMAND: HelpCommand = {
         ['--ref <ref>', 'Git ref to pin when adding from Git'],
         ['--path <path>', 'Path to scan inside the source'],
         ['-s, --skill <skill>', 'Skill name to add (repeatable)'],
+        ['--all', 'Select all discovered skills'],
+        ['--refresh', 'Refresh Git cache before installing'],
       ],
     },
     {
@@ -227,6 +229,8 @@ export const SKILLS_GROUP_COMMAND: HelpCommand = {
         ['--force', 'Overwrite existing skill directories'],
         ['--skip-existing', 'Skip existing skill directories'],
         ['--install-only', 'Install without writing ai-package.json'],
+        ['--project', 'Install into project-local agent skill directories'],
+        ['--global', 'Install into global agent skill directories'],
         ['-y, --yes', 'Skip confirmation prompts'],
         ['--ai', 'Strict non-interactive mode for AI/automation'],
       ],
@@ -243,6 +247,8 @@ export const SKILLS_GROUP_COMMAND: HelpCommand = {
   notes: [
     '`skills add` saves to ai-package.json by default; add `--install-only` for direct one-off installs.',
     '`--install-only` cannot be combined with `--manifest` because no manifest is read or written.',
+    '`skills add` prompts for project/global scope in TTY; non-TTY and `--ai` default to project unless `--global` is passed.',
+    '`--all` selects every discovered skill and cannot be combined with `--skill`.',
     '`--ai` disables all prompts; pass `--agent`, `--skill`, `--force`, `--skip-existing`, or `--yes` explicitly when needed.',
   ],
   options: [],
@@ -268,6 +274,8 @@ export const SKILLS_COMMANDS: HelpCommand[] = [
           ['--ref <ref>', 'Git ref to pin'],
           ['--path <path>', 'Path to scan inside the source'],
           ['-s, --skill <skill>', 'Skill name to add (repeatable)'],
+          ['--all', 'Select all discovered skills'],
+          ['--refresh', 'Refresh Git cache before installing'],
         ],
       },
       {
@@ -279,6 +287,8 @@ export const SKILLS_COMMANDS: HelpCommand[] = [
           ['--force', 'Overwrite existing skill directories'],
           ['--skip-existing', 'Skip existing skill directories'],
           ['--install-only', 'Install without writing ai-package.json'],
+          ['--project', 'Install into project-local agent skill directories'],
+          ['--global', 'Install into global agent skill directories'],
           ['-y, --yes', 'Skip confirmation prompts'],
           ['--ai', 'Strict non-interactive mode for AI/automation'],
         ],
@@ -288,6 +298,8 @@ export const SKILLS_COMMANDS: HelpCommand[] = [
     notes: [
       'Default behavior writes selected skills to ai-package.json before installing.',
       '`--install-only` skips manifest writes and conflicts with `--manifest`.',
+      '`--project` and `--global` are mutually exclusive; omit both in TTY to choose interactively.',
+      '`--all` and `--skill` are mutually exclusive.',
       '`--ai` disables prompts; pass `--agent`, `--skill`, and conflict flags explicitly.',
     ],
     options: [],

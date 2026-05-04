@@ -73,6 +73,7 @@ const promptForAgents = async ({
     label: agent.displayName,
     value: agent.id,
     hint: agent.projectSkillsDir,
+    separatorAfter: agent.id === 'universal',
   }));
   const initialSelected = yes ? ['universal'] : undefined;
   const selected = await searchMultiselect({

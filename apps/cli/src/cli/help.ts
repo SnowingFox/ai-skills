@@ -1,6 +1,7 @@
 import type { CAC, Command } from 'cac';
 import pc from 'picocolors';
-import { DETAILED_HELP, TAGLINE } from './help-data/root';
+import { CACHE_COMMANDS, CACHE_GROUP_COMMAND } from './help-data/cache';
+import { CLI_VERSION, DETAILED_HELP, TAGLINE } from './help-data/root';
 import { SKILLS_COMMANDS, SKILLS_GROUP_COMMAND } from './help-data/skills';
 import type { HelpCommand } from './help-data/types';
 import { renderLogo } from '../ui/banner';
@@ -88,6 +89,7 @@ const renderRootHelp = (cli: CAC): string => {
     lines.push(`${pc.gray('│')}  ${line}`);
   }
   lines.push(`${pc.gray('│')}  ${pc.dim(TAGLINE)}`);
+  lines.push(`${pc.gray('│')}  ${pc.dim(`v${CLI_VERSION}`)}`);
   lines.push(pc.gray('│'));
   lines.push(`${pc.gray('│')}  ${pc.bold('Usage:')}`);
   lines.push(
@@ -238,15 +240,20 @@ const visibleCommands = (cli: CAC): HelpCommand[] => [
         command.description !== '' &&
         command.name !== '' &&
         command.name !== '@@global@@' &&
+        command.name !== 'cache' &&
         command.name !== 'skills'
     )
     .map(toHelpCommand),
+  ...CACHE_COMMANDS,
   ...SKILLS_COMMANDS,
 ];
 
 const findCommand = (cli: CAC, name: string): HelpCommand | undefined => {
   if (name === 'skills') {
     return SKILLS_GROUP_COMMAND;
+  }
+  if (name === 'cache') {
+    return CACHE_GROUP_COMMAND;
   }
 
   const command = cli.commands.find(
@@ -256,7 +263,9 @@ const findCommand = (cli: CAC, name: string): HelpCommand | undefined => {
     return toHelpCommand(command);
   }
 
-  return SKILLS_COMMANDS.find((command) => command.name === name);
+  return [...CACHE_COMMANDS, ...SKILLS_COMMANDS].find(
+    (command) => command.name === name
+  );
 };
 
 const toHelpCommand = (command: Command): HelpCommand => ({

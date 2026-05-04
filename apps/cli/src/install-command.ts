@@ -7,6 +7,7 @@ import { resolveAgentTargets } from './agents/targets';
 import { canPrompt, isAICommand } from './cli/ai-mode';
 import { renderAiDone, renderAiStep } from './cli/ai-output';
 import { SilentError } from './errors';
+import type { GitProgressEvent } from './git';
 import { installSkills } from './install';
 import { parseAiPackageManifest } from './manifest';
 import type {
@@ -26,6 +27,8 @@ export type InstallCommandOptions = {
   force?: boolean;
   skipExisting?: boolean;
   ai?: boolean;
+  project?: boolean;
+  refresh?: boolean;
 };
 
 export type ReadTextFile = (
@@ -122,8 +125,20 @@ export const runInstallCommand = async (
       mode: resolveInstallMode(options),
       conflict: resolveConflictPolicy(options),
       canPrompt: promptAllowed,
+      refresh: options.refresh === true,
       onProgress: (progress) => {
         const message = formatProgress(progress);
+        if (aiMode) {
+          process.stdout.write(renderAiStep(message));
+        } else {
+          spinner?.message(message);
+        }
+      },
+      onGitProgress: (progress) => {
+        const message = formatGitProgress(progress);
+        if (!message) {
+          return;
+        }
         if (aiMode) {
           process.stdout.write(renderAiStep(message));
         } else {
@@ -193,6 +208,24 @@ export const formatProgress = (progress: InstallProgress): string =>
     .with('skipped', () => `skipped: ${progress.name}`)
     .with('installed', () => `installed: ${progress.name}`)
     .exhaustive();
+
+export const formatGitProgress = (progress: GitProgressEvent): string => {
+  if (progress.status === 'cache-hit') {
+    return [
+      'reusing Git cache',
+      `source: ${progress.provider}:${progress.packageId}`,
+      `ref: ${progress.ref}@${progress.commitSha.slice(0, 7)}`,
+      `cache: ${progress.cachePath}`,
+    ].join('\n');
+  }
+  if (progress.status === 'cache-refresh') {
+    return `refreshing Git cache: ${progress.cachePath}`;
+  }
+  if (progress.status === 'cache-store') {
+    return `stored Git cache: ${progress.cachePath}`;
+  }
+  return '';
+};
 
 export const formatInstallError = (error: unknown): string => {
   if (error instanceof Error) {

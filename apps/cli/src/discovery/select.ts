@@ -1,10 +1,11 @@
-import * as p from '@clack/prompts';
 import { SilentError } from '../errors';
+import { cancelSymbol, searchMultiselect } from '../prompts/search-multiselect';
 import type { DiscoveredSkill } from './discover';
 
 export type SelectSkillsOptions = {
   skills: DiscoveredSkill[];
   requestedNames?: string[];
+  all?: boolean;
   yes?: boolean;
   canPrompt?: boolean;
 };
@@ -12,9 +13,20 @@ export type SelectSkillsOptions = {
 export const selectDiscoveredSkills = async ({
   skills,
   requestedNames = [],
+  all = false,
   yes = false,
   canPrompt = process.stdin.isTTY === true,
 }: SelectSkillsOptions): Promise<DiscoveredSkill[]> => {
+  if (all && requestedNames.length > 0) {
+    throw new SilentError('--all cannot be used with --skill');
+  }
+  if (all) {
+    if (skills.length === 0) {
+      throw new SilentError(formatNoMatchingSkills([], skills));
+    }
+    return skills;
+  }
+
   if (requestedNames.length > 0) {
     const requested = new Set(requestedNames.map((name) => name.toLowerCase()));
     const selected = skills.filter((skill) =>
@@ -39,17 +51,18 @@ export const selectDiscoveredSkills = async ({
     );
   }
 
-  const selected = await p.multiselect({
+  const selected = await searchMultiselect({
     message: 'Select skills to add',
-    options: skills.map((skill) => ({
+    items: skills.map((skill) => ({
       label: skill.name,
       value: skill.name,
       hint: skill.description,
     })),
     required: true,
+    enableToggleAll: true,
   });
 
-  if (p.isCancel(selected)) {
+  if (selected === cancelSymbol) {
     throw new SilentError('Skill selection cancelled');
   }
 

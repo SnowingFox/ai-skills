@@ -14,6 +14,13 @@ const homePath = (path: string) => join(home, path);
 const configPath = (path: string) => join(configHome, path);
 
 export const agents: Record<string, AgentConfig> = {
+  universal: agent(
+    'universal',
+    'Universal',
+    '.agents/skills',
+    configPath('agents/skills')
+  ),
+  adal: agent('adal', 'AdaL', '.adal/skills'),
   'aider-desk': agent('aider-desk', 'AiderDesk', '.aider-desk/skills'),
   amp: agent('amp', 'Amp', '.agents/skills', configPath('agents/skills')),
   antigravity: agent(
@@ -30,12 +37,6 @@ export const agents: Record<string, AgentConfig> = {
     '.claude/skills',
     join(claudeHome, 'skills')
   ),
-  openclaw: agent(
-    'openclaw',
-    'OpenClaw',
-    'skills',
-    homePath('.openclaw/skills')
-  ),
   cline: agent('cline', 'Cline', '.agents/skills', homePath('.agents/skills')),
   'codearts-agent': agent(
     'codearts-agent',
@@ -45,7 +46,7 @@ export const agents: Record<string, AgentConfig> = {
   codebuddy: agent('codebuddy', 'CodeBuddy', '.codebuddy/skills'),
   codemaker: agent('codemaker', 'Codemaker', '.codemaker/skills'),
   codestudio: agent('codestudio', 'Code Studio', '.codestudio/skills'),
-  codex: agent('codex', 'Codex', '.agents/skills', join(codexHome, 'skills')),
+  codex: agent('codex', 'Codex', '.codex/skills', join(codexHome, 'skills')),
   'command-code': agent('command-code', 'Command Code', '.commandcode/skills'),
   continue: agent('continue', 'Continue', '.continue/skills'),
   cortex: agent(
@@ -109,6 +110,13 @@ export const agents: Record<string, AgentConfig> = {
     join(vibeHome, 'skills')
   ),
   mux: agent('mux', 'Mux', '.mux/skills'),
+  neovate: agent('neovate', 'Neovate', '.neovate/skills'),
+  openclaw: agent(
+    'openclaw',
+    'OpenClaw',
+    'skills',
+    homePath('.openclaw/skills')
+  ),
   opencode: agent(
     'opencode',
     'OpenCode',
@@ -117,14 +125,15 @@ export const agents: Record<string, AgentConfig> = {
   ),
   openhands: agent('openhands', 'OpenHands', '.openhands/skills'),
   pi: agent('pi', 'Pi', '.pi/skills', homePath('.pi/agent/skills')),
+  pochi: agent('pochi', 'Pochi', '.pochi/skills'),
   qoder: agent('qoder', 'Qoder', '.qoder/skills'),
   'qwen-code': agent('qwen-code', 'Qwen Code', '.qwen/skills'),
   replit: {
     ...agent('replit', 'Replit', '.agents/skills', configPath('agents/skills')),
     showInPicker: false,
   },
-  rovodev: agent('rovodev', 'Rovo Dev', '.rovodev/skills'),
   roo: agent('roo', 'Roo Code', '.roo/skills'),
+  rovodev: agent('rovodev', 'Rovo Dev', '.rovodev/skills'),
   'tabnine-cli': agent('tabnine-cli', 'Tabnine CLI', '.tabnine/agent/skills'),
   trae: agent('trae', 'Trae', '.trae/skills'),
   'trae-cn': agent(
@@ -141,17 +150,6 @@ export const agents: Record<string, AgentConfig> = {
     homePath('.codeium/windsurf/skills')
   ),
   zencoder: agent('zencoder', 'Zencoder', '.zencoder/skills'),
-  neovate: agent('neovate', 'Neovate', '.neovate/skills'),
-  pochi: agent('pochi', 'Pochi', '.pochi/skills'),
-  adal: agent('adal', 'AdaL', '.adal/skills'),
-  universal: {
-    ...agent(
-      'universal',
-      'Universal',
-      '.agents/skills',
-      configPath('agents/skills')
-    ),
-  },
 };
 
 export const getAgent = (id: string): AgentConfig => {

@@ -20,6 +20,8 @@ export const registerInstallCommand = (
       .option('--link', 'Symlink skill directories')
       .option('--force', 'Overwrite existing skill directories')
       .option('--skip-existing', 'Skip existing skill directories')
+      .option('--project', 'Install into project-local agent skill directories')
+      .option('--refresh', 'Refresh Git cache before installing')
       .option('-y, --yes', 'Skip confirmation prompts');
 
   addInstallFlags(cli.command('install', 'Install skills from ai-package.json'))

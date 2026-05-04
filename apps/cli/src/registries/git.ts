@@ -1,4 +1,5 @@
-import { cloneRepository, resolveDefaultBranch, resolveHeadSha } from '../git';
+import { resolveRemoteRef } from '../git';
+import { materializeCachedGitSource } from '../git-cache';
 import type { SkillEntry } from '../types';
 import type { AddSourceInput, ResolvedPackage, SourceRegistry } from './types';
 
@@ -28,13 +29,25 @@ export const createGitRegistry = (
   kind: config.kind,
   resolve: async (input: AddSourceInput): Promise<ResolvedPackage> => {
     const parsed = config.parseInput(input.rawSource);
-    const cloned = await cloneRepository({
+    input.onProgress?.({
+      status: 'resolving-remote',
       cloneUrl: parsed.cloneUrl,
       ref: input.ref,
     });
-
-    const ref = input.ref ?? (await resolveDefaultBranch(cloned.rootDir));
-    const commitSha = await resolveHeadSha(cloned.rootDir);
+    const { ref, commitSha } = await resolveRemoteRef({
+      cloneUrl: parsed.cloneUrl,
+      ref: input.ref,
+    });
+    input.onProgress?.({ status: 'resolved', ref, commitSha });
+    const root = await materializeCachedGitSource({
+      provider: config.kind,
+      packageId: parsed.packageId,
+      cloneUrl: parsed.cloneUrl,
+      ref,
+      commitSha,
+      refresh: input.refresh,
+      onProgress: input.onProgress,
+    });
 
     return {
       provider: config.kind,
@@ -43,18 +56,23 @@ export const createGitRegistry = (
       version: `${ref}@${commitSha}`,
       ref,
       commitSha,
-      root: cloned,
+      root,
     };
   },
-  materialize: async (entry: SkillEntry) => {
+  materialize: async (entry: SkillEntry, options) => {
     if (!entry.ref || !entry.commitSha) {
       throw new Error(`Skill "${entry.name}" is missing a pinned git version`);
     }
 
-    return cloneRepository({
-      cloneUrl: config.parseInput(entry.packageId).cloneUrl,
+    const parsed = config.parseInput(entry.cloneUrl ?? entry.packageId);
+    return materializeCachedGitSource({
+      provider: config.kind,
+      packageId: entry.packageId,
+      cloneUrl: parsed.cloneUrl,
       ref: entry.ref,
       commitSha: entry.commitSha,
+      refresh: options?.refresh,
+      onProgress: options?.onProgress,
     });
   },
   update: async (entry: SkillEntry) => {
@@ -66,6 +84,7 @@ export const createGitRegistry = (
       rawSource: entry.packageId,
       registry: config.kind,
       ref: entry.ref,
+      refresh: true,
     });
   },
 });
