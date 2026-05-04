@@ -1,0 +1,42 @@
+import { createGitRegistry, stripGitSuffix, type ParsedGitSource } from './git';
+
+const parseGitlabInput = (source: string): ParsedGitSource => {
+  const normalized = source.replace(/^gitlab:/, '').trim();
+
+  if (/^https?:\/\//.test(normalized)) {
+    const cloneUrl = normalized.endsWith('.git')
+      ? normalized
+      : `${stripGitSuffix(normalized)}.git`;
+    return {
+      packageId: cloneUrl,
+      cloneUrl,
+    };
+  }
+
+  if (/^git@[^:]+:.+/.test(normalized)) {
+    return {
+      packageId: normalized,
+      cloneUrl: normalized,
+    };
+  }
+
+  const path = normalized.replace(/^\/+|\/+$/g, '');
+  if (!path.includes('/')) {
+    throw new Error(
+      'GitLab sources must use a full URL or group/repo shorthand'
+    );
+  }
+
+  const cloneUrl = `https://gitlab.com/${stripGitSuffix(path)}.git`;
+  return {
+    packageId: cloneUrl,
+    cloneUrl,
+  };
+};
+
+export const gitlabRegistry = createGitRegistry({
+  kind: 'gitlab',
+  buildCloneUrl: (packageId) => packageId,
+  parseInput: parseGitlabInput,
+  toManifestSource: ({ cloneUrl }) => `gitlab:${cloneUrl}`,
+});
