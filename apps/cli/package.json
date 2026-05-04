@@ -1,6 +1,6 @@
 {
   "name": "ai-pkgs",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A package manager for installing and managing AI agent skills.",
   "module": "dist/cli.js",
   "type": "module",
@@ -29,9 +29,7 @@
     "dev": "bun --watch ./src/cli.ts",
     "index.ts": "bun ./src/cli.ts",
     "lint": "bunx biome check src tests tsup.config.ts package.json",
-    "publish:dry": "bun run release && npm publish --dry-run",
-    "release": "bun run check && bun run build",
-    "release:publish": "bun run release && npm publish --access public",
+    "pub": "bun run build && bun run bump && npm publish --access=public",
     "start": "bun ./src/cli.ts",
     "test": "vitest run --coverage",
     "test:e2e": "vitest run --project e2e",
