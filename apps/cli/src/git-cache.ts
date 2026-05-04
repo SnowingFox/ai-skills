@@ -33,6 +33,18 @@ type GitCacheMetadata = {
 
 const METADATA_FILE = '.ai-pkgs-cache.json';
 
+/**
+ * Resolve the global ai-pkgs Git cache directory.
+ *
+ * `AI_PKGS_CACHE_HOME` exists for tests and local smoke runs; normal users
+ * follow XDG cache conventions and then fall back to `~/.cache`.
+ *
+ * @example
+ * ```ts
+ * process.env.AI_PKGS_CACHE_HOME = '/tmp/cache';
+ * getGitCacheRoot(); // '/tmp/cache/ai-pkgs/git'
+ * ```
+ */
 export const getGitCacheRoot = (): string => {
   const cacheHome =
     process.env.AI_PKGS_CACHE_HOME ||
@@ -41,6 +53,16 @@ export const getGitCacheRoot = (): string => {
   return join(cacheHome, 'ai-pkgs/git');
 };
 
+/**
+ * Convert a package source into a stable path segment for cache storage.
+ *
+ * @example
+ * ```ts
+ * gitCacheSourceKey('vercel-labs/skills'); // 'vercel-labs/skills'
+ * gitCacheSourceKey('https://github.com/acme/skills.git');
+ * // 'github.com/acme/skills'
+ * ```
+ */
 export const gitCacheSourceKey = (source: string): string =>
   source
     .replace(/^https?:\/\//, '')
@@ -50,6 +72,22 @@ export const gitCacheSourceKey = (source: string): string =>
     .replace(/[^a-zA-Z0-9._/-]+/g, '-')
     .replace(/^\/+|\/+$/g, '') || 'unknown-source';
 
+/**
+ * Build the cache path for one provider/source/commit tuple.
+ *
+ * Cache identity is commit-based: two refs that resolve to the same SHA share
+ * one checkout, while a branch moving to a new SHA gets a new cache entry.
+ *
+ * @example
+ * ```ts
+ * getGitCachePath({
+ *   provider: 'github',
+ *   packageId: 'acme/skills',
+ *   commitSha: 'abc123',
+ * });
+ * // '<cache>/ai-pkgs/git/github/acme/skills/abc123'
+ * ```
+ */
 export const getGitCachePath = ({
   provider,
   packageId,
@@ -57,6 +95,29 @@ export const getGitCachePath = ({
 }: Pick<GitCacheRequest, 'provider' | 'packageId' | 'commitSha'>): string =>
   join(getGitCacheRoot(), provider, gitCacheSourceKey(packageId), commitSha);
 
+/**
+ * Materialize a Git source from the global cache or clone and store it.
+ *
+ * On a hit, the returned `rootDir` points at the cached checkout and has no
+ * cleanup callback. On a miss or refresh, a temporary clone is copied into the
+ * cache and then removed, leaving only the stable cache directory.
+ *
+ * @example
+ * ```ts
+ * const source = await materializeCachedGitSource({
+ *   provider: 'github',
+ *   packageId: 'acme/skills',
+ *   cloneUrl: 'https://github.com/acme/skills.git',
+ *   ref: 'main',
+ *   commitSha: 'abc123...',
+ * });
+ * // returns: { rootDir: '<cache>/github/acme/skills/abc123...' }
+ * //
+ * // Side effects:
+ * //   <cache>/github/acme/skills/abc123.../      <- checked-out repository
+ * //   <cache>/github/acme/skills/abc123.../.ai-pkgs-cache.json
+ * ```
+ */
 export const materializeCachedGitSource = async (
   request: GitCacheRequest
 ): Promise<MaterializedSource> => {
@@ -124,6 +185,18 @@ export const materializeCachedGitSource = async (
   }
 };
 
+/**
+ * Clear cached Git checkouts, optionally scoped by provider and source.
+ *
+ * The return value is the number of provider/source roots removed, not the
+ * number of commit directories beneath each source.
+ *
+ * @example
+ * ```ts
+ * await clearGitCache({ provider: 'github', source: 'acme/skills' });
+ * // removes: '<cache>/github/acme/skills'
+ * ```
+ */
 export const clearGitCache = async ({
   provider,
   source,
@@ -224,5 +297,8 @@ const listDirectories = async (dir: string): Promise<string[]> => {
     .map((entry) => entry.name);
 };
 
+/**
+ * Narrow user-provided provider filters to the Git-backed cache providers.
+ */
 export const isGitCacheProvider = (value: string): value is GitCacheProvider =>
   value === 'github' || value === 'gitlab';

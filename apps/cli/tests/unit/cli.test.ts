@@ -234,6 +234,41 @@ describe('runCli', () => {
     expect(errors.join('')).toContain('--manifest');
   });
 
+  it('rejects invalid cache providers with detailed usage', async () => {
+    const errors: string[] = [];
+    vi.spyOn(process.stderr, 'write').mockImplementation((chunk) => {
+      errors.push(String(chunk));
+      return true;
+    });
+
+    const code = await runCli(
+      ['node', 'ai-pkgs', 'cache', 'clear', '--provider', 'marketplace'],
+      '/repo'
+    );
+
+    expect(code).toBe(1);
+    expect(errors.join('')).toContain(
+      '--provider must be one of: github, gitlab'
+    );
+    expect(errors.join('')).toContain('Run ai-pkgs cache -h');
+  });
+
+  it('rejects mutually exclusive skills add selectors before cloning', async () => {
+    const errors: string[] = [];
+    vi.spyOn(process.stderr, 'write').mockImplementation((chunk) => {
+      errors.push(String(chunk));
+      return true;
+    });
+
+    const code = await runCli(
+      ['node', 'ai-pkgs', 'skills', 'add', 'file:.', '--all', '--skill', 'tdd'],
+      '/repo'
+    );
+
+    expect(code).toBe(1);
+    expect(errors.join('')).toContain('--all cannot be used with --skill');
+  });
+
   it('runs install in ai mode without prompt allowance or spinner output', async () => {
     const installed: Parameters<
       NonNullable<InstallCommandRuntime['install']>

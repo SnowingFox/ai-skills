@@ -215,6 +215,19 @@ export const runSkillsAddCommand = async (
   }
 };
 
+/**
+ * Resolve the install dimension for `skills add`.
+ *
+ * TTY users choose between project and global when no flag is present. AI and
+ * other non-interactive callers default to project so automated installs never
+ * silently write to user-level agent directories.
+ *
+ * @example
+ * ```ts
+ * await resolveInstallScope({ global: true }, false); // true
+ * await resolveInstallScope({}, false);               // false
+ * ```
+ */
 export const resolveInstallScope = async (
   options: Pick<SkillsAddOptions, 'project' | 'global'>,
   canPromptForScope: boolean
@@ -324,6 +337,22 @@ const createCloneProgressRenderer = ({
   };
 };
 
+/**
+ * Format Git resolve, clone, and cache events for spinner/static output.
+ *
+ * @example
+ * ```ts
+ * formatCloneProgress({
+ *   status: 'cache-hit',
+ *   provider: 'github',
+ *   packageId: 'acme/skills',
+ *   ref: 'main',
+ *   commitSha: 'abcdef123',
+ *   cachePath: '/cache/acme/skills/abcdef123',
+ * });
+ * // 'reusing Git cache\\nsource: github:acme/skills\\n...'
+ * ```
+ */
 export const formatCloneProgress = (event: GitProgressEvent): string => {
   if (event.status === 'resolving-remote') {
     return `resolving remote ref: ${event.ref ?? 'HEAD'}`;
@@ -356,6 +385,9 @@ export const formatCloneProgress = (event: GitProgressEvent): string => {
   return '';
 };
 
+/**
+ * Format the terminal clone success message with the pinned Git version.
+ */
 export const formatCloneDone = (ref?: string, commitSha?: string): string => {
   if (!ref || !commitSha) {
     return 'Repository cloned';
@@ -363,6 +395,9 @@ export const formatCloneDone = (ref?: string, commitSha?: string): string => {
   return `Repository cloned (${ref}@${shortSha(commitSha)})`;
 };
 
+/**
+ * Convert classified Git failures into user-facing remediation text.
+ */
 export const formatGitCloneError = (error: GitCommandError): string => {
   const base = match(error.kind)
     .with(

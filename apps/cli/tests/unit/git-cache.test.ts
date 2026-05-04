@@ -69,6 +69,38 @@ describe('git cache', () => {
     ).resolves.toBe('# One');
   });
 
+  it('refreshes an existing cache entry when requested', async () => {
+    const source = join(tempRoot, 'refresh-source');
+    const commitSha = await createGitRepo(source);
+    const events: GitProgressEvent[] = [];
+
+    const first = await materializeCachedGitSource({
+      provider: 'github',
+      packageId: 'acme/skills',
+      cloneUrl: source,
+      ref: 'main',
+      commitSha,
+    });
+    await writeFile(join(first.rootDir, 'marker.txt'), 'stale');
+
+    const refreshed = await materializeCachedGitSource({
+      provider: 'github',
+      packageId: 'acme/skills',
+      cloneUrl: source,
+      ref: 'main',
+      commitSha,
+      refresh: true,
+      onProgress: (event) => events.push(event),
+    });
+
+    expect(refreshed.rootDir).toBe(first.rootDir);
+    expect(events.map((event) => event.status)).toContain('cache-refresh');
+    expect(events.map((event) => event.status)).toContain('cache-store');
+    await expect(
+      readFile(join(refreshed.rootDir, 'marker.txt'), 'utf-8')
+    ).rejects.toThrow();
+  });
+
   it('clears matching provider and source entries', async () => {
     const source = join(tempRoot, 'source');
     const commitSha = await createGitRepo(source);
@@ -89,6 +121,46 @@ describe('git cache', () => {
     await expect(
       readFile(join(cached.rootDir, 'skills/one/SKILL.md'), 'utf-8')
     ).rejects.toThrow();
+  });
+
+  it('clears matching entries by clone URL metadata', async () => {
+    const source = join(tempRoot, 'clone-url-source');
+    const commitSha = await createGitRepo(source);
+    const cached = await materializeCachedGitSource({
+      provider: 'github',
+      packageId: 'metadata-only/source',
+      cloneUrl: source,
+      ref: 'main',
+      commitSha,
+    });
+
+    await expect(clearGitCache({ provider: 'github', source })).resolves.toBe(
+      1
+    );
+    await expect(
+      readFile(join(cached.rootDir, 'skills/one/SKILL.md'), 'utf-8')
+    ).rejects.toThrow();
+  });
+
+  it('clears all provider roots when no filter is provided', async () => {
+    const source = join(tempRoot, 'clear-all-source');
+    const commitSha = await createGitRepo(source);
+    await materializeCachedGitSource({
+      provider: 'github',
+      packageId: 'acme/skills',
+      cloneUrl: source,
+      ref: 'main',
+      commitSha,
+    });
+    await materializeCachedGitSource({
+      provider: 'gitlab',
+      packageId: 'https://gitlab.com/acme/skills.git',
+      cloneUrl: source,
+      ref: 'main',
+      commitSha,
+    });
+
+    await expect(clearGitCache({})).resolves.toBe(2);
   });
 });
 
