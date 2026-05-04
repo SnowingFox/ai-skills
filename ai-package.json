@@ -1,8 +1,108 @@
 {
   "skills": {
+    "caveman": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/productivity/caveman",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "design-an-interface": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/deprecated/design-an-interface",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "diagnose": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/engineering/diagnose",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "edit-article": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/personal/edit-article",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "git-guardrails-claude-code": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/misc/git-guardrails-claude-code",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "grill-me": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/productivity/grill-me",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "grill-with-docs": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/engineering/grill-with-docs",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "improve-codebase-architecture": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/engineering/improve-codebase-architecture",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "migrate-to-shoehorn": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/misc/migrate-to-shoehorn",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "obsidian-vault": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/personal/obsidian-vault",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "qa": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/deprecated/qa",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "request-refactor-plan": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/deprecated/request-refactor-plan",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "scaffold-exercises": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/misc/scaffold-exercises",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "setup-matt-pocock-skills": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/engineering/setup-matt-pocock-skills",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "setup-pre-commit": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/misc/setup-pre-commit",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
     "tdd": {
       "source": "github:mattpocock/skills",
       "path": "skills/engineering/tdd",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "to-issues": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/engineering/to-issues",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "to-prd": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/engineering/to-prd",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "ubiquitous-language": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/deprecated/ubiquitous-language",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "write-a-skill": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/productivity/write-a-skill",
+      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
+    },
+    "zoom-out": {
+      "source": "github:mattpocock/skills",
+      "path": "skills/engineering/zoom-out",
       "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
     }
   }

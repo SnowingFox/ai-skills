@@ -104,6 +104,80 @@ All external integrations follow a pluggable provider pattern with factory funct
 - UI primitives from Radix UI; icons from `lucide-react`
 - Conventional Commits: `feat:`, `fix:`, `chore:`
 
+## CLI Development Rules (`apps/cli`)
+
+### Architecture Boundaries
+
+- `apps/cli/src/cli.ts` owns CLI construction and entrypoint behavior only. Keep
+  command behavior in `src/commands/*`, help rendering in `src/cli/help.ts`,
+  help content in `src/cli/help-data/*`, and execution/error policy in
+  `src/cli/runtime.ts`.
+- Keep provider-specific source logic behind registry interfaces in
+  `src/registries/*`. GitHub and GitLab should share the Git registry boundary
+  when behavior is identical; Marketplace remains a provider boundary even when
+  the implementation is deferred.
+- Keep Git subprocess behavior in `src/git.ts`. Cache policy belongs in
+  `src/git-cache.ts`; install materialization belongs in `src/install.ts`;
+  copy/link/conflict behavior belongs in `src/installer/*`.
+- Do not add module-level side effects outside the CLI entrypoint. Modules should
+  export factories, helpers, and command registration functions; `buildCli()` /
+  `registerCoreCommands()` decide what is wired at startup.
+- Prefer small exported pure helpers for command decisions (`resolveInstallMode`,
+  `resolveConflictPolicy`, `resolveInstallScope`, formatters). These make CLI UX
+  behavior unit-testable without spawning a process.
+
+### JSDoc And Comments
+
+- Every exported CLI helper, command runner, registry boundary, and cache helper
+  needs a concise multi-line JSDoc summary explaining behavior, not just the
+  type signature.
+- Add `@example` when behavior has side effects, multiple modes, callbacks, or
+  non-obvious edge cases. Examples should show input and observable output.
+- For functions with I/O side effects such as cloning, cache writes, manifest
+  writes, or install materialization, the JSDoc example must mention the
+  resulting filesystem/cache state and what cleanup does or does not happen.
+- Avoid `@param` / `@returns` that simply restate TypeScript types. Use them only
+  when the meaning is not obvious from the signature.
+- Do not add section-divider comments. Group related functions together and let
+  file/module JSDoc plus function JSDoc carry the explanation.
+
+### Testing Discipline
+
+- CLI changes require focused unit tests for exported decision helpers and
+  formatters, plus e2e coverage when behavior crosses command parsing, filesystem
+  writes, Git, or install targets.
+- Tests must reflect real user or automation flows. Include failure paths for
+  invalid flags, non-interactive requirements, missing skills, cache misses, and
+  cache hits instead of only happy paths.
+- Git/cache/install tests must use temporary directories and isolated cache
+  roots such as `AI_PKGS_CACHE_HOME`. Never let tests write to the developer's
+  real `~/.cache/ai-pkgs`, global agent skill directories, or repository root.
+- Subprocess e2e tests must pass an explicit `cwd`. Do not rely on the parent
+  process cwd because that can accidentally install into this repository.
+- Use Vitest (`bun run --cwd apps/cli test:unit`,
+  `bun run --cwd apps/cli test:e2e`) for CLI tests. Do not introduce `bun test`,
+  Jest, or ad-hoc test runners.
+- Before claiming CLI work is complete, run `bun run type-check:cli`,
+  `bun run --cwd apps/cli test:unit`, `bun run --cwd apps/cli test:e2e`,
+  Biome on touched CLI files, and `bun run build:cli`.
+
+### CLI UX Contracts
+
+- Bare `ai-pkgs` renders help and must not attempt to read `ai-package.json`.
+- `--ai` is strict non-interactive mode: no prompts, no spinners, deterministic
+  clack-style text output, and clear failure messages when required decisions are
+  missing.
+- `ai-pkgs install` restores from `ai-package.json` into project-local targets.
+  Global installs are handled by `ai-pkgs skills add --global`, not by
+  `install`.
+- `skills add` writes to `ai-package.json` by default. `--install-only` skips
+  manifest reads/writes and must not be combined with `--manifest`.
+- Mutually exclusive flags must fail early with `SilentError` and a detailed help
+  hint. Current examples include `--force` with `--skip-existing`, `--project`
+  with `--global`, and `--all` with `--skill`.
+- Help data should stay detailed and scenario-based: grouped flags, grouped
+  examples, notes for special modes, and global flags visible in command help.
+
 ## File Editing Rules (Strict)
 
 These rules apply to every code change, not just the first iteration.
