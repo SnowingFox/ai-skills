@@ -1,0 +1,883 @@
+{
+  "checkpoint_id": "41eec4e3b9f2",
+  "session_id": "f58dfb89-b852-4a0d-8d51-280475b598e1",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-04T11:48:07.718Z",
+  "branch": "main",
+  "checkpoints_count": 35,
+  "files_touched": [
+    ".cursor/skills/caveman/SKILL.md",
+    ".cursor/skills/design-an-interface/SKILL.md",
+    ".cursor/skills/diagnose/SKILL.md",
+    ".cursor/skills/diagnose/scripts/hitl-loop.template.sh",
+    ".cursor/skills/edit-article/SKILL.md",
+    ".cursor/skills/git-guardrails-claude-code/SKILL.md",
+    ".cursor/skills/git-guardrails-claude-code/scripts/block-dangerous-git.sh",
+    ".cursor/skills/grill-me/SKILL.md",
+    ".cursor/skills/grill-with-docs/ADR-FORMAT.md",
+    ".cursor/skills/grill-with-docs/CONTEXT-FORMAT.md",
+    ".cursor/skills/grill-with-docs/SKILL.md",
+    ".cursor/skills/improve-codebase-architecture/DEEPENING.md",
+    ".cursor/skills/improve-codebase-architecture/INTERFACE-DESIGN.md",
+    ".cursor/skills/improve-codebase-architecture/LANGUAGE.md",
+    ".cursor/skills/improve-codebase-architecture/SKILL.md",
+    ".cursor/skills/migrate-to-shoehorn/SKILL.md",
+    ".cursor/skills/obsidian-vault/SKILL.md",
+    ".cursor/skills/qa/SKILL.md",
+    ".cursor/skills/request-refactor-plan/SKILL.md",
+    ".cursor/skills/scaffold-exercises/SKILL.md",
+    ".cursor/skills/setup-matt-pocock-skills/SKILL.md",
+    ".cursor/skills/setup-matt-pocock-skills/domain.md",
+    ".cursor/skills/setup-matt-pocock-skills/issue-tracker-github.md",
+    ".cursor/skills/setup-matt-pocock-skills/issue-tracker-gitlab.md",
+    ".cursor/skills/setup-matt-pocock-skills/issue-tracker-local.md",
+    ".cursor/skills/setup-matt-pocock-skills/triage-labels.md",
+    ".cursor/skills/setup-pre-commit/SKILL.md",
+    ".cursor/skills/tdd/SKILL.md",
+    ".cursor/skills/tdd/deep-modules.md",
+    ".cursor/skills/tdd/interface-design.md",
+    ".cursor/skills/tdd/mocking.md",
+    ".cursor/skills/tdd/refactoring.md",
+    ".cursor/skills/tdd/tests.md",
+    ".cursor/skills/to-issues/SKILL.md",
+    ".cursor/skills/to-prd/SKILL.md",
+    ".cursor/skills/ubiquitous-language/SKILL.md",
+    ".cursor/skills/write-a-skill/SKILL.md",
+    ".cursor/skills/zoom-out/SKILL.md",
+    "AGENTS.md",
+    "ai-package.json"
+  ],
+  "agent": "Cursor",
+  "model": "gpt-5.5-extra-high",
+  "turn_id": "d1c99065c1ad",
+  "is_task": false,
+  "tool_use_id": "",
+  "transcript_identifier_at_start": "",
+  "checkpoint_transcript_start": 0,
+  "transcript_lines_at_start": 0,
+  "session_metrics": {
+    "duration_ms": 10792445,
+    "turn_count": 37,
+    "context_tokens": 249321,
+    "context_window_size": 272000,
+    "active_duration_ms": 5481948,
+    "turn_metrics": [
+      {
+        "turn_id": "dc1e98a74dd4",
+        "started_at": "2026-05-04T08:42:33.000Z",
+        "ended_at": "2026-05-04T09:06:19.319Z",
+        "duration_ms": 1426319
+      },
+      {
+        "turn_id": "51e45fb588d8",
+        "started_at": "2026-05-04T09:06:22.000Z",
+        "ended_at": "2026-05-04T09:08:31.418Z",
+        "duration_ms": 129418
+      },
+      {
+        "turn_id": "e09667d372a0",
+        "started_at": "2026-05-04T09:09:19.000Z",
+        "ended_at": "2026-05-04T09:10:00.622Z",
+        "duration_ms": 41622
+      },
+      {
+        "turn_id": "7cd6800ec51e",
+        "started_at": "2026-05-04T09:10:05.000Z",
+        "ended_at": "2026-05-04T09:11:28.048Z",
+        "duration_ms": 83048
+      },
+      {
+        "turn_id": "c9150d04fe46",
+        "started_at": "2026-05-04T09:11:49.000Z",
+        "ended_at": "2026-05-04T09:13:36.291Z",
+        "duration_ms": 107291
+      },
+      {
+        "turn_id": "dad975d227be",
+        "started_at": "2026-05-04T09:14:03.000Z",
+        "ended_at": "2026-05-04T09:32:16.050Z",
+        "duration_ms": 1093050
+      },
+      {
+        "turn_id": "7f8226393929",
+        "started_at": "2026-05-04T09:38:01.000Z",
+        "ended_at": "2026-05-04T09:38:41.617Z",
+        "duration_ms": 40617
+      },
+      {
+        "turn_id": "82cd7399ae8d",
+        "started_at": "2026-05-04T09:38:44.000Z",
+        "ended_at": "2026-05-04T09:46:36.655Z",
+        "duration_ms": 472655
+      },
+      {
+        "turn_id": "51d8df79ed23",
+        "started_at": "2026-05-04T09:46:52.000Z",
+        "ended_at": "2026-05-04T09:53:33.483Z",
+        "duration_ms": 401483
+      },
+      {
+        "turn_id": "e16b6cf89297",
+        "started_at": "2026-05-04T09:53:48.000Z",
+        "ended_at": "2026-05-04T09:53:56.519Z",
+        "duration_ms": 8519
+      },
+      {
+        "turn_id": "b8a9f0070372",
+        "started_at": "2026-05-04T09:54:03.000Z",
+        "ended_at": "2026-05-04T09:57:15.629Z",
+        "duration_ms": 192629
+      },
+      {
+        "turn_id": "50e588b595d9",
+        "started_at": "2026-05-04T10:04:20.000Z",
+        "ended_at": "2026-05-04T10:07:11.873Z",
+        "duration_ms": 171873
+      },
+      {
+        "turn_id": "97147f493955",
+        "started_at": "2026-05-04T10:07:58.000Z",
+        "ended_at": "2026-05-04T10:10:20.304Z",
+        "duration_ms": 142304
+      },
+      {
+        "turn_id": "f5a7c6ec536e",
+        "started_at": "2026-05-04T10:10:37.000Z",
+        "ended_at": "2026-05-04T10:11:27.181Z",
+        "duration_ms": 50181
+      },
+      {
+        "turn_id": "a44b8f48f214",
+        "started_at": "2026-05-04T10:11:43.000Z",
+        "ended_at": "2026-05-04T10:13:05.670Z",
+        "duration_ms": 82670
+      },
+      {
+        "turn_id": "b32a8b928c5a",
+        "started_at": "2026-05-04T10:13:26.000Z",
+        "ended_at": "2026-05-04T10:15:22.488Z",
+        "duration_ms": 116488
+      },
+      {
+        "turn_id": "f911ed353f31",
+        "started_at": "2026-05-04T10:15:56.000Z",
+        "ended_at": "2026-05-04T10:16:12.554Z",
+        "duration_ms": 16554
+      },
+      {
+        "turn_id": "f63343e2e27f",
+        "started_at": "2026-05-04T10:22:41.000Z",
+        "ended_at": "2026-05-04T10:22:41.236Z",
+        "duration_ms": 236
+      },
+      {
+        "turn_id": "a74c820e90d9",
+        "started_at": "2026-05-04T10:29:44.000Z",
+        "ended_at": "2026-05-04T10:37:19.342Z",
+        "duration_ms": 455342
+      },
+      {
+        "turn_id": "1d132b32b38f",
+        "started_at": "2026-05-04T10:39:29.000Z",
+        "ended_at": "2026-05-04T10:39:29.740Z",
+        "duration_ms": 740
+      },
+      {
+        "turn_id": "a69b778c51b4",
+        "started_at": "2026-05-04T10:43:12.000Z",
+        "ended_at": "2026-05-04T10:46:20.172Z",
+        "duration_ms": 188172
+      },
+      {
+        "turn_id": "fba0dd450365",
+        "started_at": "2026-05-04T10:48:46.000Z",
+        "ended_at": "2026-05-04T10:49:26.079Z",
+        "duration_ms": 40079
+      },
+      {
+        "turn_id": "3e1f54e15c63",
+        "started_at": "2026-05-04T10:53:02.000Z",
+        "ended_at": "2026-05-04T10:53:57.499Z",
+        "duration_ms": 55499
+      },
+      {
+        "turn_id": "9d07d373814b",
+        "started_at": "2026-05-04T10:57:26.000Z",
+        "ended_at": "2026-05-04T10:57:33.016Z",
+        "duration_ms": 7016
+      },
+      {
+        "turn_id": "b4240ab95e66",
+        "started_at": "2026-05-04T10:58:08.000Z",
+        "ended_at": "2026-05-04T10:58:48.614Z",
+        "duration_ms": 40614
+      },
+      {
+        "turn_id": "a49cee048171",
+        "started_at": "2026-05-04T10:59:13.000Z",
+        "ended_at": "2026-05-04T11:01:10.529Z",
+        "duration_ms": 117529
+      }
+    ]
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-04T11:48:07.641Z",
+    "agent_lines": 2240,
+    "agent_removed": 0,
+    "human_added": 303,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 2543,
+    "total_lines_changed": 2543,
+    "agent_percentage": 88.08493904836807,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 2228,
+      "user_lines_removed": 12,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".gitignore": 1,
+        ".idea/workspace.xml": 3,
+        "apps/cli/index.ts": 4,
+        "apps/cli/package.json": 12,
+        "bun.lock": 128,
+        "apps/cli/src/cli.ts": 95,
+        "apps/cli/src/git.ts": 75,
+        "apps/cli/src/install-command.ts": 154,
+        "apps/cli/src/install.ts": 162,
+        "apps/cli/src/manifest.ts": 242,
+        "apps/cli/src/tests/cli.test.ts": 118,
+        "apps/cli/src/tests/e2e.test.ts": 160,
+        "apps/cli/src/tests/git.test.ts": 110,
+        "apps/cli/src/tests/install-command.test.ts": 245,
+        "apps/cli/src/tests/install.test.ts": 374,
+        "apps/cli/src/tests/manifest.test.ts": 272,
+        "apps/cli/src/types.ts": 54,
+        "apps/cli/vitest.config.ts": 19
+      },
+      "user_removed_per_file": {
+        ".idea/workspace.xml": 6,
+        "apps/cli/index.ts": 1,
+        "apps/cli/package.json": 1,
+        "bun.lock": 2,
+        "docs/ai-package-skills.md": 2
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2232,
+      "agent_lines_removed": 15,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 119,
+      "user_lines_removed": 47,
+      "agent_lines_added": 2739,
+      "agent_lines_removed": 57,
+      "user_added_per_file": {
+        "docs/ai-package-skills.md": 39,
+        "skills-lock.json": 6,
+        ".agents/skills/to-prd/_s_k_i_l_l.md": 74
+      },
+      "user_removed_per_file": {
+        "docs/ai-package-skills.md": 47
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 74,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2737,
+      "agent_lines_removed": 57,
+      "user_added_per_file": {
+        ".agents/skills/to-prd/_s_k_i_l_l.md": 74
+      },
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 76,
+      "user_lines_removed": 1,
+      "agent_lines_added": 2760,
+      "agent_lines_removed": 58,
+      "user_added_per_file": {
+        ".agents/skills/to-prd/_s_k_i_l_l.md": 74,
+        "t_o_d_o.md": 2
+      },
+      "user_removed_per_file": {
+        "t_o_d_o.md": 1
+      }
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 76,
+      "user_lines_removed": 1,
+      "agent_lines_added": 2752,
+      "agent_lines_removed": 58,
+      "user_added_per_file": {
+        ".agents/skills/to-prd/_s_k_i_l_l.md": 74,
+        "t_o_d_o.md": 2
+      },
+      "user_removed_per_file": {
+        "t_o_d_o.md": 1
+      }
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 397,
+      "user_lines_removed": 456,
+      "agent_lines_added": 4473,
+      "agent_lines_removed": 58,
+      "user_added_per_file": {
+        ".agents/skills/to-prd/_s_k_i_l_l.md": 74,
+        "t_o_d_o.md": 2,
+        "apps/cli/src/cli.ts": 6,
+        "apps/cli/src/git.ts": 67,
+        "apps/cli/src/install-command.ts": 69,
+        "apps/cli/src/install.ts": 86,
+        "apps/cli/src/manifest.ts": 18,
+        "apps/cli/src/types.ts": 47,
+        "apps/cli/vitest.config.ts": 28
+      },
+      "user_removed_per_file": {
+        "t_o_d_o.md": 1,
+        "apps/cli/src/cli.ts": 60,
+        "apps/cli/src/git.ts": 7,
+        "apps/cli/src/install-command.ts": 3,
+        "apps/cli/src/install.ts": 123,
+        "apps/cli/src/manifest.ts": 242,
+        "apps/cli/src/types.ts": 19,
+        "apps/cli/vitest.config.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 397,
+      "user_lines_removed": 456,
+      "agent_lines_added": 4473,
+      "agent_lines_removed": 58,
+      "user_added_per_file": {
+        ".agents/skills/to-prd/_s_k_i_l_l.md": 74,
+        "t_o_d_o.md": 2,
+        "apps/cli/src/cli.ts": 6,
+        "apps/cli/src/git.ts": 67,
+        "apps/cli/src/install-command.ts": 69,
+        "apps/cli/src/install.ts": 86,
+        "apps/cli/src/manifest.ts": 18,
+        "apps/cli/src/types.ts": 47,
+        "apps/cli/vitest.config.ts": 28
+      },
+      "user_removed_per_file": {
+        "t_o_d_o.md": 1,
+        "apps/cli/src/cli.ts": 60,
+        "apps/cli/src/git.ts": 7,
+        "apps/cli/src/install-command.ts": 3,
+        "apps/cli/src/install.ts": 123,
+        "apps/cli/src/manifest.ts": 242,
+        "apps/cli/src/types.ts": 19,
+        "apps/cli/vitest.config.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 9,
+      "user_lines_added": 560,
+      "user_lines_removed": 526,
+      "agent_lines_added": 4876,
+      "agent_lines_removed": 58,
+      "user_added_per_file": {
+        ".agents/skills/to-prd/_s_k_i_l_l.md": 74,
+        "t_o_d_o.md": 2,
+        "apps/cli/src/cli.ts": 11,
+        "apps/cli/src/cli/runtime.ts": 22,
+        "apps/cli/src/commands/index.ts": 2,
+        "apps/cli/src/commands/install.ts": 1,
+        "apps/cli/src/commands/skills.ts": 37,
+        "apps/cli/src/git.ts": 67,
+        "apps/cli/src/install-command.ts": 69,
+        "apps/cli/src/install.ts": 86,
+        "apps/cli/src/manifest.ts": 18,
+        "apps/cli/src/types.ts": 47,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 53,
+        "apps/cli/tests/unit/cli.test.ts": 43,
+        "apps/cli/vitest.config.ts": 28
+      },
+      "user_removed_per_file": {
+        "t_o_d_o.md": 1,
+        "apps/cli/src/cli.ts": 65,
+        "apps/cli/src/commands/install.ts": 4,
+        "apps/cli/src/commands/skills.ts": 28,
+        "apps/cli/src/git.ts": 7,
+        "apps/cli/src/install-command.ts": 3,
+        "apps/cli/src/install.ts": 123,
+        "apps/cli/src/manifest.ts": 242,
+        "apps/cli/src/types.ts": 19,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 10,
+        "apps/cli/tests/unit/cli.test.ts": 23,
+        "apps/cli/vitest.config.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 10,
+      "user_lines_added": 596,
+      "user_lines_removed": 549,
+      "agent_lines_added": 5230,
+      "agent_lines_removed": 58,
+      "user_added_per_file": {
+        ".agents/skills/to-prd/_s_k_i_l_l.md": 74,
+        "t_o_d_o.md": 2,
+        "apps/cli/src/agents/registry.ts": 1,
+        "apps/cli/src/agents/targets.ts": 16,
+        "apps/cli/src/cli.ts": 11,
+        "apps/cli/src/cli/help.ts": 4,
+        "apps/cli/src/cli/runtime.ts": 22,
+        "apps/cli/src/commands/index.ts": 2,
+        "apps/cli/src/commands/install.ts": 1,
+        "apps/cli/src/commands/skills.ts": 37,
+        "apps/cli/src/git.ts": 67,
+        "apps/cli/src/install-command.ts": 69,
+        "apps/cli/src/install.ts": 86,
+        "apps/cli/src/manifest.ts": 18,
+        "apps/cli/src/types.ts": 47,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 55,
+        "apps/cli/tests/unit/cli-help.test.ts": 13,
+        "apps/cli/tests/unit/cli.test.ts": 43,
+        "apps/cli/vitest.config.ts": 28
+      },
+      "user_removed_per_file": {
+        "t_o_d_o.md": 1,
+        "apps/cli/src/agents/registry.ts": 2,
+        "apps/cli/src/agents/targets.ts": 6,
+        "apps/cli/src/cli.ts": 65,
+        "apps/cli/src/cli/help.ts": 10,
+        "apps/cli/src/commands/install.ts": 4,
+        "apps/cli/src/commands/skills.ts": 28,
+        "apps/cli/src/git.ts": 7,
+        "apps/cli/src/install-command.ts": 3,
+        "apps/cli/src/install.ts": 123,
+        "apps/cli/src/manifest.ts": 242,
+        "apps/cli/src/types.ts": 19,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 12,
+        "apps/cli/tests/unit/cli-help.test.ts": 3,
+        "apps/cli/tests/unit/cli.test.ts": 23,
+        "apps/cli/vitest.config.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 11,
+      "user_lines_added": 596,
+      "user_lines_removed": 549,
+      "agent_lines_added": 5230,
+      "agent_lines_removed": 58,
+      "user_added_per_file": {
+        ".agents/skills/to-prd/_s_k_i_l_l.md": 74,
+        "t_o_d_o.md": 2,
+        "apps/cli/src/agents/registry.ts": 1,
+        "apps/cli/src/agents/targets.ts": 16,
+        "apps/cli/src/cli.ts": 11,
+        "apps/cli/src/cli/help.ts": 4,
+        "apps/cli/src/cli/runtime.ts": 22,
+        "apps/cli/src/commands/index.ts": 2,
+        "apps/cli/src/commands/install.ts": 1,
+        "apps/cli/src/commands/skills.ts": 37,
+        "apps/cli/src/git.ts": 67,
+        "apps/cli/src/install-command.ts": 69,
+        "apps/cli/src/install.ts": 86,
+        "apps/cli/src/manifest.ts": 18,
+        "apps/cli/src/types.ts": 47,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 55,
+        "apps/cli/tests/unit/cli-help.test.ts": 13,
+        "apps/cli/tests/unit/cli.test.ts": 43,
+        "apps/cli/vitest.config.ts": 28
+      },
+      "user_removed_per_file": {
+        "t_o_d_o.md": 1,
+        "apps/cli/src/agents/registry.ts": 2,
+        "apps/cli/src/agents/targets.ts": 6,
+        "apps/cli/src/cli.ts": 65,
+        "apps/cli/src/cli/help.ts": 10,
+        "apps/cli/src/commands/install.ts": 4,
+        "apps/cli/src/commands/skills.ts": 28,
+        "apps/cli/src/git.ts": 7,
+        "apps/cli/src/install-command.ts": 3,
+        "apps/cli/src/install.ts": 123,
+        "apps/cli/src/manifest.ts": 242,
+        "apps/cli/src/types.ts": 19,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 12,
+        "apps/cli/tests/unit/cli-help.test.ts": 3,
+        "apps/cli/tests/unit/cli.test.ts": 23,
+        "apps/cli/vitest.config.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 12,
+      "user_lines_added": 702,
+      "user_lines_removed": 592,
+      "agent_lines_added": 5230,
+      "agent_lines_removed": 58,
+      "user_added_per_file": {
+        ".agents/skills/to-prd/_s_k_i_l_l.md": 74,
+        "t_o_d_o.md": 2,
+        "apps/cli/src/agents/registry.ts": 1,
+        "apps/cli/src/agents/targets.ts": 16,
+        "apps/cli/src/cli.ts": 11,
+        "apps/cli/src/cli/help.ts": 76,
+        "apps/cli/src/cli/runtime.ts": 22,
+        "apps/cli/src/commands/index.ts": 2,
+        "apps/cli/src/commands/install.ts": 1,
+        "apps/cli/src/commands/skills.ts": 37,
+        "apps/cli/src/git.ts": 67,
+        "apps/cli/src/install-command.ts": 69,
+        "apps/cli/src/install.ts": 86,
+        "apps/cli/src/manifest.ts": 18,
+        "apps/cli/src/types.ts": 47,
+        "apps/cli/src/ui/banner.ts": 16,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 55,
+        "apps/cli/tests/unit/cli-help.test.ts": 31,
+        "apps/cli/tests/unit/cli.test.ts": 43,
+        "apps/cli/vitest.config.ts": 28
+      },
+      "user_removed_per_file": {
+        "t_o_d_o.md": 1,
+        "apps/cli/src/agents/registry.ts": 2,
+        "apps/cli/src/agents/targets.ts": 6,
+        "apps/cli/src/cli.ts": 65,
+        "apps/cli/src/cli/help.ts": 15,
+        "apps/cli/src/commands/install.ts": 4,
+        "apps/cli/src/commands/skills.ts": 28,
+        "apps/cli/src/git.ts": 7,
+        "apps/cli/src/install-command.ts": 3,
+        "apps/cli/src/install.ts": 123,
+        "apps/cli/src/manifest.ts": 242,
+        "apps/cli/src/types.ts": 19,
+        "apps/cli/src/ui/banner.ts": 38,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 12,
+        "apps/cli/tests/unit/cli-help.test.ts": 3,
+        "apps/cli/tests/unit/cli.test.ts": 23,
+        "apps/cli/vitest.config.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 13,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 14,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5340,
+      "agent_lines_removed": 58,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 15,
+      "user_lines_added": 103,
+      "user_lines_removed": 15,
+      "agent_lines_added": 5340,
+      "agent_lines_removed": 58,
+      "user_added_per_file": {
+        "apps/cli/src/cli/help.ts": 2,
+        "apps/cli/src/commands/skills.ts": 22,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 27,
+        "apps/cli/tests/unit/cli-help.test.ts": 2,
+        "apps/cli/tests/unit/cli.test.ts": 50
+      },
+      "user_removed_per_file": {
+        "apps/cli/src/cli/help.ts": 1,
+        "apps/cli/src/commands/skills.ts": 14
+      }
+    },
+    {
+      "checkpoint_number": 16,
+      "user_lines_added": 109,
+      "user_lines_removed": 16,
+      "agent_lines_added": 5342,
+      "agent_lines_removed": 63,
+      "user_added_per_file": {
+        "apps/cli/src/cli.ts": 5,
+        "apps/cli/src/cli/help.ts": 2,
+        "apps/cli/src/commands/skills.ts": 22,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 28,
+        "apps/cli/tests/unit/cli-help.test.ts": 2,
+        "apps/cli/tests/unit/cli.test.ts": 50
+      },
+      "user_removed_per_file": {
+        "apps/cli/src/cli/help.ts": 1,
+        "apps/cli/src/commands/skills.ts": 14,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 17,
+      "user_lines_added": 114,
+      "user_lines_removed": 15,
+      "agent_lines_added": 5342,
+      "agent_lines_removed": 63,
+      "user_added_per_file": {
+        "apps/cli/src/cli.ts": 5,
+        "apps/cli/src/cli/help.ts": 2,
+        "apps/cli/src/commands/skills.ts": 22,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 28,
+        "apps/cli/tests/unit/cli-help.test.ts": 7,
+        "apps/cli/tests/unit/cli.test.ts": 50
+      },
+      "user_removed_per_file": {
+        "apps/cli/src/commands/skills.ts": 14,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 18,
+      "user_lines_added": 116,
+      "user_lines_removed": 15,
+      "agent_lines_added": 5357,
+      "agent_lines_removed": 63,
+      "user_added_per_file": {
+        "apps/cli/src/cli.ts": 7,
+        "apps/cli/src/cli/help.ts": 2,
+        "apps/cli/src/commands/skills.ts": 22,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 28,
+        "apps/cli/tests/unit/cli-help.test.ts": 7,
+        "apps/cli/tests/unit/cli.test.ts": 50
+      },
+      "user_removed_per_file": {
+        "apps/cli/src/commands/skills.ts": 14,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 19,
+      "user_lines_added": 127,
+      "user_lines_removed": 18,
+      "agent_lines_added": 5601,
+      "agent_lines_removed": 146,
+      "user_added_per_file": {
+        "apps/cli/src/cli.ts": 18,
+        "apps/cli/src/cli/help.ts": 2,
+        "apps/cli/src/commands/skills.ts": 22,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 28,
+        "apps/cli/tests/unit/cli-help.test.ts": 7,
+        "apps/cli/tests/unit/cli.test.ts": 50
+      },
+      "user_removed_per_file": {
+        "apps/cli/src/commands/skills.ts": 14,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 1,
+        "apps/cli/tsup.config.ts": 3
+      }
+    },
+    {
+      "checkpoint_number": 20,
+      "user_lines_added": 131,
+      "user_lines_removed": 25,
+      "agent_lines_added": 5601,
+      "agent_lines_removed": 146,
+      "user_added_per_file": {
+        "apps/cli/_r_e_a_d_m_e.md": 1,
+        "apps/cli/dist/cli.js": 5,
+        "apps/cli/src/cli.ts": 16,
+        "apps/cli/src/cli/help.ts": 2,
+        "apps/cli/src/commands/skills.ts": 22,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 28,
+        "apps/cli/tests/unit/cli-help.test.ts": 7,
+        "apps/cli/tests/unit/cli.test.ts": 50
+      },
+      "user_removed_per_file": {
+        "apps/cli/_r_e_a_d_m_e.md": 1,
+        "apps/cli/dist/cli.js": 6,
+        "apps/cli/src/commands/skills.ts": 14,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 1,
+        "apps/cli/tsup.config.ts": 3
+      }
+    },
+    {
+      "checkpoint_number": 21,
+      "user_lines_added": 467,
+      "user_lines_removed": 72,
+      "agent_lines_added": 5602,
+      "agent_lines_removed": 147,
+      "user_added_per_file": {
+        "apps/cli/dist/cli.js": 15,
+        "apps/cli/src/cli.ts": 16,
+        "apps/cli/src/cli/help.ts": 317,
+        "apps/cli/src/commands/skills.ts": 22,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 28,
+        "apps/cli/tests/unit/cli-help.test.ts": 19,
+        "apps/cli/tests/unit/cli.test.ts": 50
+      },
+      "user_removed_per_file": {
+        "apps/cli/dist/cli.js": 16,
+        "apps/cli/src/cli/help.ts": 36,
+        "apps/cli/src/commands/skills.ts": 14,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 1,
+        "apps/cli/tsup.config.ts": 5
+      }
+    },
+    {
+      "checkpoint_number": 22,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 23,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5997,
+      "agent_lines_removed": 147,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 24,
+      "user_lines_added": 244,
+      "user_lines_removed": 368,
+      "agent_lines_added": 6395,
+      "agent_lines_removed": 147,
+      "user_added_per_file": {
+        "apps/cli/ai-package.json": 9,
+        "apps/cli/dist/cli.js": 20,
+        "apps/cli/src/cli/help.ts": 4,
+        "apps/cli/src/commands/skills.ts": 5,
+        "apps/cli/src/install-command.ts": 33,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 68,
+        "apps/cli/tests/unit/cli-help.test.ts": 10,
+        "apps/cli/tests/unit/cli.test.ts": 66,
+        "apps/cli/tests/unit/install-command.test.ts": 29
+      },
+      "user_removed_per_file": {
+        "apps/cli/dist/cli.js": 16,
+        "apps/cli/src/cli/help.ts": 340,
+        "apps/cli/src/commands/skills.ts": 1,
+        "apps/cli/src/install-command.ts": 6,
+        "apps/cli/tests/e2e/install.e2e.test.ts": 4,
+        "apps/cli/tests/unit/cli-help.test.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 25,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 26,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 6396,
+      "agent_lines_removed": 147,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 27,
+      "user_lines_added": 5,
+      "user_lines_removed": 4,
+      "agent_lines_added": 6427,
+      "agent_lines_removed": 146,
+      "user_added_per_file": {
+        "apps/cli/package.json": 5
+      },
+      "user_removed_per_file": {
+        "apps/cli/package.json": 4
+      }
+    },
+    {
+      "checkpoint_number": 28,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 6383,
+      "agent_lines_removed": 142,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 29,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 6384,
+      "agent_lines_removed": 144,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 30,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 31,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 32,
+      "user_lines_added": 310,
+      "user_lines_removed": 28,
+      "agent_lines_added": 15,
+      "agent_lines_removed": 4,
+      "user_added_per_file": {
+        "apps/cli/dist/cli.js": 3,
+        "apps/cli/src/cli.ts": 4,
+        ".cursor/skills/tdd/_s_k_i_l_l.md": 109,
+        ".cursor/skills/tdd/deep-modules.md": 33,
+        ".cursor/skills/tdd/interface-design.md": 31,
+        ".cursor/skills/tdd/mocking.md": 59,
+        ".cursor/skills/tdd/refactoring.md": 10,
+        ".cursor/skills/tdd/tests.md": 61
+      },
+      "user_removed_per_file": {
+        "apps/cli/dist/cli.js": 3,
+        "apps/cli/src/cli.ts": 25
+      }
+    },
+    {
+      "checkpoint_number": 33,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 34,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 35,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 36,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3016,
+      "agent_lines_removed": 1,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    }
+  ]
+}

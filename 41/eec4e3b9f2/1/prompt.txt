@@ -1,0 +1,393 @@
+/grille-me 
+docs/ai-package-skills.md
+
+参考一下此次的 git 改动，我觉得并没有符合我的预期，我现在用就报错。。。很奇怪啊
+
+1. 首先从用法上我觉得还需要重新讨论一下
+2. 架构上，我希望封装 interface 然后对 github、gitlab 进行单独实现，当然如果 github、gitlab 差不多，其实就封装为一套就行了，然后其次就是 marketplace 就是会请求我们的后台 api 接口，github 还是进行 git clone 曲拉取吧= = @submodule/skills 应该也是这样？
+3. 代码架构还是多参考 ~/dev/story/apps/cli 的吧，可以参考 ~/dev/story/docs/ts-rewrite 这个文档来
+
+重新规划一下技术方案 docs/ai-package-skills.md 对 skills 包管理我觉得说的应该够详细了，但是具体的代码方案我觉得还是不够呢
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+/to-prd 用这个写吧，以及 gitlab 应该记录他们的源地址，或者说也不管 gitlab 了，先专注于 github
+
+---
+
+gitlab 应该记录他们的源地址，或者说也不管 gitlab 了，先专注于 github
+
+---
+
+开始吧，遵循 docs/ai-package-skills.md 实现，先写个实现计划
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+➜  ai-skills git:(main) ✗ bun run apps/cli/index.ts        
+┌  AI package skills installer
+│
+■  ENOENT: no such file or directory, open '/Users/bytedance/dev/ai-skills/ai-package.json'
+│
+└  Skills install failed
+
+为啥默认就这样了？不应该弹出来最基本的用法么？🤔
+
+以及 --help 是不是也应该参考 ~/dev/story 那样的展示，并且带上 AI-PKGS 的 LOGO，颜色你自己定
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+这里不支持搜索，以及没有 ai-pkgs 的 logo
+
+以及 cursor 应该是 .cursor/skills，要选 .agents 应该自己选，而不是强迫 cursor 为 .agents/skills = =
+
+---
+
+换个颜色吧，以及这些 help 不是很详细啊，比如 add 这些都没列出来具体的用法🤔
+ai-pkgs skills
+│
+│  Manage skills
+│
+│  Flags:
+│    --registry <registry>  github, gitlab, marketplace, or file
+│    --ref <ref>            Git ref to pin
+│    --path <path>          Path to scan inside the source
+│    -s, --skill <skill>    Skill name to add (repeatable)
+│    -a, --agent <agent>    Target agent (repeatable)
+│    --copy                 Copy skill directories (default)
+│    --link                 Symlink skill directories
+│    --force                Overwrite existing skill directories
+│    --skip-existing        Skip existing skill directories
+│    -y, --yes              Skip confirmation prompts
+│    -C, --dir <path>       Project directory
+│    -m, --manifest <path>  Path to ai-package.json
+│
+│  Global flags:
+│    -h, --help          Display this message
+│
+│  Usage:  skills <add|list|remove|update|search> [...args] [options]
+
+---
+
+换个颜色吧，和 submodule 一样，以及这些 help 不是很详细啊，比如 add 这些都没列出来具体的用法🤔
+ai-pkgs skills
+│
+│  Manage skills
+│
+│  Flags:
+│    --registry <registry>  github, gitlab, marketplace, or file
+│    --ref <ref>            Git ref to pin
+│    --path <path>          Path to scan inside the source
+│    -s, --skill <skill>    Skill name to add (repeatable)
+│    -a, --agent <agent>    Target agent (repeatable)
+│    --copy                 Copy skill directories (default)
+│    --link                 Symlink skill directories
+│    --force                Overwrite existing skill directories
+│    --skip-existing        Skip existing skill directories
+│    -y, --yes              Skip confirmation prompts
+│    -C, --dir <path>       Project directory
+│    -m, --manifest <path>  Path to ai-package.json
+│
+│  Global flags:
+│    -h, --help          Display this message
+│
+│  Usage:  skills <add|list|remove|update|search> [...args] [options]
+
+---
+
+/grille-me 加个 flag，可以不用 ai-package.json 来安装的那种，你觉得有什么比较好，就直接安装进去就训练
+
+---
+
+/grille-me 加个 flag，可以不用 ai-package.json 来安装的那种，你觉得有什么比较好，就直接安装进去就行了
+
+---
+
+resume
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+为什么把 --registry 删了？example 应该加回来呀，以及入口应该是 apps/cli/src/cli.ts 而非 apps/cli/index.ts，收敛一下吧，直接在 cli.ts 里面 runCli
+
+---
+
+加回来
+
+---
+
+注册一下 bin，以及完善一下 keywords 和介绍
+
+---
+
+tsup 打包一下吧
+
+---
+
+total 72
+-rwxr-xr-x@ 1 bytedance  staff    36K May  4 18:15 cli.js
+➜  dist git:(main) ✗ bun run cli.js                     
+2 | #!/usr/bin/env node
+    ^
+error: Syntax Error
+    at /Users/bytedance/dev/ai-skills/apps/cli/dist/cli.js:2:1
+
+Bun v1.3.6 (macOS arm64)
+
+---
+
+┌  ai-pkgs skills
+│
+│  Manage skills declared in ai-package.json
+│
+│  Usage:  skills <command> [...args] [options]
+│
+│  Commands:
+│    skills add <source> [options]       Discover skills from GitHub, GitLab, file, or marketplace source
+│    skills list [options]               List manifest skills
+│    skills remove <skill...> [options]  Remove skills from the manifest
+│    skills update [skill...] [options]  Update pinned Git skill versions
+│    skills search [query]               Search marketplace skills
+│
+│  Flags:
+│    -C, --dir <path>       Project directory
+│    -m, --manifest <path>  Path to ai-package.json
+│
+│  Examples:
+│    ai-pkgs skills add vercel-labs/skills --agent cursor
+│    ai-pkgs skills add https://github.com/mattpocock/skills --path skills --skill tdd
+│    ai-pkgs skills list
+│    ai-pkgs skills update tdd --agent cursor --force
+│
+│  Global flags:
+│    -h, --help          Display this message
+
+这些 usage example 貌似没有体现出来所有的用法吧，以及之前说到的 --install-only 呢？这些都不见了？应该列出来啊
+
+把用法都列出来，详细的，以及在代码中也加上 JSDOC 注释来展示这些用法，以及说明这些是什么
+
+每个 Examples 应该分组，以及特殊的用法等等，解释、说明等
+
+---
+
+记得把 skills -h 也在 root -h 列出来哈，解释有详细的例子等等，并且可以把这些 example 放到单独的变量维护，以及不要加 tsup.config.ts 的 onSuccess 啊
+
+---
+
+/grille-me 并且确保有一个 global flag 是 --run-with-ai 或者你有什么好听的方法吗？在 root help 里面也加上也写上有专门给 AI 用的命令，就是没有交互模式，纯输出文字，不过我看现在的这些参数是够用了？我觉得 Example 或者 flag 也加上给 AI 用的吧，就不进入 TTY 模式的那种
+
+以及 help 变量应该单独抽一个文件维护，skills 单独抽啊，不要混在一起
+
+---
+
+/grille-me 并且确保有一个 global flag 是 --run-with-ai 或者你有什么好听的方法吗？在 root help 里面也加上也写上有专门给 AI 用的命令，就是没有交互模式，纯输出文字，不过我看现在的这些参数是够用了？我觉得 Example 或者 flag 也加上给 AI 用的吧，就不进入 TTY 模式的那种
+
+以及 help 变量应该单独抽一个文件维护，skills 单独抽啊，不要混在一起
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+➜  cli git:(main) ✗ bun run dist/cli.js skills add https://github.com/mattpocock/skills --skill write-a-prd --ai
+No matching skills found
+
+这里应该列出来有哪些 SKILLS，这些报错应该也加上一个 -h for detail usage
+
+---
+
+➜  cli git:(main) ✗ bun run dist/cli.js skills add https://github.com/mattpocock/skills --skill write-a-prd --ai
+No matching skills found
+
+这里应该列出来有哪些 SKILLS，这些报错应该也加上一个用 -h for detail usage
+
+---
+
+bummp 来一个，整个 release 和 publish 的命令
+
+---
+
+➜  cli git:(main) ✗ bun run publish
+$ npm publish --access public
+npm warn config ignoring workspace config at /Users/bytedance/dev/ai-skills/apps/cli/.npmrc
+npm warn publish npm auto-corrected some errors in your package.json when publishing.  Please run "npm pkg fix" to address these errors.
+npm warn publish errors corrected:
+npm warn publish "bin[ai-pkgs]" script name was cleaned
+npm notice
+npm notice 📦  ai-pkgs@0.0.3
+npm notice Tarball Contents
+npm notice 219B README.md
+npm notice 43.4kB dist/cli.js
+npm notice 1.6kB package.json
+npm notice Tarball Details
+npm notice name: ai-pkgs
+npm notice version: 0.0.3
+npm notice filename: ai-pkgs-0.0.3.tgz
+npm notice package size: 14.3 kB
+npm notice unpacked size: 45.2 kB
+npm notice shasum: 11ca974050a7cfaab5c1d883aef9d6124b2e783b
+npm notice integrity: sha512-Ram7gOTTLQ26B[...]pG5x/JnQn1Jlw==
+npm notice total files: 3
+npm notice
+npm notice Publishing to https://registry.npmjs.org/ with tag latest and public access
+npm error code E404
+npm error 404 Not Found - PUT https://registry.npmjs.org/ai-pkgs - Not found
+npm error 404
+npm error 404  'ai-pkgs@0.0.3' is not in this registry.
+npm error 404
+npm error 404 Note that you can also install from a
+npm error 404 tarball, folder, http url, or git url.
+npm error A complete log of this run can be found in: /Users/bytedance/.npm/_logs/2026-05-04T10_48_27_588Z-debug-0.log
+error: script "publish" exited with code 1
+➜  cli git:(main) ✗ 
+
+why?
+
+---
+
+> ai-pkgs@0.0.3 publish
+> npm publish --access public
+
+npm warn config ignoring workspace config at /Users/bytedance/dev/ai-skills/apps/cli/.npmrc
+npm warn publish npm auto-corrected some errors in your package.json when publishing.  Please run "npm pkg fix" to address these errors.
+npm warn publish errors corrected:
+npm warn publish "bin[ai-pkgs]" script name was cleaned
+npm notice
+npm notice 📦  ai-pkgs@0.0.3
+npm notice Tarball Contents
+npm notice 219B README.md
+npm notice 43.4kB dist/cli.js
+npm notice 1.6kB package.json
+npm notice Tarball Details
+npm notice name: ai-pkgs
+npm notice version: 0.0.3
+npm notice filename: ai-pkgs-0.0.3.tgz
+npm notice package size: 14.3 kB
+npm notice unpacked size: 45.2 kB
+npm notice shasum: 11ca974050a7cfaab5c1d883aef9d6124b2e783b
+npm notice integrity: sha512-Ram7gOTTLQ26B[...]pG5x/JnQn1Jlw==
+npm notice total files: 3
+npm notice
+npm notice Publishing to https://registry.npmjs.org/ with tag latest and public access
+Authenticate your account at:
+https://www.npmjs.com/auth/cli/47ede0c6-165e-49b8-9d65-85c2de663e74
+Press ENTER to open in the browser...
+
+npm error code E403
+npm error 403 403 Forbidden - PUT https://registry.npmjs.org/ai-pkgs - You cannot publish over the previously published versions: 0.0.3.
+npm error 403 In most cases, you or one of your dependencies are requesting
+npm error 403 a package version that is forbidden by your security policy, or
+npm error 403 on a server you do not have access to.
+npm error A complete log of this run can be found in: /Users/bytedance/.npm/_logs/2026-05-04T10_51_29_603Z-debug-0.log
+npm error code 1
+npm error path /Users/bytedance/dev/ai-skills/apps/cli
+npm error command failed
+npm error command sh -c npm publish --access public
+npm error A complete log of this run can be found in: /Users/bytedance/.npm/_logs/2026-05-04T10_51_02_123Z-debug-0.log
+error: script "publish" exited with code 1
+
+这是为什么呢
+
+---
+
+更新一下 cli 的 README
+
+---
+
+用法和架构吧写这些
+
+---
+
+➜  ai-skills git:(main) ✗ git commit -m "feat: impl skills install & ai-package.json features"
+On branch main
+Your branch is ahead of 'origin/main' by 6 commits.
+  (use "git push" to publish your local commits)
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   .gitignore
+        modified:   .idea/workspace.xml
+        modified:   bun.lock
+        modified:   docs/ai-package-skills.md
+        modified:   package.json
+        modified:   skills-lock.json
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .agents/skills/to-prd/
+        .entire/
+        TODO.md
+        ai-package.json
+
+no changes added to commit (use "git add" and/or "git commit -a")
+➜  ai-skills git:(main) ✗ 
+➜  ai-skills git:(main) ✗ git add .                                                           
+➜  ai-skills git:(main) ✗ git commit -m "feat: impl skills install & ai-package.json features"
+
+为什么卡主了？
+
+---
+
+删除 story/checkpoint/v1 并且更新到远端，以及启动 story v2
+
+---
+
+➜  ai-skills git:(story/v2) npm i ai-pkgs -g             
+
+added 10 packages in 2s
+➜  ai-skills git:(story/v2) ai-pkgs            
+➜  ai-skills git:(story/v2) ai-pkgs
+➜  ai-skills git:(story/v2) which ai-pkgs
+/Users/bytedance/.npm-global/bin/ai-pkgs
+
+为什么用不了呢？
+
+---
+
+/grille-me 参考 submodule/skills，git clone 也应该单独展示对应的进度和 spinner 呀，你看看，用 clack render
+
+---
+
+/grille-me 参考 submodule/skills，git clone 也应该有一个 section 单独展示对应的进度和 spinner 呀，你看看，用 clack 去渲染展示
+
+---
+
+/grille-me 参考 submodule/skills，git clone 也应该有一个 section 单独展示对应的进度和 spinner 呀，你看看，用 clack 去渲染展示，你可以画 ASCII 我看看交互对不对，以及 git clone error 之类的，要处理好
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
