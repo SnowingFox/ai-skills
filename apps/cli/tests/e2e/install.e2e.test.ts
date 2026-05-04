@@ -55,6 +55,402 @@ describe('ai-pkgs install e2e', () => {
     expect(result.output).toContain('skills/local');
   });
 
+  it('prints manifest skills as JSON', async () => {
+    const projectDir = join(tempRoot, 'list-json-project');
+    await mkdir(projectDir, { recursive: true });
+    await writeFile(
+      join(projectDir, 'ai-package.json'),
+      JSON.stringify({
+        skills: {
+          local: {
+            source: 'file:.',
+            path: 'skills/local',
+          },
+        },
+      })
+    );
+
+    const result = await runCliProcess(projectDir, {}, [
+      'skills',
+      'list',
+      '--json',
+    ]);
+
+    expect(result.code).toBe(0);
+    const parsed = JSON.parse(result.output) as {
+      name: string;
+      path: string;
+    }[];
+    expect(parsed).toEqual([
+      expect.objectContaining({ name: 'local', path: 'skills/local' }),
+    ]);
+  });
+
+  it('adds skills to the global manifest and installs globally', async () => {
+    const projectDir = join(tempRoot, 'global-add-project');
+    const sourceDir = join(tempRoot, 'global-add-source');
+    const homeDir = join(tempRoot, 'global-home');
+    await mkdir(projectDir, { recursive: true });
+    await mkdir(homeDir, { recursive: true });
+    await mkdir(join(sourceDir, 'skills/tdd'), { recursive: true });
+    await writeFile(join(sourceDir, 'skills/tdd/SKILL.md'), '# TDD');
+
+    const result = await runCliProcess(projectDir, { HOME: homeDir }, [
+      'skills',
+      'add',
+      sourceDir,
+      '--global',
+      '--skill',
+      'tdd',
+      '--agent',
+      'cursor',
+      '--force',
+      '--yes',
+    ]);
+
+    expect(result.code).toBe(0);
+    await expect(
+      readFile(join(homeDir, '.cursor/skills/tdd/SKILL.md'), 'utf-8')
+    ).resolves.toBe('# TDD');
+    const globalManifest = await readFile(
+      join(homeDir, '.ai-pkgs/ai-package.json'),
+      'utf-8'
+    );
+    expect(globalManifest).toContain('"tdd"');
+    expect(globalManifest).toContain(`"source": "file:${sourceDir}"`);
+  });
+
+  it('supports global install-only without writing the global manifest', async () => {
+    const projectDir = join(tempRoot, 'global-install-only-project');
+    const sourceDir = join(tempRoot, 'global-install-only-source');
+    const homeDir = join(tempRoot, 'global-install-only-home');
+    await mkdir(projectDir, { recursive: true });
+    await mkdir(homeDir, { recursive: true });
+    await mkdir(join(sourceDir, 'skills/tdd'), { recursive: true });
+    await writeFile(join(sourceDir, 'skills/tdd/SKILL.md'), '# TDD');
+
+    const result = await runCliProcess(projectDir, { HOME: homeDir }, [
+      'skills',
+      'add',
+      sourceDir,
+      '--global',
+      '--install-only',
+      '--skill',
+      'tdd',
+      '--agent',
+      'cursor',
+      '--force',
+      '--yes',
+    ]);
+
+    expect(result.code).toBe(0);
+    await expect(
+      readFile(join(homeDir, '.cursor/skills/tdd/SKILL.md'), 'utf-8')
+    ).resolves.toBe('# TDD');
+    await expect(
+      readFile(join(homeDir, '.ai-pkgs/ai-package.json'), 'utf-8')
+    ).rejects.toThrow();
+  });
+
+  it('restores global manifest skills with install --global', async () => {
+    const projectDir = join(tempRoot, 'global-install-project');
+    const sourceDir = join(tempRoot, 'global-install-source');
+    const homeDir = join(tempRoot, 'global-install-home');
+    await mkdir(projectDir, { recursive: true });
+    await mkdir(homeDir, { recursive: true });
+    await mkdir(join(sourceDir, 'skills/tdd'), { recursive: true });
+    await mkdir(join(homeDir, '.ai-pkgs'), { recursive: true });
+    await writeFile(join(sourceDir, 'skills/tdd/SKILL.md'), '# TDD');
+    await writeFile(
+      join(homeDir, '.ai-pkgs/ai-package.json'),
+      JSON.stringify({
+        skills: {
+          tdd: {
+            source: `file:${sourceDir}`,
+            path: 'skills/tdd',
+          },
+        },
+      })
+    );
+
+    const result = await runCliProcess(projectDir, { HOME: homeDir }, [
+      'install',
+      '--global',
+      '--agent',
+      'cursor',
+      '--force',
+      '--yes',
+    ]);
+
+    expect(result.code).toBe(0);
+    await expect(
+      readFile(join(homeDir, '.cursor/skills/tdd/SKILL.md'), 'utf-8')
+    ).resolves.toBe('# TDD');
+  });
+
+  it('lists and removes global manifest skills', async () => {
+    const projectDir = join(tempRoot, 'global-list-project');
+    const sourceDir = join(tempRoot, 'global-list-source');
+    const homeDir = join(tempRoot, 'global-list-home');
+    await mkdir(projectDir, { recursive: true });
+    await mkdir(homeDir, { recursive: true });
+    await mkdir(join(homeDir, '.ai-pkgs'), { recursive: true });
+    await writeFile(
+      join(homeDir, '.ai-pkgs/ai-package.json'),
+      JSON.stringify({
+        skills: {
+          tdd: {
+            source: `file:${sourceDir}`,
+            path: 'skills/tdd',
+          },
+        },
+      })
+    );
+
+    const listed = await runCliProcess(projectDir, { HOME: homeDir }, [
+      'skills',
+      'list',
+      '--global',
+    ]);
+    const removed = await runCliProcess(projectDir, { HOME: homeDir }, [
+      'skills',
+      'remove',
+      'tdd',
+      '--global',
+    ]);
+    const manifestAfter = await readFile(
+      join(homeDir, '.ai-pkgs/ai-package.json'),
+      'utf-8'
+    );
+
+    expect(listed.code).toBe(0);
+    expect(listed.output).toContain('tdd');
+    expect(removed.code).toBe(0);
+    expect(manifestAfter).not.toContain('"tdd"');
+  });
+
+  it('reports outdated Git skills without writing the manifest', async () => {
+    const repoDir = join(tempRoot, 'outdated-repo');
+    const projectDir = join(tempRoot, 'outdated-project');
+    await mkdir(projectDir, { recursive: true });
+    const oldSha = await createGitRepo(repoDir, 'skills/tdd', '# TDD v1');
+    const newSha = await commitGitRepo(
+      repoDir,
+      'skills/tdd/SKILL.md',
+      '# TDD v2'
+    );
+    const gitConfigPath = await writeGitConfig({
+      repoDir,
+      source: 'https://github.com/acme/skills.git',
+    });
+    await writeFile(
+      join(projectDir, 'ai-package.json'),
+      JSON.stringify(
+        {
+          skills: {
+            tdd: {
+              source: 'github:acme/skills',
+              version: `main@${oldSha}`,
+              path: 'skills/tdd',
+            },
+            reviewer: {
+              source: 'github:acme/skills',
+              version: `main@${oldSha}`,
+              path: 'skills/reviewer',
+            },
+          },
+        },
+        null,
+        2
+      )
+    );
+
+    const result = await runCliProcess(
+      projectDir,
+      { GIT_CONFIG_GLOBAL: gitConfigPath },
+      ['skills', 'outdated']
+    );
+    const manifestAfter = await readFile(
+      join(projectDir, 'ai-package.json'),
+      'utf-8'
+    );
+
+    expect(result.code).toBe(0);
+    expect(stripAnsi(result.output)).toContain('outdated: 2');
+    expect(stripAnsi(result.output)).toContain(
+      `tdd main@${oldSha.slice(0, 7)} -> main@${newSha.slice(0, 7)}`
+    );
+    expect(manifestAfter).toContain(oldSha);
+    expect(manifestAfter).not.toContain(newSha);
+  });
+
+  it('updates Git pins only when --yes confirms non-interactive writes', async () => {
+    const repoDir = join(tempRoot, 'update-repo');
+    const projectDir = join(tempRoot, 'update-project');
+    await mkdir(projectDir, { recursive: true });
+    const oldSha = await createGitRepo(repoDir, 'skills/tdd', '# TDD v1');
+    const newSha = await commitGitRepo(
+      repoDir,
+      'skills/tdd/SKILL.md',
+      '# TDD v2'
+    );
+    const gitConfigPath = await writeGitConfig({
+      repoDir,
+      source: 'https://github.com/acme/skills.git',
+    });
+    await writeFile(
+      join(projectDir, 'ai-package.json'),
+      JSON.stringify(
+        {
+          skills: {
+            tdd: {
+              source: 'github:acme/skills',
+              version: `main@${oldSha}`,
+              path: 'skills/tdd',
+            },
+          },
+        },
+        null,
+        2
+      )
+    );
+
+    const denied = await runCliProcess(
+      projectDir,
+      { GIT_CONFIG_GLOBAL: gitConfigPath },
+      ['skills', 'update', 'tdd'],
+      { allowFailure: true }
+    );
+    const beforeYes = await readFile(
+      join(projectDir, 'ai-package.json'),
+      'utf-8'
+    );
+    const updated = await runCliProcess(
+      projectDir,
+      { GIT_CONFIG_GLOBAL: gitConfigPath },
+      ['skills', 'update', 'tdd', '--yes']
+    );
+    const afterYes = await readFile(
+      join(projectDir, 'ai-package.json'),
+      'utf-8'
+    );
+
+    expect(denied.code).toBe(1);
+    expect(denied.output).toContain('Pass --yes to update skills');
+    expect(beforeYes).toContain(oldSha);
+    expect(updated.code).toBe(0);
+    expect(stripAnsi(updated.output)).toContain('updated: 1');
+    expect(afterYes).toContain(newSha);
+  });
+
+  it('updates Git pins in the global manifest', async () => {
+    const repoDir = join(tempRoot, 'global-update-repo');
+    const projectDir = join(tempRoot, 'global-update-project');
+    const homeDir = join(tempRoot, 'global-update-home');
+    await mkdir(projectDir, { recursive: true });
+    await mkdir(join(homeDir, '.ai-pkgs'), { recursive: true });
+    const oldSha = await createGitRepo(repoDir, 'skills/tdd', '# TDD v1');
+    const newSha = await commitGitRepo(
+      repoDir,
+      'skills/tdd/SKILL.md',
+      '# TDD v2'
+    );
+    const gitConfigPath = await writeGitConfig({
+      repoDir,
+      source: 'https://github.com/acme/global-skills.git',
+    });
+    await writeFile(
+      join(homeDir, '.ai-pkgs/ai-package.json'),
+      JSON.stringify(
+        {
+          skills: {
+            tdd: {
+              source: 'github:acme/global-skills',
+              version: `main@${oldSha}`,
+              path: 'skills/tdd',
+            },
+          },
+        },
+        null,
+        2
+      )
+    );
+
+    const result = await runCliProcess(
+      projectDir,
+      { GIT_CONFIG_GLOBAL: gitConfigPath, HOME: homeDir },
+      ['skills', 'update', '--global', '--yes']
+    );
+    const manifestAfter = await readFile(
+      join(homeDir, '.ai-pkgs/ai-package.json'),
+      'utf-8'
+    );
+
+    expect(result.code).toBe(0);
+    expect(stripAnsi(result.output)).toContain('updated: 1');
+    expect(manifestAfter).toContain(newSha);
+  });
+
+  it('does not partially update when one selected skill check fails', async () => {
+    const repoDir = join(tempRoot, 'partial-repo');
+    const missingRepo = join(tempRoot, 'missing-repo');
+    const projectDir = join(tempRoot, 'partial-project');
+    await mkdir(projectDir, { recursive: true });
+    const oldSha = await createGitRepo(repoDir, 'skills/tdd', '# TDD v1');
+    const newSha = await commitGitRepo(
+      repoDir,
+      'skills/tdd/SKILL.md',
+      '# TDD v2'
+    );
+    const gitConfigPath = await writeGitConfig(
+      {
+        repoDir,
+        source: 'https://github.com/acme/skills.git',
+      },
+      {
+        repoDir: missingRepo,
+        source: 'https://github.com/missing/skills.git',
+      }
+    );
+    await writeFile(
+      join(projectDir, 'ai-package.json'),
+      JSON.stringify(
+        {
+          skills: {
+            tdd: {
+              source: 'github:acme/skills',
+              version: `main@${oldSha}`,
+              path: 'skills/tdd',
+            },
+            broken: {
+              source: 'github:missing/skills',
+              version: `main@${oldSha}`,
+              path: 'skills/broken',
+            },
+          },
+        },
+        null,
+        2
+      )
+    );
+
+    const result = await runCliProcess(
+      projectDir,
+      { GIT_CONFIG_GLOBAL: gitConfigPath },
+      ['skills', 'update', '--yes'],
+      { allowFailure: true }
+    );
+    const manifestAfter = await readFile(
+      join(projectDir, 'ai-package.json'),
+      'utf-8'
+    );
+
+    expect(result.code).toBe(1);
+    expect(stripAnsi(result.output)).toContain('failed: 1');
+    expect(manifestAfter).toContain(oldSha);
+    expect(manifestAfter).not.toContain(newSha);
+  });
+
   it('installs a source directly without writing ai-package.json', async () => {
     const projectDir = join(tempRoot, 'install-only-project');
     const sourceDir = join(tempRoot, 'install-only-source');
@@ -294,7 +690,9 @@ describe('ai-pkgs install e2e', () => {
 
     const cachedOutput = stripAnsi(cachedResult.output);
     expect(cachedResult.code).toBe(0);
-    expect(cachedOutput).toContain('◇  reusing Git cache');
+    expect(cachedOutput).toContain(
+      '◇  reusing Git cache for verified remote ref'
+    );
     expect(cachedOutput).toContain('source: github:acme/skills');
     expect(cachedOutput).toContain('cache-home/ai-pkgs/git');
 
@@ -368,7 +766,7 @@ describe('ai-pkgs install e2e', () => {
 
     const output = stripAnsi(cachedResult.output);
     expect(cachedResult.code).toBe(0);
-    expect(output).toContain('◇  reusing Git cache');
+    expect(output).toContain('◇  reusing Git cache for verified remote ref');
     expect(output).toContain('source: github:acme/install-cache');
     expect(output).toContain('copy: 2 skills -> Cursor');
     expect(output).not.toContain('cloning: first');
@@ -868,6 +1266,36 @@ const createGitRepo = async (
   await runCommand('git', ['commit', '-m', 'add skill'], repoDir);
   const result = await runCommand('git', ['rev-parse', 'HEAD'], repoDir);
   return result.output.trim();
+};
+
+const commitGitRepo = async (
+  repoDir: string,
+  relativePath: string,
+  content: string
+): Promise<string> => {
+  await writeFile(join(repoDir, relativePath), content);
+  await runCommand('git', ['add', '.'], repoDir);
+  await runCommand('git', ['commit', '-m', 'update skill'], repoDir);
+  const result = await runCommand('git', ['rev-parse', 'HEAD'], repoDir);
+  return result.output.trim();
+};
+
+const writeGitConfig = async (
+  ...mappings: { repoDir: string; source: string }[]
+): Promise<string> => {
+  const gitConfigPath = join(tempRoot, `gitconfig-${mappings.length}`);
+  await writeFile(
+    gitConfigPath,
+    mappings
+      .map(({ repoDir, source }) =>
+        [
+          `[url "${pathToFileURL(repoDir).href}"]`,
+          `\tinsteadOf = ${source}`,
+        ].join('\n')
+      )
+      .join('\n')
+  );
+  return gitConfigPath;
 };
 
 const runCliProcess = async (

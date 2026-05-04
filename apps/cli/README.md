@@ -40,6 +40,17 @@ ai-pkgs skills add ./local-skills \
   --yes
 ```
 
+Add skills to the global ai-pkgs manifest and install them globally:
+
+```bash
+ai-pkgs skills add mattpocock/skills \
+  --global \
+  --skill tdd \
+  --agent cursor \
+  --force \
+  --yes
+```
+
 Install directly without writing `ai-package.json`:
 
 ```bash
@@ -47,6 +58,18 @@ ai-pkgs skills add ./local-skills \
   --registry file \
   --install-only \
   --skill to-prd \
+  --agent cursor \
+  --force \
+  --yes
+```
+
+Global one-off installs can also skip the global manifest:
+
+```bash
+ai-pkgs skills add mattpocock/skills \
+  --global \
+  --install-only \
+  --skill tdd \
   --agent cursor \
   --force \
   --yes
@@ -66,6 +89,24 @@ ai-pkgs skills vercel-migrate \
   --agent cursor \
   --force \
   --yes
+```
+
+List declared skills as grouped text or JSON:
+
+```bash
+ai-pkgs skills list
+ai-pkgs skills list --json
+ai-pkgs skills list --global
+```
+
+Check and update Git-backed skill pins:
+
+```bash
+ai-pkgs skills outdated
+ai-pkgs skills outdated tdd to-prd
+ai-pkgs skills update --yes
+ai-pkgs skills update tdd --yes
+ai-pkgs skills update --global --yes
 ```
 
 Run in strict AI/automation mode:
@@ -93,14 +134,35 @@ selected agent targets. It does not mutate the manifest.
 entries to `ai-package.json`, then installs them. Add `--install-only` for
 one-off installs that skip all manifest reads and writes.
 
+`skills add -g, --global` writes selected entries to
+`~/.ai-pkgs/ai-package.json` and installs them into global agent directories.
+`--global --install-only` performs a one-off global install without writing the
+global manifest. `--global` cannot be combined with `--manifest`.
+
 `skills vercel-migrate` reads legacy Vercel `skills-lock.json` files and writes
 their GitHub skills into `ai-package.json`. It keeps the lock file by default;
 pass `--remove-lock` to delete it after a successful manifest write. Conflicts
 prompt in TTY mode, or require `--force` / `--skip-existing` in non-interactive
 mode.
 
-`skills list`, `skills remove`, and `skills update` maintain the manifest.
-Marketplace `skills search` is reserved for the backend marketplace API.
+`skills list` prints manifest skills grouped by source; pass `--json` for
+machine-readable output. Add `--global` to read `~/.ai-pkgs/ai-package.json`.
+
+`skills outdated [skill...]` checks every manifest skill, or only named skills,
+by resolving each Git-backed entry's stored ref and comparing the latest SHA to
+the manifest `commitSha`. It reports file and Marketplace sources as skipped,
+exits 0 when skills are merely outdated, and exits 1 only when checks fail.
+
+`skills update [skill...]` reuses the same outdated check and writes only entries
+whose Git pin moved. TTY mode asks before writing with default Yes; non-TTY and
+`--ai` require `--yes`. If any requested check fails, no partial manifest write
+is performed. Add `--global` to update `~/.ai-pkgs/ai-package.json`.
+
+`install -g, --global` restores `~/.ai-pkgs/ai-package.json` into global agent
+skill directories. Without `--global`, `install` remains project-scoped.
+
+`skills remove` edits manifest entries by name. Marketplace `skills search` is
+reserved for the backend marketplace API.
 
 ## Sources
 
@@ -166,7 +228,8 @@ The CLI follows a small boundary-oriented architecture:
 - `src/cli.ts` builds the `cac` parser, installs custom help, and delegates
 execution to `src/cli/runtime.ts`.
 - `src/commands/*` registers command surfaces. `skills [...args]` is a dispatcher
-for `add`, `list`, `remove`, `update`, `vercel-migrate`, and `search`.
+  for `add`, `list`, `remove`, `outdated`, `update`, `vercel-migrate`, and
+  `search`; implementation files live under `src/commands/skills/`.
 - `src/cli/help.ts` renders help only. Help content lives in
 `src/cli/help-data/*`.
 - `src/cli/ai-mode.ts` owns strict AI/non-interactive mode helpers.
@@ -202,6 +265,15 @@ ai-package.json
   -> installPlan()
 ```
 
+High-level data flow for global manifest commands:
+
+```text
+-g / --global
+  -> ~/.ai-pkgs/ai-package.json
+  -> existing Git cache/ref resolution
+  -> global agent skill directories
+```
+
 High-level data flow for `skills vercel-migrate`:
 
 ```text
@@ -210,6 +282,17 @@ skills-lock.json
   -> resolve GitHub default-branch pins
   -> merge with ai-package.json
   -> optionally run install
+```
+
+High-level data flow for `skills outdated` and `skills update`:
+
+```text
+ai-package.json
+  -> select all skills or requested names
+  -> group Git checks by provider + packageId + ref
+  -> resolve each remote ref once
+  -> report outdated/up-to-date/skipped/failed
+  -> update writes only if no checks failed and confirmation is explicit
 ```
 
 ## Development

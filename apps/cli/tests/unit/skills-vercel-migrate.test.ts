@@ -6,7 +6,7 @@ import {
   resolveMissingVercelMigrationPaths,
   resolveLockfilePath,
   resolveVercelMigrationSkills,
-} from '../../src/commands/skills-vercel-migrate';
+} from '../../src/commands/skills/vercel-migrate';
 import type { DiscoveredSkill } from '../../src/discovery/discover';
 import type { AiPackageManifest, RemoteSkillEntry } from '../../src/types';
 

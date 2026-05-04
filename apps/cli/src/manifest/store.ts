@@ -1,5 +1,8 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { homedir } from 'node:os';
 import { dirname, isAbsolute, resolve } from 'node:path';
+import { join } from 'node:path';
+import { SilentError } from '../errors';
 import type { AiPackageManifest, SkillEntry } from '../types';
 import { parseAiPackageManifest } from './parse';
 
@@ -9,6 +12,18 @@ export type ManifestStore = {
   write: (manifest: AiPackageManifest) => Promise<void>;
   addSkills: (skills: SkillEntry[]) => Promise<AiPackageManifest>;
   removeSkills: (names: string[]) => Promise<AiPackageManifest>;
+};
+
+export type ManifestScopeOptions = {
+  dir?: string;
+  global?: boolean;
+  manifest?: string;
+};
+
+export type ManifestScope = {
+  projectDir: string;
+  manifestPath: string;
+  global: boolean;
 };
 
 /**
@@ -63,6 +78,43 @@ export const createManifestStore = (
     },
   };
 };
+
+/**
+ * Resolve project or global manifest scope for commands that read/write
+ * `ai-package.json`.
+ */
+export const resolveManifestScope = (
+  cwd: string,
+  options: ManifestScopeOptions
+): ManifestScope => {
+  if (options.global === true) {
+    if (options.manifest) {
+      throw new SilentError('--global cannot be used with --manifest');
+    }
+    const manifestPath = getGlobalManifestPath();
+    return {
+      projectDir: dirname(manifestPath),
+      manifestPath,
+      global: true,
+    };
+  }
+
+  const projectDir = resolve(cwd, options.dir ?? '.');
+  return {
+    projectDir,
+    manifestPath: resolveManifestPath(
+      projectDir,
+      options.manifest ?? 'ai-package.json'
+    ),
+    global: false,
+  };
+};
+
+/**
+ * Return the fixed global ai-pkgs manifest path.
+ */
+export const getGlobalManifestPath = (): string =>
+  join(homedir(), '.ai-pkgs', 'ai-package.json');
 
 export const resolveManifestPath = (
   projectDir: string,

@@ -21,6 +21,7 @@ export const registerInstallCommand = (
       .option('--force', 'Overwrite existing skill directories')
       .option('--skip-existing', 'Skip existing skill directories')
       .option('--project', 'Install into project-local agent skill directories')
+      .option('-g, --global', 'Install from the global ai-pkgs manifest')
       .option('--refresh', 'Refresh Git cache before installing')
       .option('--verbose', 'Show per-skill install progress and paths')
       .option('-y, --yes', 'Skip confirmation prompts');

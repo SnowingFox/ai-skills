@@ -7,6 +7,8 @@ export {
 } from './manifest/parse';
 export {
   createManifestStore,
+  getGlobalManifestPath,
+  resolveManifestScope,
   resolveManifestPath,
   serializeManifest,
 } from './manifest/store';

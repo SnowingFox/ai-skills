@@ -101,6 +101,8 @@ describe('cli/help', () => {
     expect(output).toContain('skills add <source> [options]');
     expect(output).toContain('skills list [options]');
     expect(output).toContain('skills remove <skill...> [options]');
+    expect(output).toContain('skills outdated [skill...] [options]');
+    expect(output).toContain('skills update [skill...] [options]');
     expect(output).toContain('skills vercel-migrate [options]');
     expect(output).toContain('Examples:');
     expect(output).toContain('Source selection');
@@ -109,6 +111,7 @@ describe('cli/help', () => {
     expect(output).toContain('--install');
     expect(output).toContain('--remove-lock');
     expect(output).toContain('--install-only');
+    expect(output).toContain('--json');
     expect(output).toContain('--all');
     expect(output).toContain('--project');
     expect(output).toContain('--global');
@@ -117,8 +120,20 @@ describe('cli/help', () => {
     expect(output).toContain('Install only (no manifest writes)');
     expect(output).toContain('AI/automation mode');
     expect(output).toContain('ai-pkgs skills vercel-migrate --skip-existing');
+    expect(output).toContain('ai-pkgs skills outdated tdd to-prd');
     expect(output).toContain('ai-pkgs skills add vercel-labs/skills');
     expect(output).toContain('ai-pkgs install --agent cursor --force');
+  });
+
+  it('renders skills outdated help', () => {
+    const cli = buildHelpCli();
+    const output = stripAnsi(renderHelp(cli, 'skills outdated'));
+
+    expect(output).toContain('ai-pkgs skills outdated');
+    expect(output).toContain('Check pinned skill versions');
+    expect(output).toContain('skills outdated [skill...] [options]');
+    expect(output).toContain('ai-pkgs skills outdated tdd to-prd');
+    expect(output).toContain('Outdated skills still exit 0');
   });
 
   it('renders skills vercel-migrate help', () => {

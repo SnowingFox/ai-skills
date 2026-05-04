@@ -1,5 +1,4 @@
 import { readFile } from 'node:fs/promises';
-import { isAbsolute, resolve } from 'node:path';
 import * as p from '@clack/prompts';
 import pc from 'picocolors';
 import { match } from 'ts-pattern';
@@ -9,7 +8,8 @@ import { renderAiDone, renderAiStep } from './cli/ai-output';
 import { SilentError } from './errors';
 import type { GitProgressEvent } from './git';
 import { installSkills } from './install';
-import { parseAiPackageManifest } from './manifest';
+import { parseAiPackageManifest, resolveManifestScope } from './manifest';
+export { resolveManifestPath } from './manifest';
 import type {
   AgentTarget,
   AiPackageManifest,
@@ -30,6 +30,7 @@ export type InstallCommandOptions = {
   skipExisting?: boolean;
   ai?: boolean;
   project?: boolean;
+  global?: boolean;
   refresh?: boolean;
   verbose?: boolean;
 };
@@ -79,12 +80,11 @@ export const runInstallCommand = async (
     const aiMode = isAICommand(options);
     const promptAllowed = canPrompt(options);
     const verbose = options.verbose === true;
-    const projectDir = resolve(runtime.cwd, options.dir ?? '.');
-    const manifestPath = resolveManifestPath(
-      projectDir,
-      options.manifest ?? 'ai-package.json'
-    );
-    const manifest = await readManifest(manifestPath, runtime);
+    if (options.project === true && options.global === true) {
+      throw new SilentError('--project and --global are mutually exclusive');
+    }
+    const manifestScope = resolveManifestScope(runtime.cwd, options);
+    const manifest = await readManifest(manifestScope.manifestPath, runtime);
 
     if (manifest.skills.length === 0) {
       p.outro(pc.yellow('No skills declared in ai-package.json'));
@@ -112,7 +112,8 @@ export const runInstallCommand = async (
 
     const targets = await resolveAgentTargets({
       agentIds: normalizeList(options.agent),
-      cwd: projectDir,
+      cwd: manifestScope.projectDir,
+      global: manifestScope.global,
       yes: options.yes === true,
       canPrompt: promptAllowed,
     });
@@ -128,7 +129,7 @@ export const runInstallCommand = async (
     }
     const result = await runtime.install({
       manifest,
-      projectDir,
+      projectDir: manifestScope.projectDir,
       targets,
       mode,
       conflict,
@@ -192,17 +193,6 @@ export const runInstallCommand = async (
   }
 };
 
-export const resolveManifestPath = (
-  projectDir: string,
-  manifestPath: string
-): string => {
-  if (isAbsolute(manifestPath)) {
-    return manifestPath;
-  }
-
-  return resolve(projectDir, manifestPath);
-};
-
 export const formatSkillSummary = (manifest: AiPackageManifest): string =>
   manifest.skills
     .map((skill) => {
@@ -258,7 +248,7 @@ export const formatInstallResultSummary = ({
 export const formatGitProgress = (progress: GitProgressEvent): string => {
   if (progress.status === 'cache-hit') {
     return [
-      'reusing Git cache',
+      'reusing Git cache for verified remote ref',
       `source: ${progress.provider}:${progress.packageId}`,
       `ref: ${progress.ref}@${progress.commitSha.slice(0, 7)}`,
       `cache: ${progress.cachePath}`,

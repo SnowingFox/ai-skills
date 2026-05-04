@@ -27,7 +27,9 @@ export const resolveAgentTargets = async ({
   canPrompt = process.stdin.isTTY === true,
 }: ResolveAgentTargetsOptions): Promise<ResolvedAgentTarget[]> => {
   const selected =
-    agentIds.length > 0 ? agentIds : await promptForAgents({ canPrompt, yes });
+    agentIds.length > 0
+      ? agentIds
+      : await promptForAgents({ canPrompt, yes, global });
 
   const targets = selected.map((id) => {
     const agent = getAgent(id);
@@ -56,9 +58,11 @@ export const resolveAgentTargets = async ({
 
 const promptForAgents = async ({
   canPrompt,
+  global,
   yes,
 }: {
   canPrompt: boolean;
+  global: boolean;
   yes: boolean;
 }): Promise<string[]> => {
   if (!canPrompt) {
@@ -72,7 +76,7 @@ const promptForAgents = async ({
   const choices = listAgents().map((agent) => ({
     label: agent.displayName,
     value: agent.id,
-    hint: agent.projectSkillsDir,
+    hint: global ? agent.globalSkillsDir : agent.projectSkillsDir,
     separatorAfter: agent.id === 'universal',
   }));
   const initialSelected = yes ? ['universal'] : undefined;
@@ -90,7 +94,9 @@ const promptForAgents = async ({
 
   process.stdout.write(
     `${pc.dim('Install targets:')} ${selected
-      .map((id) => getAgent(id).projectSkillsDir)
+      .map((id) =>
+        global ? getAgent(id).globalSkillsDir : getAgent(id).projectSkillsDir
+      )
       .join(', ')}\n`
   );
   return selected;

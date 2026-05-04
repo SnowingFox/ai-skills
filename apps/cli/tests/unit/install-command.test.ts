@@ -13,6 +13,7 @@ import {
   resolveManifestPath,
   runInstallCommand,
 } from '../../src/install-command';
+import { resolveManifestScope } from '../../src/manifest';
 import type {
   InstallCommandRuntime,
   InstallCommandRuntimeOverrides,
@@ -36,6 +37,20 @@ describe('install command helpers', () => {
     expect(resolveManifestPath('/repo', '/tmp/ai-package.json')).toBe(
       '/tmp/ai-package.json'
     );
+  });
+
+  it('resolves global manifest scope and rejects manifest overrides', () => {
+    const scope = resolveManifestScope('/repo', { global: true });
+
+    expect(scope.global).toBe(true);
+    expect(scope.projectDir).toContain('.ai-pkgs');
+    expect(scope.manifestPath).toContain('.ai-pkgs/ai-package.json');
+    expect(() =>
+      resolveManifestScope('/repo', {
+        global: true,
+        manifest: 'other.json',
+      })
+    ).toThrow('--global cannot be used with --manifest');
   });
 
   it('formats file and remote skill summaries', () => {
@@ -91,7 +106,7 @@ describe('install command helpers', () => {
         commitSha: 'abcdef1234567890',
         cachePath: '/cache/acme/skills/abcdef1234567890',
       })
-    ).toContain('reusing Git cache');
+    ).toContain('reusing Git cache for verified remote ref');
     expect(
       formatInstallResultSummary({
         installed: [
@@ -197,6 +212,28 @@ describe('runInstallCommand', () => {
 
     expect(code).toBe(0);
     expect(calls).toEqual(['/repo/workspace']);
+  });
+
+  it('installs from global manifest scope into global targets', async () => {
+    const calls: { projectDir: string; skillsDir: string }[] = [];
+    const code = await runInstallCommand(
+      { agent: 'cursor', global: true, yes: true },
+      runtime({
+        install: async (options) => {
+          calls.push({
+            projectDir: options.projectDir,
+            skillsDir: options.targets?.[0]?.skillsDir ?? '',
+          });
+          return {
+            installed: [{ name: 'one', targetDir: '/home/.cursor/skills/one' }],
+          };
+        },
+      })
+    );
+
+    expect(code).toBe(0);
+    expect(calls[0]?.projectDir).toContain('.ai-pkgs');
+    expect(calls[0]?.skillsDir).toContain('.cursor/skills');
   });
 
   it('passes installer progress through the Clack spinner formatter', async () => {

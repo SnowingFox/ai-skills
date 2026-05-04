@@ -1,137 +1,35 @@
 import { resolve } from 'node:path';
-import type { CAC } from 'cac';
 import * as p from '@clack/prompts';
 import pc from 'picocolors';
 import { match } from 'ts-pattern';
-import { resolveAgentTargets } from '../agents/targets';
-import { canPrompt, isAICommand } from '../cli/ai-mode';
-import { renderAiDone, renderAiStep } from '../cli/ai-output';
-import { discoverSkills } from '../discovery/discover';
-import { selectDiscoveredSkills } from '../discovery/select';
-import { SilentError } from '../errors';
-import { GitCommandError, type GitProgressEvent } from '../git';
-import { createManifestStore } from '../manifest';
-import { installPlan } from '../installer/install';
+import { resolveAgentTargets } from '../../agents/targets';
+import { canPrompt, isAICommand } from '../../cli/ai-mode';
+import { renderAiDone, renderAiStep } from '../../cli/ai-output';
+import { discoverSkills } from '../../discovery/discover';
+import { selectDiscoveredSkills } from '../../discovery/select';
+import { SilentError } from '../../errors';
+import { GitCommandError, type GitProgressEvent } from '../../git';
+import {
+  formatInstallResultSummary,
+  formatProgress,
+  normalizeList,
+  resolveConflictPolicy,
+  resolveInstallMode,
+} from '../../install-command';
+import { installPlan } from '../../installer/install';
+import { createManifestStore, resolveManifestScope } from '../../manifest';
 import {
   createRegistries,
   getRegistry,
   type RegistryKind,
-} from '../registries';
-import {
-  runSkillsVercelMigrateCommand,
-  type SkillsVercelMigrateOptions,
-} from './skills-vercel-migrate';
-import type { SkillEntry } from '../types';
-import {
-  normalizeList,
-  formatInstallResultSummary,
-  formatProgress,
-  resolveConflictPolicy,
-  resolveInstallMode,
-  type InstallCommandRuntime,
-  type InstallCommandOptions,
-} from '../install-command';
-
-type SkillsCommandRuntime = InstallCommandRuntime;
-
-type SkillsAddOptions = InstallCommandOptions & {
-  registry?: RegistryKind;
-  ref?: string;
-  path?: string;
-  skill?: string | string[];
-  installOnly?: boolean;
-  project?: boolean;
-  global?: boolean;
-  all?: boolean;
-  refresh?: boolean;
-};
-
-type SkillsCommandOptions = SkillsAddOptions & SkillsVercelMigrateOptions;
-
-export const registerSkillsCommand = (
-  cli: CAC,
-  runtime: SkillsCommandRuntime
-) => {
-  cli
-    .command('skills [...args]', 'Manage skills')
-    .usage(
-      'skills <add|list|remove|update|search|vercel-migrate> [...args] [options]'
-    )
-    .option('--registry <registry>', 'github, gitlab, marketplace, or file')
-    .option('--ref <ref>', 'Git ref to pin')
-    .option('--path <path>', 'Path to scan inside the source')
-    .option('-s, --skill <skill>', 'Skill name to add (repeatable)')
-    .option('-a, --agent <agent>', 'Target agent (repeatable)')
-    .option('--copy', 'Copy skill directories (default)')
-    .option('--link', 'Symlink skill directories')
-    .option('--force', 'Overwrite existing skill directories')
-    .option('--skip-existing', 'Skip existing skill directories')
-    .option('--install-only', 'Install without writing ai-package.json')
-    .option('--project', 'Install into project-local agent skill directories')
-    .option('--global', 'Install into global agent skill directories')
-    .option('--all', 'Select all discovered skills')
-    .option('--refresh', 'Refresh Git cache before installing')
-    .option('--lockfile <path>', 'Path to legacy skills-lock.json')
-    .option('--remove-lock', 'Remove skills-lock.json after migration')
-    .option('--install', 'Install migrated ai-package.json after writing')
-    .option('--verbose', 'Show per-skill install progress and paths')
-    .option('-y, --yes', 'Skip confirmation prompts')
-    .option('-C, --dir <path>', 'Project directory')
-    .option('-m, --manifest <path>', 'Path to ai-package.json')
-    .action((args: string[] | undefined, options: SkillsCommandOptions) =>
-      runSkillsCommand(args ?? [], options, runtime)
-    );
-};
-
-export const runSkillsCommand = async (
-  args: string[],
-  options: SkillsCommandOptions,
-  runtime: SkillsCommandRuntime
-): Promise<number> => {
-  const [subcommand, ...rest] = args;
-
-  if (subcommand === 'add') {
-    const source = rest[0];
-    if (!source) {
-      throw new SilentError('Usage: ai-pkgs skills add <source> [options]');
-    }
-    return runSkillsAddCommand(source, options, runtime);
-  }
-
-  if (subcommand === 'list') {
-    return runSkillsListCommand(options, runtime);
-  }
-
-  if (subcommand === 'remove') {
-    return runSkillsRemoveCommand(rest, options, runtime);
-  }
-
-  if (subcommand === 'update') {
-    return runSkillsUpdateCommand(rest, options, runtime);
-  }
-
-  if (subcommand === 'vercel-migrate') {
-    return runSkillsVercelMigrateCommand(options, runtime);
-  }
-
-  if (subcommand === 'search') {
-    throw new SilentError('Marketplace search is not implemented yet');
-  }
-
-  throw new SilentError(
-    'Usage: ai-pkgs skills <add|list|remove|update|search|vercel-migrate>'
-  );
-};
+} from '../../registries';
+import type { ResolvedPackage } from '../../registries/types';
+import type { SkillEntry } from '../../types';
+import type { SkillsAddOptions, SkillsCommandRuntime } from './types';
 
 /**
- * `ai-pkgs skills add <source>` — resolve a source, discover skill folders,
- * write selected entries back to `ai-package.json`, then install them into
- * explicit agent targets.
- *
- * The manifest mutation happens before install so a failed target copy still
- * leaves the user's declarative package file reflecting the requested source.
- * Non-TTY callers must pass both `--skill` when discovery is ambiguous and
- * `--agent` for target selection.
+ * `ai-pkgs skills add <source>` resolves a source, writes selected manifest
+ * entries, then installs the chosen skills into explicit agent targets.
  */
 export const runSkillsAddCommand = async (
   rawSource: string,
@@ -146,6 +44,9 @@ export const runSkillsAddCommand = async (
   }
   if (options.project === true && options.global === true) {
     throw new SilentError('--project and --global are mutually exclusive');
+  }
+  if (options.global === true && options.manifest) {
+    throw new SilentError('--global cannot be used with --manifest');
   }
 
   const registryKind = resolveRegistry(rawSource, options.registry);
@@ -190,11 +91,12 @@ export const runSkillsAddCommand = async (
     });
 
     if (options.installOnly !== true) {
+      const manifestScope = resolveManifestScope(runtime.cwd, options);
       const manifestSkills: SkillEntry[] = selected.map((skill) => ({
         name: skill.name,
         provider: resolved.provider,
-        source: resolved.source,
-        packageId: resolved.packageId,
+        source: resolveManifestSource(resolved, manifestScope.global),
+        packageId: resolveManifestPackageId(resolved, manifestScope.global),
         version: resolved.version,
         ref: resolved.ref,
         commitSha: resolved.commitSha,
@@ -202,7 +104,10 @@ export const runSkillsAddCommand = async (
         sourceRoot:
           resolved.provider === 'file' ? resolved.root.rootDir : undefined,
       }));
-      const store = createManifestStore(projectDir, options.manifest);
+      const store = createManifestStore(
+        manifestScope.projectDir,
+        manifestScope.manifestPath
+      );
       await store.addSkills(manifestSkills);
     }
 
@@ -273,10 +178,6 @@ export const runSkillsAddCommand = async (
 
 /**
  * Resolve the install dimension for `skills add`.
- *
- * TTY users choose between project and global when no flag is present. AI and
- * other non-interactive callers default to project so automated installs never
- * silently write to user-level agent directories.
  *
  * @example
  * ```ts
@@ -430,19 +331,6 @@ const isCacheProgressEvent = (
 
 /**
  * Format Git resolve, clone, and cache events for spinner/static output.
- *
- * @example
- * ```ts
- * formatCloneProgress({
- *   status: 'cache-hit',
- *   provider: 'github',
- *   packageId: 'acme/skills',
- *   ref: 'main',
- *   commitSha: 'abcdef123',
- *   cachePath: '/cache/acme/skills/abcdef123',
- * });
- * // 'reusing Git cache\\nsource: github:acme/skills\\n...'
- * ```
  */
 export const formatCloneProgress = (event: GitProgressEvent): string => {
   if (event.status === 'resolving-remote') {
@@ -461,7 +349,7 @@ export const formatCloneProgress = (event: GitProgressEvent): string => {
   }
   if (event.status === 'cache-hit') {
     return [
-      'reusing Git cache',
+      'reusing Git cache for verified remote ref',
       `source: ${event.provider}:${event.packageId}`,
       `ref: ${event.ref}@${shortSha(event.commitSha)}`,
       `cache: ${event.cachePath}`,
@@ -525,106 +413,22 @@ export const formatGitCloneError = (error: GitCommandError): string => {
   return `${base}${detail}`;
 };
 
-const shortSha = (sha: string): string => sha.slice(0, 7);
-
-const indent = (value: string): string =>
-  value
-    .split('\n')
-    .map((line) => `  ${line}`)
-    .join('\n');
-
-export const runSkillsListCommand = async (
-  options: InstallCommandOptions,
-  runtime: SkillsCommandRuntime
-): Promise<number> => {
-  const projectDir = resolve(runtime.cwd, options.dir ?? '.');
-  const store = createManifestStore(projectDir, options.manifest);
-  const manifest = await store.read();
-  for (const skill of manifest.skills) {
-    process.stdout.write(
-      `${skill.name}\t${skill.source ?? `${skill.provider}:${skill.packageId}`}\t${skill.path}\n`
-    );
-  }
-  return 0;
-};
-
 /**
- * Remove manifest entries by name. This intentionally does not delete already
- * installed target directories; uninstalling materialized skill folders can be
- * added later without changing the package-file contract.
- */
-export const runSkillsRemoveCommand = async (
-  skills: string[],
-  options: InstallCommandOptions,
-  runtime: SkillsCommandRuntime
-): Promise<number> => {
-  if (skills.length === 0) {
-    throw new SilentError('Pass at least one skill to remove');
-  }
-
-  const projectDir = resolve(runtime.cwd, options.dir ?? '.');
-  const store = createManifestStore(projectDir, options.manifest);
-  await store.removeSkills(skills);
-  return 0;
-};
-
-/**
- * Refresh Git-backed manifest entries by preserving their stored ref and
- * replacing only the resolved SHA in `<ref>@<sha>`.
+ * Select the source registry for `skills add`.
  *
- * File sources are left unchanged. Marketplace entries route through the
- * registry boundary and currently emit the deferred Marketplace stub error.
+ * GitHub owner/repo shorthand remains the default, while complete non-GitHub
+ * clone URLs route through the GitLab registry because it preserves arbitrary
+ * HTTPS and SSH origins in the manifest.
+ *
+ * @example
+ * ```ts
+ * resolveRegistry('vercel-labs/skills'); // 'github'
+ * resolveRegistry('https://self-hosted-gitlab.yourcompany.com/your-skills-repo/skills.git'); // 'gitlab'
+ * ```
  */
-export const runSkillsUpdateCommand = async (
-  skills: string[],
-  options: InstallCommandOptions,
-  runtime: SkillsCommandRuntime
-): Promise<number> => {
-  const projectDir = resolve(runtime.cwd, options.dir ?? '.');
-  const store = createManifestStore(projectDir, options.manifest);
-  const manifest = await store.read();
-  const requested = new Set(skills);
-  const registries = createRegistries(projectDir);
-  const updated: SkillEntry[] = [];
-
-  for (const skill of manifest.skills) {
-    if (requested.size > 0 && !requested.has(skill.name)) {
-      updated.push(skill);
-      continue;
-    }
-
-    if (skill.provider === 'file') {
-      updated.push(skill);
-      continue;
-    }
-
-    const registry = getRegistry(registries, skill.provider);
-    if (!registry.update) {
-      throw new SilentError(
-        `${skill.provider} updates are not implemented yet`
-      );
-    }
-
-    const resolved = await registry.update(skill);
-    await resolved.root.cleanup?.();
-    updated.push({
-      ...skill,
-      source: resolved.source,
-      packageId: resolved.packageId,
-      version: resolved.version,
-      ref: resolved.ref,
-      commitSha: resolved.commitSha,
-    });
-    p.log.success(`${pc.cyan(skill.name)} -> ${resolved.version}`);
-  }
-
-  await store.write({ skills: updated });
-  return 0;
-};
-
-const resolveRegistry = (
+export const resolveRegistry = (
   source: string,
-  registry: RegistryKind | undefined
+  registry?: RegistryKind
 ): RegistryKind => {
   if (
     source.startsWith('file:') ||
@@ -639,5 +443,39 @@ const resolveRegistry = (
   if (source.startsWith('gitlab:') || source.includes('gitlab')) {
     return 'gitlab';
   }
+  if (isFullGitCloneUrl(source)) {
+    return registry ?? 'gitlab';
+  }
   return registry ?? 'github';
 };
+
+const isFullGitCloneUrl = (source: string): boolean =>
+  /^https?:\/\//.test(source) || /^git@[^:]+:.+/.test(source);
+
+const resolveManifestSource = (
+  resolved: ResolvedPackage,
+  global: boolean
+): string | undefined => {
+  if (resolved.provider !== 'file' || !global) {
+    return resolved.source;
+  }
+  return `file:${resolved.root.rootDir}`;
+};
+
+const resolveManifestPackageId = (
+  resolved: ResolvedPackage,
+  global: boolean
+): string => {
+  if (resolved.provider !== 'file' || !global) {
+    return resolved.packageId;
+  }
+  return resolved.root.rootDir;
+};
+
+const shortSha = (sha: string): string => sha.slice(0, 7);
+
+const indent = (value: string): string =>
+  value
+    .split('\n')
+    .map((line) => `  ${line}`)
+    .join('\n');

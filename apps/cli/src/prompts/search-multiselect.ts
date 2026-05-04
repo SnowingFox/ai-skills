@@ -27,6 +27,10 @@ const silentOutput = new Writable({
 });
 
 const ANSI_RE = new RegExp(`${String.fromCharCode(27)}\\[[0-9;]*m`, 'g');
+const DEFAULT_RENDER_COLUMNS = 80;
+const MAX_RENDER_COLUMNS = 80;
+const RENDER_COLUMN_SAFETY_MARGIN = 8;
+const TRUNCATION_MARKER = '...';
 
 /**
  * Searchable multiselect for long lists like agent targets.
@@ -80,6 +84,7 @@ export const searchMultiselect = async <T>({
     const render = (state: 'active' | 'submit' | 'cancel' = 'active') => {
       clear();
       const visible = filteredItems();
+      const renderColumns = resolvePromptRenderColumns(process.stdout.columns);
       cursor = Math.min(cursor, Math.max(visible.length - 1, 0));
       const icon =
         state === 'active'
@@ -91,13 +96,11 @@ export const searchMultiselect = async <T>({
 
       if (state === 'active') {
         lines.push(pc.dim('│'));
-        lines.push(
-          `${pc.dim('│')}  ${pc.dim('Search:')} ${query}${pc.inverse(' ')}`
-        );
+        lines.push(formatSearchMultiselectSearchLine(query, renderColumns));
         const hint = enableToggleAll
           ? 'Type to filter, ↑↓ move, space select, option+a toggle all, enter confirm'
           : 'Type to filter, ↑↓ move, space select, enter confirm';
-        lines.push(`${pc.dim('│')}  ${pc.dim(hint)}`);
+        lines.push(formatSearchMultiselectPromptLine(hint, renderColumns));
         lines.push(pc.dim('│'));
 
         const start = Math.max(
@@ -115,14 +118,14 @@ export const searchMultiselect = async <T>({
         } else {
           for (const [offset, item] of page.entries()) {
             const actualIndex = start + offset;
-            const pointer = actualIndex === cursor ? pc.cyan('❯') : ' ';
-            const checkbox = selected.has(item.value)
-              ? pc.green('●')
-              : pc.dim('○');
-            const label =
-              actualIndex === cursor ? pc.underline(item.label) : item.label;
-            const hint = item.hint ? pc.dim(` (${item.hint})`) : '';
-            lines.push(`${pc.dim('│')} ${pointer} ${checkbox} ${label}${hint}`);
+            lines.push(
+              formatSearchMultiselectItemLine({
+                item,
+                active: actualIndex === cursor,
+                checked: selected.has(item.value),
+                columns: renderColumns,
+              })
+            );
             if (showSeparators && item.separatorAfter) {
               lines.push(
                 `${pc.dim('│')}  ${pc.dim('─────────────────────────────────')}`
@@ -143,12 +146,15 @@ export const searchMultiselect = async <T>({
           .filter((item) => selected.has(item.value))
           .map((item) => item.label);
         lines.push(
-          `${pc.dim('│')}  ${pc.dim(selectedLabels.join(', ') || 'Cancelled')}`
+          formatSearchMultiselectPromptLine(
+            selectedLabels.join(', ') || 'Cancelled',
+            renderColumns
+          )
         );
       }
 
       process.stdout.write(`${lines.join('\n')}\n`);
-      lastRenderHeight = measureRenderedRows(lines, process.stdout.columns);
+      lastRenderHeight = measureRenderedRows(lines, renderColumns);
     };
 
     const cleanup = () => {
@@ -261,6 +267,79 @@ export const filterSearchMultiselectItems = <T>(
 };
 
 /**
+ * Render one prompt chrome line within the same one-line width budget.
+ */
+export const formatSearchMultiselectPromptLine = (
+  content: string,
+  columns: number
+): string => {
+  const prefix = `${pc.dim('│')}  `;
+  return `${prefix}${pc.dim(
+    truncateToDisplayWidth(content, columns - getVisibleTextWidth(prefix))
+  )}`;
+};
+
+/**
+ * Render the search input row without allowing long queries to wrap.
+ */
+export const formatSearchMultiselectSearchLine = (
+  query: string,
+  columns: number
+): string => {
+  const prefix = `${pc.dim('│')}  ${pc.dim('Search:')} `;
+  const cursor = pc.inverse(' ');
+  const availableColumns =
+    columns - getVisibleTextWidth(prefix) - getVisibleTextWidth(cursor);
+  return `${prefix}${truncateToDisplayWidth(query, availableColumns)}${cursor}`;
+};
+
+/**
+ * Render one selectable row, truncating hints before they can wrap.
+ */
+export const formatSearchMultiselectItemLine = <T>({
+  item,
+  active,
+  checked,
+  columns,
+}: {
+  item: SearchMultiselectItem<T>;
+  active: boolean;
+  checked: boolean;
+  columns: number;
+}): string => {
+  const pointer = active ? pc.cyan('❯') : ' ';
+  const checkbox = checked ? pc.green('●') : pc.dim('○');
+  const label = active ? pc.underline(item.label) : item.label;
+  const prefix = `${pc.dim('│')} ${pointer} ${checkbox} ${label}`;
+  const hint = formatSearchMultiselectHint(
+    item.hint,
+    columns - getVisibleTextWidth(prefix)
+  );
+
+  return `${prefix}${hint}`;
+};
+
+/**
+ * Format a hint suffix within the remaining one-line budget.
+ */
+export const formatSearchMultiselectHint = (
+  hint: string | undefined,
+  availableColumns: number
+): string => {
+  if (!hint) {
+    return '';
+  }
+
+  const wrapperWidth = getVisibleTextWidth(' ()');
+  const contentColumns = availableColumns - wrapperWidth;
+  if (contentColumns <= TRUNCATION_MARKER.length) {
+    return '';
+  }
+
+  return pc.dim(` (${truncateToDisplayWidth(hint, contentColumns)})`);
+};
+
+/**
  * Count terminal rows occupied by rendered prompt lines.
  *
  * Long descriptions wrap in the terminal, so clearing by logical line count
@@ -269,9 +348,70 @@ export const filterSearchMultiselectItems = <T>(
 export const measureRenderedRows = (lines: string[], columns = 80): number => {
   const width = Math.max(columns, 1);
   return lines.reduce((rows, line) => {
-    const visibleWidth = line.replace(ANSI_RE, '').length;
+    const visibleWidth = getVisibleTextWidth(line);
     return rows + Math.max(1, Math.ceil(visibleWidth / width));
   }, 0);
+};
+
+/**
+ * Truncate text by terminal display width and append `...` when shortened.
+ */
+export const truncateToDisplayWidth = (
+  value: string,
+  maxWidth: number
+): string => {
+  if (getVisibleTextWidth(value) <= maxWidth) {
+    return value;
+  }
+  if (maxWidth <= 0) {
+    return '';
+  }
+  if (maxWidth <= TRUNCATION_MARKER.length) {
+    return TRUNCATION_MARKER.slice(0, maxWidth);
+  }
+
+  const contentWidthLimit = maxWidth - TRUNCATION_MARKER.length;
+  let result = '';
+  let usedWidth = 0;
+  for (const char of Array.from(value)) {
+    const charWidth = getCodePointWidth(char);
+    if (usedWidth + charWidth > contentWidthLimit) {
+      break;
+    }
+    result += char;
+    usedWidth += charWidth;
+  }
+
+  return `${result}${TRUNCATION_MARKER}`;
+};
+
+/**
+ * Measure printable terminal width, ignoring ANSI styling.
+ */
+export const getVisibleTextWidth = (value: string): number =>
+  Array.from(value.replace(ANSI_RE, '')).reduce(
+    (width, char) => width + getCodePointWidth(char),
+    0
+  );
+
+/**
+ * Use a conservative width when estimating rows for clearing old prompt frames.
+ *
+ * Some browser terminals report the full terminal column count even when the
+ * prompt is rendered inside a narrower pane, so measuring at the reported width
+ * can leave wrapped hint rows behind.
+ */
+export const resolvePromptRenderColumns = (
+  columns = DEFAULT_RENDER_COLUMNS
+): number => {
+  const normalized =
+    Number.isFinite(columns) && columns > 0
+      ? Math.floor(columns)
+      : DEFAULT_RENDER_COLUMNS;
+  return Math.max(
+    1,
+    Math.min(normalized, MAX_RENDER_COLUMNS) - RENDER_COLUMN_SAFETY_MARGIN
+  );
 };
 
 /**
@@ -289,3 +429,36 @@ export const isToggleAllKey = (key: readline.Key): boolean => {
  */
 export const getToggleAllValues = <T>(items: SearchMultiselectItem<T>[]): T[] =>
   items.map((item) => item.value);
+
+const getCodePointWidth = (char: string): number => {
+  const codePoint = char.codePointAt(0);
+  if (codePoint === undefined || codePoint === 0) {
+    return 0;
+  }
+  if (codePoint < 32 || (codePoint >= 0x7f && codePoint < 0xa0)) {
+    return 0;
+  }
+  if (isCombiningCodePoint(codePoint)) {
+    return 0;
+  }
+  return isWideCodePoint(codePoint) ? 2 : 1;
+};
+
+const isCombiningCodePoint = (codePoint: number): boolean =>
+  (codePoint >= 0x0300 && codePoint <= 0x036f) ||
+  (codePoint >= 0x1ab0 && codePoint <= 0x1aff) ||
+  (codePoint >= 0x1dc0 && codePoint <= 0x1dff) ||
+  (codePoint >= 0x20d0 && codePoint <= 0x20ff) ||
+  (codePoint >= 0xfe20 && codePoint <= 0xfe2f);
+
+const isWideCodePoint = (codePoint: number): boolean =>
+  (codePoint >= 0x1100 && codePoint <= 0x115f) ||
+  codePoint === 0x2329 ||
+  codePoint === 0x232a ||
+  (codePoint >= 0x2e80 && codePoint <= 0xa4cf) ||
+  (codePoint >= 0xac00 && codePoint <= 0xd7a3) ||
+  (codePoint >= 0xf900 && codePoint <= 0xfaff) ||
+  (codePoint >= 0xfe10 && codePoint <= 0xfe19) ||
+  (codePoint >= 0xfe30 && codePoint <= 0xfe6f) ||
+  (codePoint >= 0xff00 && codePoint <= 0xff60) ||
+  (codePoint >= 0xffe0 && codePoint <= 0xffe6);

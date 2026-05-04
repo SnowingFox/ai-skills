@@ -40,6 +40,21 @@ describe('buildCli', () => {
     });
   });
 
+  it('parses global install options with cac', () => {
+    const cli = buildCli(createInstallCommandRuntime('/repo'));
+    cli.parse(
+      ['node', 'ai-pkgs', 'install', '--global', '--agent', 'cursor', '--yes'],
+      { run: false }
+    );
+
+    expect(cli.matchedCommandName).toBe('install');
+    expect(cli.options).toMatchObject({
+      global: true,
+      agent: 'cursor',
+      yes: true,
+    });
+  });
+
   it('parses skills subcommands through the skills dispatcher', () => {
     const cli = buildCli(createInstallCommandRuntime('/repo'));
     cli.parse(['node', 'ai-pkgs', 'skills', 'list'], { run: false });
@@ -107,6 +122,45 @@ describe('buildCli', () => {
       install: true,
       removeLock: true,
       skipExisting: true,
+    });
+  });
+
+  it('parses skills global shorthand', () => {
+    const cli = buildCli(createInstallCommandRuntime('/repo'));
+    cli.parse(['node', 'ai-pkgs', 'skills', 'list', '-g', '--json'], {
+      run: false,
+    });
+
+    expect(cli.matchedCommandName).toBe('skills');
+    expect(cli.args).toEqual(['list']);
+    expect(cli.options).toMatchObject({
+      global: true,
+      json: true,
+    });
+  });
+
+  it('parses skills list and outdated options', () => {
+    const cli = buildCli(createInstallCommandRuntime('/repo'));
+    cli.parse(
+      [
+        'node',
+        'ai-pkgs',
+        'skills',
+        'outdated',
+        'tdd',
+        'to-prd',
+        '--manifest',
+        'config/ai-package.json',
+        '--json',
+      ],
+      { run: false }
+    );
+
+    expect(cli.matchedCommandName).toBe('skills');
+    expect(cli.args).toEqual(['outdated', 'tdd', 'to-prd']);
+    expect(cli.options).toMatchObject({
+      manifest: 'config/ai-package.json',
+      json: true,
     });
   });
 

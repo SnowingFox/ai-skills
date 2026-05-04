@@ -2,20 +2,24 @@ import { readFile, unlink } from 'node:fs/promises';
 import { isAbsolute, posix, resolve } from 'node:path';
 import * as p from '@clack/prompts';
 import pc from 'picocolors';
-import { canPrompt, isAICommand } from '../cli/ai-mode';
-import { renderAiDone, renderAiStep } from '../cli/ai-output';
-import { discoverSkills, type DiscoveredSkill } from '../discovery/discover';
-import { SilentError } from '../errors';
+import { canPrompt, isAICommand } from '../../cli/ai-mode';
+import { renderAiDone, renderAiStep } from '../../cli/ai-output';
+import { discoverSkills, type DiscoveredSkill } from '../../discovery/discover';
+import { SilentError } from '../../errors';
 import {
   type InstallCommandOptions,
   type InstallCommandRuntime,
   runInstallCommand,
-} from '../install-command';
-import { createManifestStore } from '../manifest';
-import { sanitizeManifestPath } from '../manifest/parse';
-import { githubRegistry } from '../registries/github';
-import type { ResolvedPackage } from '../registries/types';
-import type { AiPackageManifest, RemoteSkillEntry, SkillEntry } from '../types';
+} from '../../install-command';
+import { createManifestStore } from '../../manifest';
+import { sanitizeManifestPath } from '../../manifest/parse';
+import { githubRegistry } from '../../registries/github';
+import type { ResolvedPackage } from '../../registries/types';
+import type {
+  AiPackageManifest,
+  RemoteSkillEntry,
+  SkillEntry,
+} from '../../types';
 
 type RawLegacyVercelLockEntry = {
   source?: unknown;
@@ -84,15 +88,6 @@ const HASH_RE = /^[0-9a-f]{64}$/i;
 
 /**
  * Parse the legacy Vercel `skills-lock.json` shape.
- *
- * @example
- * ```ts
- * parseLegacyVercelSkillsLock(
- *   { version: 1, skills: { tdd: { source: 'owner/repo', ...entry } } },
- *   'skills-lock.json'
- * );
- * // Returns normalized entries keyed by lock skill name.
- * ```
  */
 export const parseLegacyVercelSkillsLock = (
   raw: unknown,
@@ -118,9 +113,6 @@ export const parseLegacyVercelSkillsLock = (
 
 /**
  * Convert validated lock entries into manifest-ready skill requests.
- *
- * The legacy lock stores `skillPath` as a path to `SKILL.md`; `ai-package.json`
- * stores the containing skill directory.
  */
 export const normalizeLegacyVercelLockEntries = (
   entries: LegacyVercelLockEntry[]
@@ -135,9 +127,6 @@ export const normalizeLegacyVercelLockEntries = (
 
 /**
  * Fill missing manifest paths by discovering skills in the materialized source.
- *
- * Non-interactive callers only accept an exact discovered-name match. TTY callers
- * may provide a selector for the ambiguous path.
  */
 export const resolveMissingVercelMigrationPaths = async (
   skills: PendingVercelMigrationSkill[],
@@ -192,12 +181,6 @@ export const resolveMissingVercelMigrationPaths = async (
 
 /**
  * Resolve GitHub pins once per legacy source and return manifest entries.
- *
- * @example
- * ```ts
- * await resolveVercelMigrationSkills(pending, resolveSource);
- * // Each result has `version: "<ref>@<commitSha>"` for ai-package.json.
- * ```
  */
 export const resolveVercelMigrationSkills = async (
   skills: ResolvedVercelMigrationSkill[],
@@ -274,15 +257,14 @@ export const mergeVercelMigrationSkills = (
 
 /**
  * Execute `ai-pkgs skills vercel-migrate`.
- *
- * The command migrates declarations first. Optional installation delegates to
- * the normal `install` command so target resolution, cache materialization, and
- * copy/link behavior stay consistent.
  */
 export const runSkillsVercelMigrateCommand = async (
   options: SkillsVercelMigrateOptions,
   runtime: InstallCommandRuntime
 ): Promise<number> => {
+  if (options.global === true) {
+    throw new SilentError('skills vercel-migrate does not support --global');
+  }
   if (options.force === true && options.skipExisting === true) {
     throw new SilentError('--force and --skip-existing are mutually exclusive');
   }
