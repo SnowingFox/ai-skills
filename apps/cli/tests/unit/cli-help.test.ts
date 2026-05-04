@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import cac from 'cac';
 import { describe, expect, it } from 'vitest';
 import { renderHelp, renderTree, setupHelpOverride } from '../../src/cli/help';
@@ -5,6 +6,9 @@ import { GRAYS, renderLogo } from '../../src/ui/banner';
 
 const ANSI_RE = new RegExp(`${String.fromCharCode(27)}\\[[0-9;]*m`, 'g');
 const stripAnsi = (value: string) => value.replace(ANSI_RE, '');
+const packageVersion = JSON.parse(
+  readFileSync(new URL('../../package.json', import.meta.url), 'utf-8')
+) as { version: string };
 
 describe('cli/help', () => {
   it('renders top-level help with logo, usage, commands, and global flags', () => {
@@ -14,7 +18,7 @@ describe('cli/help', () => {
     expect(output).toContain('█████╗ ██╗');
     expect(output).toContain('╚═╝  ╚═╝╚═╝');
     expect(output).toContain('Composable skills for AI agents.');
-    expect(output).toContain('v0.0.5');
+    expect(output).toContain(`v${packageVersion.version}`);
     expect(output).toContain('Usage:');
     expect(output).toContain('ai-pkgs <command>');
     expect(output).toContain('Commands:');
@@ -50,6 +54,7 @@ describe('cli/help', () => {
     expect(output).toContain('Install skills from ai-package.json');
     expect(output).toContain('Flags:');
     expect(output).toContain('--agent');
+    expect(output).toContain('--verbose');
     expect(output).toContain('Global flags:');
     expect(output).toContain('--help');
     expect(output).toContain('Usage:');
@@ -67,6 +72,7 @@ describe('cli/help', () => {
     expect(output).toContain('--all');
     expect(output).toContain('--global');
     expect(output).toContain('--refresh');
+    expect(output).toContain('--verbose');
     expect(output).toContain('--ai');
     expect(output).toContain('Global flags:');
     expect(output).toContain('--help');
@@ -95,18 +101,41 @@ describe('cli/help', () => {
     expect(output).toContain('skills add <source> [options]');
     expect(output).toContain('skills list [options]');
     expect(output).toContain('skills remove <skill...> [options]');
+    expect(output).toContain('skills vercel-migrate [options]');
     expect(output).toContain('Examples:');
     expect(output).toContain('Source selection');
     expect(output).toContain('Install behavior');
+    expect(output).toContain('--lockfile');
+    expect(output).toContain('--install');
+    expect(output).toContain('--remove-lock');
     expect(output).toContain('--install-only');
     expect(output).toContain('--all');
     expect(output).toContain('--project');
     expect(output).toContain('--global');
+    expect(output).toContain('--verbose');
     expect(output).toContain('--ai');
     expect(output).toContain('Install only (no manifest writes)');
     expect(output).toContain('AI/automation mode');
+    expect(output).toContain('ai-pkgs skills vercel-migrate --skip-existing');
     expect(output).toContain('ai-pkgs skills add vercel-labs/skills');
     expect(output).toContain('ai-pkgs install --agent cursor --force');
+  });
+
+  it('renders skills vercel-migrate help', () => {
+    const cli = buildHelpCli();
+    const output = stripAnsi(renderHelp(cli, 'skills vercel-migrate'));
+
+    expect(output).toContain('ai-pkgs skills vercel-migrate');
+    expect(output).toContain('Migrate Vercel skills-lock.json');
+    expect(output).toContain('--lockfile');
+    expect(output).toContain('--remove-lock');
+    expect(output).toContain('--install');
+    expect(output).toContain('--skip-existing');
+    expect(output).toContain('Migrate legacy Vercel locks');
+    expect(output).toContain(
+      'ai-pkgs skills vercel-migrate --install --agent cursor --force --yes'
+    );
+    expect(output).toContain('Only legacy GitHub lock entries are supported.');
   });
 
   it('renders cache clear help', () => {
@@ -175,7 +204,8 @@ const buildHelpCli = () => {
   cli
     .command('install', 'Install skills from ai-package.json')
     .usage('install [options]')
-    .option('-a, --agent <agent>', 'Target agent');
+    .option('-a, --agent <agent>', 'Target agent')
+    .option('--verbose', 'Show per-skill install progress and paths');
   cli
     .command('skills [...args]', 'Manage skills')
     .usage('skills <add|list|remove|update|search> [...args] [options]')

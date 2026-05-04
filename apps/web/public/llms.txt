@@ -1,0 +1,237 @@
+# AI SKILLS / ai-pkgs
+
+AI SKILLS is a registry and package-management workflow for reusable AI agent
+skills. The CLI package is `ai-pkgs`; it installs skills into agent-specific
+skill directories such as Cursor, Claude Code, Codex, or the universal
+`.agents/skills` target.
+
+## What ai-pkgs does
+
+- Restores project-declared skills from `ai-package.json`.
+- Adds skills from GitHub, GitLab, local files, and a future Marketplace
+  provider boundary.
+- Pins Git sources as `<ref>@<resolvedSha>` for reproducible installs.
+- Installs by copying skill directories by default, or by symlinking with
+  `--link`.
+- Supports project-local and global target directories for `skills add`.
+- Uses a global Git cache keyed by provider, source, and commit SHA so repeated
+  installs can reuse the same checkout.
+- Provides `--ai` for strict non-interactive automation with deterministic
+  clack-style text output.
+
+## Common commands
+
+Show help:
+
+```bash
+ai-pkgs --help
+ai-pkgs skills -h
+ai-pkgs help skills add
+ai-pkgs help cache clear
+```
+
+Restore skills declared in the current project's `ai-package.json`:
+
+```bash
+ai-pkgs install --agent cursor --force --yes
+```
+
+Add all discovered skills from a GitHub repository, save them to
+`ai-package.json`, and install them into Cursor:
+
+```bash
+ai-pkgs skills add vercel-labs/skills --all --agent cursor --project
+```
+
+Add one skill from an explicit GitHub URL and source subdirectory:
+
+```bash
+ai-pkgs skills add https://github.com/mattpocock/skills \
+  --path skills \
+  --skill tdd \
+  --agent cursor \
+  --project
+```
+
+Install directly without writing `ai-package.json`:
+
+```bash
+ai-pkgs skills add vercel-labs/skills \
+  --install-only \
+  --all \
+  --agent cursor \
+  --force
+```
+
+Install to a global agent skill directory:
+
+```bash
+ai-pkgs skills add vercel-labs/skills \
+  --install-only \
+  --all \
+  --agent cursor \
+  --global \
+  --force
+```
+
+Run without prompts for AI/automation:
+
+```bash
+ai-pkgs --ai skills add vercel-labs/skills \
+  --install-only \
+  --all \
+  --agent cursor \
+  --project \
+  --force \
+  --yes
+```
+
+Clear cached Git checkouts:
+
+```bash
+ai-pkgs cache clear
+ai-pkgs cache clear --provider github
+ai-pkgs cache clear --provider github --source vercel-labs/skills
+```
+
+## Command reference
+
+### `ai-pkgs install [options]`
+
+Restores every skill declared in `ai-package.json`. This command is project-only:
+it installs into project-local agent targets and does not provide `--global`.
+
+Flags:
+
+- `-m, --manifest <path>`: path to `ai-package.json`.
+- `-C, --dir <path>`: project directory to install into.
+- `-a, --agent <agent>`: target agent. Repeat or pass comma-separated values.
+- `--copy`: copy skill directories. This is the default.
+- `--link`: symlink skill directories.
+- `--force`: overwrite existing skill directories.
+- `--skip-existing`: skip existing skill directories.
+- `--project`: explicit project-local install dimension.
+- `--refresh`: refresh Git cache before installing.
+- `-y, --yes`: skip confirmation prompts.
+- Global `--ai`: strict non-interactive mode.
+- Global `-h, --help`: show help.
+
+### `ai-pkgs skills add <source> [options]`
+
+Resolves a source, discovers `SKILL.md` directories, selects skills, writes
+selected entries to `ai-package.json`, and installs them. Use `--install-only`
+for direct one-off installs with no manifest reads or writes.
+
+Source flags:
+
+- `--registry <registry>`: `github`, `gitlab`, `marketplace`, or `file`.
+- `--ref <ref>`: Git branch, tag, or commit to pin.
+- `--path <path>`: subdirectory to scan inside the source.
+- `-s, --skill <skill>`: select a skill by name. Repeatable.
+- `--all`: select all discovered skills. Mutually exclusive with `--skill`.
+- `--refresh`: refresh Git cache before installing.
+
+Install flags:
+
+- `-a, --agent <agent>`: target agent. Repeatable.
+- `--project`: install into project-local agent skill directories.
+- `--global`: install into user-level global agent skill directories.
+- `--copy`: copy skill directories. This is the default.
+- `--link`: symlink skill directories.
+- `--force`: overwrite existing skill directories.
+- `--skip-existing`: skip existing skill directories.
+- `--install-only`: install without writing `ai-package.json`.
+- `-y, --yes`: skip confirmation prompts.
+- Global `--ai`: strict non-interactive mode.
+- Global `-h, --help`: show help.
+
+Project flags:
+
+- `-C, --dir <path>`: project directory.
+- `-m, --manifest <path>`: path to `ai-package.json`. Cannot be combined with
+  `--install-only`.
+
+TTY behavior:
+
+- If no `--agent` is supplied and prompts are allowed, ai-pkgs opens a searchable
+  agent picker.
+- If no `--project` or `--global` is supplied to `skills add`, TTY mode prompts
+  for the install dimension.
+- Multi-skill selection supports type-to-filter, arrow keys, space to select,
+  `a` to toggle all matching skills, and enter to confirm.
+
+Non-interactive behavior:
+
+- In non-TTY and `--ai` mode, omitted `skills add` scope defaults to project.
+- In `--ai` mode, all prompts are disabled. Pass `--agent`, `--all` or
+  `--skill`, `--force` or `--skip-existing`, and `--yes` when needed.
+
+### `ai-pkgs skills list [options]`
+
+Lists skills declared in `ai-package.json`.
+
+Flags:
+
+- `-C, --dir <path>`: project directory.
+- `-m, --manifest <path>`: path to `ai-package.json`.
+
+### `ai-pkgs skills remove <skill...> [options]`
+
+Removes manifest entries by name. Installed skill folders are left untouched.
+
+Flags:
+
+- `-C, --dir <path>`: project directory.
+- `-m, --manifest <path>`: path to `ai-package.json`.
+
+### `ai-pkgs skills update [skill...] [options]`
+
+Refreshes pinned Git SHAs for all or selected Git-backed manifest entries.
+
+Flags:
+
+- `-C, --dir <path>`: project directory.
+- `-m, --manifest <path>`: path to `ai-package.json`.
+
+### `ai-pkgs skills search [query]`
+
+Reserved for Marketplace search. Marketplace distribution is planned as a
+backend API that returns skill zip packages.
+
+### `ai-pkgs cache clear [options]`
+
+Clears the global Git cache used by `skills add` and `install`.
+
+Flags:
+
+- `--provider <provider>`: filter by `github` or `gitlab`.
+- `--source <source>`: filter by source, such as `owner/repo` or a clone URL.
+
+## Sources
+
+GitHub is the default registry:
+
+```bash
+ai-pkgs skills add owner/repo
+```
+
+Explicit source forms:
+
+```bash
+ai-pkgs skills add github:owner/repo
+ai-pkgs skills add https://github.com/owner/repo --registry github
+ai-pkgs skills add https://gitlab.example.com/group/repo.git --registry gitlab
+ai-pkgs skills add ./local-skills --registry file
+ai-pkgs skills add file:./local-skills
+```
+
+## Agent targets
+
+Common agent IDs:
+
+- `cursor`: project `.cursor/skills`, global `~/.cursor/skills`.
+- `claude-code`: project `.claude/skills`, global Claude skills directory.
+- `codex`: project `.agents/skills`, global Codex skills directory.
+- `universal`: project `.agents/skills`, global shared agents directory.
+
+Run `ai-pkgs skills -h` for the full command surface and examples.

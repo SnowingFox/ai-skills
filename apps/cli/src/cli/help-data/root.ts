@@ -1,5 +1,44 @@
+import { existsSync, readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 export const TAGLINE = 'Composable skills for AI agents.';
-export const CLI_VERSION = '0.0.5';
+
+/**
+ * Read the package version from the nearest ai-pkgs package.json.
+ *
+ * The CLI may run from TypeScript source, bundled `dist/cli.js`, or a globally
+ * installed npm package. Walking upward from the current module keeps help
+ * output tied to the packaged metadata instead of a manually updated constant.
+ *
+ * @example
+ * ```ts
+ * getCliVersion(); // '0.0.7'
+ * ```
+ */
+export const getCliVersion = (): string => {
+  let current = dirname(fileURLToPath(import.meta.url));
+  for (let depth = 0; depth < 6; depth += 1) {
+    const packagePath = join(current, 'package.json');
+    if (existsSync(packagePath)) {
+      const pkg = JSON.parse(readFileSync(packagePath, 'utf-8')) as {
+        name?: string;
+        version?: string;
+      };
+      if (pkg.name === 'ai-pkgs' && pkg.version) {
+        return pkg.version;
+      }
+    }
+
+    const next = dirname(current);
+    if (next === current) {
+      break;
+    }
+    current = next;
+  }
+
+  return '0.0.0';
+};
 
 export const DETAILED_HELP: [command: string, description: string][] = [
   [

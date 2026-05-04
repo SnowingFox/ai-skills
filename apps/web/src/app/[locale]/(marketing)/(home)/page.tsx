@@ -103,7 +103,9 @@ export default async function HomePage() {
           <div className="mx-auto flex w-full items-center justify-between gap-3 rounded-md bg-muted/80 px-4 py-3 font-mono text-sm transition-colors hover:bg-muted sm:max-w-[348px] lg:mx-0">
             <code className="flex items-center gap-[1ch] truncate">
               <span className="text-muted-foreground">$</span>
-              <span>npx ai-skills init</span>
+              <span>
+                ai-pkgs skills add vercel-labs/skills --all --agent cursor
+              </span>
             </code>
             <Button
               variant="ghost"

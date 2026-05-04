@@ -24,6 +24,7 @@ describe('buildCli', () => {
         '/tmp/project',
         '--agent',
         'cursor',
+        '--verbose',
         '--yes',
       ],
       { run: false }
@@ -34,6 +35,7 @@ describe('buildCli', () => {
       manifest: 'config/ai-package.json',
       dir: '/tmp/project',
       agent: 'cursor',
+      verbose: true,
       yes: true,
     });
   });
@@ -59,6 +61,7 @@ describe('buildCli', () => {
         '--all',
         '--global',
         '--refresh',
+        '--verbose',
         '--agent',
         'cursor',
       ],
@@ -72,7 +75,38 @@ describe('buildCli', () => {
       all: true,
       global: true,
       refresh: true,
+      verbose: true,
       agent: 'cursor',
+    });
+  });
+
+  it('parses skills vercel-migrate options', () => {
+    const cli = buildCli(createInstallCommandRuntime('/repo'));
+    cli.parse(
+      [
+        'node',
+        'ai-pkgs',
+        'skills',
+        'vercel-migrate',
+        '--lockfile',
+        'legacy/skills-lock.json',
+        '--manifest',
+        'config/ai-package.json',
+        '--install',
+        '--remove-lock',
+        '--skip-existing',
+      ],
+      { run: false }
+    );
+
+    expect(cli.matchedCommandName).toBe('skills');
+    expect(cli.args).toEqual(['vercel-migrate']);
+    expect(cli.options).toMatchObject({
+      lockfile: 'legacy/skills-lock.json',
+      manifest: 'config/ai-package.json',
+      install: true,
+      removeLock: true,
+      skipExisting: true,
     });
   });
 
@@ -305,8 +339,9 @@ describe('runCli', () => {
 
     expect(code).toBe(0);
     expect(installed[0]?.canPrompt).toBe(false);
-    expect(stripAnsi(output.join(''))).toContain('◇  Installing skills');
-    expect(stripAnsi(output.join(''))).toContain('◇  copying: one');
+    expect(stripAnsi(output.join(''))).toContain('◇  Materializing sources');
+    expect(stripAnsi(output.join(''))).toContain('copy: 1 skill -> Cursor');
+    expect(stripAnsi(output.join(''))).not.toContain('◇  copying: one');
     expect(stripAnsi(output.join(''))).toContain('◆  Installed 1 skill(s)');
   });
 });

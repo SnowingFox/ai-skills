@@ -6,6 +6,7 @@ import {
   createInstallCommandRuntime,
   formatInstallError,
   formatGitProgress,
+  formatInstallResultSummary,
   formatProgress,
   formatSkillSummary,
   resolveConflictPolicy,
@@ -91,6 +92,26 @@ describe('install command helpers', () => {
         cachePath: '/cache/acme/skills/abcdef1234567890',
       })
     ).toContain('reusing Git cache');
+    expect(
+      formatInstallResultSummary({
+        installed: [
+          { name: 'one', targetDir: '/repo/.cursor/skills/one' },
+          {
+            name: 'two',
+            targetDir: '/repo/.cursor/skills/two',
+            skipped: true,
+          },
+        ],
+        targets: [
+          {
+            agentId: 'cursor',
+            displayName: 'Cursor',
+            skillsDir: '/repo/.cursor/skills',
+          },
+        ],
+        mode: 'copy',
+      })
+    ).toBe('copy: 1 skill -> Cursor (/repo/.cursor/skills)\nskipped: 1 skill');
   });
 
   it('normalizes install command runtime dependencies', () => {

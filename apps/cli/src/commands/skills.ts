@@ -17,17 +17,22 @@ import {
   getRegistry,
   type RegistryKind,
 } from '../registries';
+import {
+  runSkillsVercelMigrateCommand,
+  type SkillsVercelMigrateOptions,
+} from './skills-vercel-migrate';
 import type { SkillEntry } from '../types';
 import {
   normalizeList,
+  formatInstallResultSummary,
+  formatProgress,
   resolveConflictPolicy,
   resolveInstallMode,
+  type InstallCommandRuntime,
   type InstallCommandOptions,
 } from '../install-command';
 
-type SkillsCommandRuntime = {
-  cwd: string;
-};
+type SkillsCommandRuntime = InstallCommandRuntime;
 
 type SkillsAddOptions = InstallCommandOptions & {
   registry?: RegistryKind;
@@ -41,13 +46,17 @@ type SkillsAddOptions = InstallCommandOptions & {
   refresh?: boolean;
 };
 
+type SkillsCommandOptions = SkillsAddOptions & SkillsVercelMigrateOptions;
+
 export const registerSkillsCommand = (
   cli: CAC,
   runtime: SkillsCommandRuntime
 ) => {
   cli
     .command('skills [...args]', 'Manage skills')
-    .usage('skills <add|list|remove|update|search> [...args] [options]')
+    .usage(
+      'skills <add|list|remove|update|search|vercel-migrate> [...args] [options]'
+    )
     .option('--registry <registry>', 'github, gitlab, marketplace, or file')
     .option('--ref <ref>', 'Git ref to pin')
     .option('--path <path>', 'Path to scan inside the source')
@@ -62,17 +71,21 @@ export const registerSkillsCommand = (
     .option('--global', 'Install into global agent skill directories')
     .option('--all', 'Select all discovered skills')
     .option('--refresh', 'Refresh Git cache before installing')
+    .option('--lockfile <path>', 'Path to legacy skills-lock.json')
+    .option('--remove-lock', 'Remove skills-lock.json after migration')
+    .option('--install', 'Install migrated ai-package.json after writing')
+    .option('--verbose', 'Show per-skill install progress and paths')
     .option('-y, --yes', 'Skip confirmation prompts')
     .option('-C, --dir <path>', 'Project directory')
     .option('-m, --manifest <path>', 'Path to ai-package.json')
-    .action((args: string[] | undefined, options: SkillsAddOptions) =>
+    .action((args: string[] | undefined, options: SkillsCommandOptions) =>
       runSkillsCommand(args ?? [], options, runtime)
     );
 };
 
 export const runSkillsCommand = async (
   args: string[],
-  options: SkillsAddOptions,
+  options: SkillsCommandOptions,
   runtime: SkillsCommandRuntime
 ): Promise<number> => {
   const [subcommand, ...rest] = args;
@@ -97,12 +110,16 @@ export const runSkillsCommand = async (
     return runSkillsUpdateCommand(rest, options, runtime);
   }
 
+  if (subcommand === 'vercel-migrate') {
+    return runSkillsVercelMigrateCommand(options, runtime);
+  }
+
   if (subcommand === 'search') {
     throw new SilentError('Marketplace search is not implemented yet');
   }
 
   throw new SilentError(
-    'Usage: ai-pkgs skills <add|list|remove|update|search>'
+    'Usage: ai-pkgs skills <add|list|remove|update|search|vercel-migrate>'
   );
 };
 
@@ -137,6 +154,7 @@ export const runSkillsAddCommand = async (
   const cloneRenderer = createCloneProgressRenderer({
     aiMode,
     enabled: registryKind === 'github' || registryKind === 'gitlab',
+    verbose: options.verbose === true,
   });
 
   const resolved = await registry
@@ -195,19 +213,57 @@ export const runSkillsAddCommand = async (
       yes: options.yes === true,
       canPrompt: promptAllowed,
     });
+    const mode = resolveInstallMode(options);
     const result = await installPlan({
       skills: selected.map((skill) => ({
         name: skill.name,
         sourceDir: skill.absolutePath,
       })),
       targets,
-      mode: resolveInstallMode(options),
+      mode,
       conflict: resolveConflictPolicy(options),
       canPrompt: promptAllowed,
+      onProgress:
+        options.verbose === true
+          ? (progress) => {
+              const message = formatProgress(progress);
+              if (aiMode) {
+                process.stdout.write(renderAiStep(message));
+              } else {
+                p.log.info(message);
+              }
+            }
+          : undefined,
     });
 
+    const installSummary = formatInstallResultSummary({
+      installed: result.installed,
+      targets,
+      mode,
+    });
+    if (aiMode) {
+      process.stdout.write(renderAiStep(installSummary));
+    } else {
+      p.note(installSummary, 'Installing skills');
+    }
     for (const skill of result.installed) {
-      p.log.success(`${pc.cyan(skill.name)} -> ${pc.dim(skill.targetDir)}`);
+      if (skill.skipped === true) {
+        const message = `skipped: ${skill.name} -> ${skill.targetDir}`;
+        if (aiMode) {
+          process.stdout.write(renderAiStep(message));
+        } else {
+          p.log.info(
+            `${pc.yellow(skill.name)} skipped -> ${pc.dim(skill.targetDir)}`
+          );
+        }
+      } else if (options.verbose === true) {
+        const message = `installed: ${skill.name} -> ${skill.targetDir}`;
+        if (aiMode) {
+          process.stdout.write(renderAiStep(message));
+        } else {
+          p.log.success(`${pc.cyan(skill.name)} -> ${pc.dim(skill.targetDir)}`);
+        }
+      }
     }
     return 0;
   } finally {
@@ -275,9 +331,11 @@ type CloneProgressRenderer = {
 const createCloneProgressRenderer = ({
   aiMode,
   enabled,
+  verbose,
 }: {
   aiMode: boolean;
   enabled: boolean;
+  verbose: boolean;
 }): CloneProgressRenderer => {
   if (!enabled) {
     return {
@@ -287,14 +345,21 @@ const createCloneProgressRenderer = ({
   }
 
   if (aiMode) {
+    let usedCache = false;
     return {
       onProgress: (event) => {
+        if (event.status === 'cache-hit') {
+          usedCache = true;
+        }
         const message = formatCloneProgress(event);
         if (message) {
           process.stdout.write(renderAiStep(message));
         }
       },
       done: (ref, commitSha) => {
+        if (usedCache) {
+          return;
+        }
         process.stdout.write(renderAiDone(formatCloneDone(ref, commitSha)));
       },
       fail: () => {},
@@ -310,9 +375,23 @@ const createCloneProgressRenderer = ({
 
   const spinner = p.spinner();
   let started = false;
+  let completed = false;
 
   return {
     onProgress: (event) => {
+      if (isCacheProgressEvent(event)) {
+        const message = formatCloneProgress(event);
+        if (started && event.status === 'cache-store') {
+          started = false;
+          completed = true;
+          spinner.stop(formatCloneDone(event.ref, event.commitSha));
+        }
+        if (message) {
+          p.note(message, 'Git cache');
+        }
+        return;
+      }
+
       if (event.status === 'cloning') {
         started = true;
         spinner.start(`Cloning repository: ${event.cloneUrl}`);
@@ -322,10 +401,12 @@ const createCloneProgressRenderer = ({
       const message = formatCloneProgress(event);
       if (message && started) {
         spinner.message(message);
+      } else if (message && verbose) {
+        p.log.info(message);
       }
     },
     done: (ref, commitSha) => {
-      if (started) {
+      if (started && !completed) {
         spinner.stop(formatCloneDone(ref, commitSha));
       }
     },
@@ -336,6 +417,16 @@ const createCloneProgressRenderer = ({
     },
   };
 };
+
+const isCacheProgressEvent = (
+  event: GitProgressEvent
+): event is Extract<
+  GitProgressEvent,
+  { status: 'cache-hit' | 'cache-refresh' | 'cache-store' }
+> =>
+  event.status === 'cache-hit' ||
+  event.status === 'cache-refresh' ||
+  event.status === 'cache-store';
 
 /**
  * Format Git resolve, clone, and cache events for spinner/static output.

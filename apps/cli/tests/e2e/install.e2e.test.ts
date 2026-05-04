@@ -214,7 +214,8 @@ describe('ai-pkgs install e2e', () => {
     ]);
 
     expect(result.code).toBe(0);
-    expect(stripAnsi(result.output)).toContain('◇  Installing skills');
+    expect(stripAnsi(result.output)).toContain('◇  Materializing sources');
+    expect(stripAnsi(result.output)).toContain('copy: 1 skill -> Cursor');
     expect(stripAnsi(result.output)).toContain('◆  Installed 1 skill(s)');
   });
 
@@ -307,6 +308,469 @@ describe('ai-pkgs install e2e', () => {
     ]);
     expect(clearResult.code).toBe(0);
     expect(clearResult.output).toContain('Cleared 1 Git cache entry');
+  });
+
+  it('aggregates ai install progress for repeated cached git sources', async () => {
+    const githubRepo = join(tempRoot, 'ai-install-cache-repo');
+    const projectDir = join(tempRoot, 'ai-install-cache-project');
+    await mkdir(projectDir, { recursive: true });
+    const commit = await createGitRepo(
+      githubRepo,
+      'skills/shared',
+      '# Shared Skill'
+    );
+
+    const gitConfigPath = join(tempRoot, 'ai-install-cache-gitconfig');
+    await writeFile(
+      gitConfigPath,
+      [
+        `[url "${pathToFileURL(githubRepo).href}"]`,
+        '\tinsteadOf = https://github.com/acme/install-cache.git',
+        '',
+      ].join('\n')
+    );
+    await writeFile(
+      join(projectDir, 'ai-package.json'),
+      JSON.stringify(
+        {
+          skills: {
+            first: {
+              source: 'github:acme/install-cache',
+              version: `main@${commit}`,
+              path: 'skills/shared',
+            },
+            second: {
+              source: 'github:acme/install-cache',
+              version: `main@${commit}`,
+              path: 'skills/shared',
+            },
+          },
+        },
+        null,
+        2
+      )
+    );
+
+    await runCliProcess(
+      projectDir,
+      {
+        GIT_CONFIG_GLOBAL: gitConfigPath,
+      },
+      ['--ai', 'install', '--yes', '--agent', 'cursor', '--force']
+    );
+    const cachedResult = await runCliProcess(
+      projectDir,
+      {
+        GIT_CONFIG_GLOBAL: gitConfigPath,
+      },
+      ['--ai', 'install', '--yes', '--agent', 'cursor', '--force']
+    );
+
+    const output = stripAnsi(cachedResult.output);
+    expect(cachedResult.code).toBe(0);
+    expect(output).toContain('◇  reusing Git cache');
+    expect(output).toContain('source: github:acme/install-cache');
+    expect(output).toContain('copy: 2 skills -> Cursor');
+    expect(output).not.toContain('cloning: first');
+    expect(output).not.toContain('cloning: second');
+  });
+
+  it('migrates a legacy Vercel skills lock into ai-package.json', async () => {
+    const githubRepo = join(tempRoot, 'vercel-migrate-repo');
+    const projectDir = join(tempRoot, 'vercel-migrate-project');
+    await mkdir(projectDir, { recursive: true });
+    const commit = await createGitRepo(
+      githubRepo,
+      'skills/migrated',
+      '# Migrated Skill'
+    );
+
+    const gitConfigPath = join(tempRoot, 'vercel-migrate-gitconfig');
+    await writeFile(
+      gitConfigPath,
+      [
+        `[url "${pathToFileURL(githubRepo).href}"]`,
+        '\tinsteadOf = https://github.com/acme/vercel-skills.git',
+        '',
+      ].join('\n')
+    );
+    await writeFile(
+      join(projectDir, 'skills-lock.json'),
+      JSON.stringify(
+        {
+          version: 1,
+          skills: {
+            migrated: {
+              source: 'acme/vercel-skills',
+              sourceType: 'github',
+              skillPath: 'skills/migrated/SKILL.md',
+              computedHash: 'a'.repeat(64),
+            },
+          },
+        },
+        null,
+        2
+      )
+    );
+
+    const result = await runCliProcess(
+      projectDir,
+      {
+        GIT_CONFIG_GLOBAL: gitConfigPath,
+      },
+      ['--ai', 'skills', 'vercel-migrate', '--skip-existing', '--yes']
+    );
+
+    const output = stripAnsi(result.output);
+    expect(result.code).toBe(0);
+    expect(output).toContain('updated:');
+    expect(output).toContain('◆  Vercel skills migration complete');
+    await expect(
+      readFile(join(projectDir, 'skills-lock.json'), 'utf-8')
+    ).resolves.toContain('computedHash');
+    await expect(
+      readFile(join(projectDir, 'ai-package.json'), 'utf-8')
+    ).resolves.toBe(
+      `${JSON.stringify(
+        {
+          skills: {
+            migrated: {
+              source: 'github:acme/vercel-skills',
+              path: 'skills/migrated',
+              version: `main@${commit}`,
+            },
+          },
+        },
+        null,
+        2
+      )}\n`
+    );
+  });
+
+  it('migrates a legacy lock without skillPath by matching discovered names', async () => {
+    const githubRepo = join(tempRoot, 'vercel-migrate-discover-repo');
+    const projectDir = join(tempRoot, 'vercel-migrate-discover-project');
+    await mkdir(projectDir, { recursive: true });
+    const commit = await createGitRepo(
+      githubRepo,
+      'skills/migrated',
+      '# Migrated Skill'
+    );
+
+    const gitConfigPath = join(tempRoot, 'vercel-migrate-discover-gitconfig');
+    await writeFile(
+      gitConfigPath,
+      [
+        `[url "${pathToFileURL(githubRepo).href}"]`,
+        '\tinsteadOf = https://github.com/acme/vercel-discover.git',
+        '',
+      ].join('\n')
+    );
+    await writeFile(
+      join(projectDir, 'skills-lock.json'),
+      JSON.stringify({
+        version: 1,
+        skills: {
+          migrated: {
+            source: 'acme/vercel-discover',
+            sourceType: 'github',
+            computedHash: 'f'.repeat(64),
+          },
+        },
+      })
+    );
+
+    const result = await runCliProcess(
+      projectDir,
+      {
+        GIT_CONFIG_GLOBAL: gitConfigPath,
+      },
+      ['--ai', 'skills', 'vercel-migrate', '--skip-existing', '--yes']
+    );
+
+    expect(result.code).toBe(0);
+    await expect(
+      readFile(join(projectDir, 'ai-package.json'), 'utf-8')
+    ).resolves.toBe(
+      `${JSON.stringify(
+        {
+          skills: {
+            migrated: {
+              source: 'github:acme/vercel-discover',
+              path: 'skills/migrated',
+              version: `main@${commit}`,
+            },
+          },
+        },
+        null,
+        2
+      )}\n`
+    );
+  });
+
+  it('fails non-interactive missing skillPath resolution without a name match', async () => {
+    const githubRepo = join(tempRoot, 'vercel-migrate-no-match-repo');
+    const projectDir = join(tempRoot, 'vercel-migrate-no-match-project');
+    await mkdir(projectDir, { recursive: true });
+    await createGitRepo(githubRepo, 'skills/available', '# Available Skill');
+
+    const gitConfigPath = join(tempRoot, 'vercel-migrate-no-match-gitconfig');
+    await writeFile(
+      gitConfigPath,
+      [
+        `[url "${pathToFileURL(githubRepo).href}"]`,
+        '\tinsteadOf = https://github.com/acme/vercel-no-match.git',
+        '',
+      ].join('\n')
+    );
+    await writeFile(
+      join(projectDir, 'skills-lock.json'),
+      JSON.stringify({
+        version: 1,
+        skills: {
+          missing: {
+            source: 'acme/vercel-no-match',
+            sourceType: 'github',
+            computedHash: '1'.repeat(64),
+          },
+        },
+      })
+    );
+
+    const result = await runCliProcess(
+      projectDir,
+      {
+        GIT_CONFIG_GLOBAL: gitConfigPath,
+      },
+      ['--ai', 'skills', 'vercel-migrate', '--skip-existing', '--yes'],
+      { allowFailure: true }
+    );
+
+    expect(result.code).toBe(1);
+    expect(result.output).toContain(
+      'Could not infer skillPath for legacy skill "missing".'
+    );
+    expect(result.output).toContain('available (skills/available)');
+    await expect(
+      readFile(join(projectDir, 'ai-package.json'), 'utf-8')
+    ).rejects.toThrow();
+  });
+
+  it('migrates and installs the final manifest when requested', async () => {
+    const githubRepo = join(tempRoot, 'vercel-migrate-install-repo');
+    const projectDir = join(tempRoot, 'vercel-migrate-install-project');
+    await mkdir(projectDir, { recursive: true });
+    await createGitRepo(githubRepo, 'skills/migrated', '# Migrated Skill');
+
+    const gitConfigPath = join(tempRoot, 'vercel-migrate-install-gitconfig');
+    await writeFile(
+      gitConfigPath,
+      [
+        `[url "${pathToFileURL(githubRepo).href}"]`,
+        '\tinsteadOf = https://github.com/acme/vercel-install.git',
+        '',
+      ].join('\n')
+    );
+    await writeFile(
+      join(projectDir, 'skills-lock.json'),
+      JSON.stringify({
+        version: 1,
+        skills: {
+          migrated: {
+            source: 'acme/vercel-install',
+            sourceType: 'github',
+            skillPath: 'skills/migrated/SKILL.md',
+            computedHash: 'b'.repeat(64),
+          },
+        },
+      })
+    );
+
+    const result = await runCliProcess(
+      projectDir,
+      {
+        GIT_CONFIG_GLOBAL: gitConfigPath,
+      },
+      [
+        '--ai',
+        'skills',
+        'vercel-migrate',
+        '--install',
+        '--agent',
+        'cursor',
+        '--force',
+        '--yes',
+      ]
+    );
+
+    const output = stripAnsi(result.output);
+    expect(result.code).toBe(0);
+    expect(output).toContain('◆  Vercel skills migration complete');
+    expect(output).toContain('◇  Materializing sources');
+    expect(output).toContain('◆  Installed 1 skill(s)');
+    await expect(
+      readFile(join(projectDir, '.cursor/skills/migrated/SKILL.md'), 'utf-8')
+    ).resolves.toBe('# Migrated Skill');
+  });
+
+  it('fails migration conflicts in ai mode without an explicit policy', async () => {
+    const githubRepo = join(tempRoot, 'vercel-migrate-conflict-repo');
+    const projectDir = join(tempRoot, 'vercel-migrate-conflict-project');
+    await mkdir(projectDir, { recursive: true });
+    await createGitRepo(githubRepo, 'skills/migrated', '# Migrated Skill');
+
+    const gitConfigPath = join(tempRoot, 'vercel-migrate-conflict-gitconfig');
+    await writeFile(
+      gitConfigPath,
+      [
+        `[url "${pathToFileURL(githubRepo).href}"]`,
+        '\tinsteadOf = https://github.com/acme/vercel-conflict.git',
+        '',
+      ].join('\n')
+    );
+    await writeFile(
+      join(projectDir, 'skills-lock.json'),
+      JSON.stringify({
+        version: 1,
+        skills: {
+          migrated: {
+            source: 'acme/vercel-conflict',
+            sourceType: 'github',
+            skillPath: 'skills/migrated/SKILL.md',
+            computedHash: 'c'.repeat(64),
+          },
+        },
+      })
+    );
+    await writeFile(
+      join(projectDir, 'ai-package.json'),
+      JSON.stringify({
+        skills: {
+          migrated: {
+            source: 'file:.',
+            path: 'skills/local',
+          },
+        },
+      })
+    );
+
+    const result = await runCliProcess(
+      projectDir,
+      {
+        GIT_CONFIG_GLOBAL: gitConfigPath,
+      },
+      ['--ai', 'skills', 'vercel-migrate', '--yes'],
+      { allowFailure: true }
+    );
+
+    expect(result.code).toBe(1);
+    expect(result.output).toContain('Pass --force to overwrite');
+    await expect(
+      readFile(join(projectDir, 'ai-package.json'), 'utf-8')
+    ).resolves.toContain('file:.');
+  });
+
+  it('removes the legacy lock only after a successful manifest write', async () => {
+    const githubRepo = join(tempRoot, 'vercel-migrate-remove-repo');
+    const projectDir = join(tempRoot, 'vercel-migrate-remove-project');
+    await mkdir(projectDir, { recursive: true });
+    await createGitRepo(githubRepo, 'skills/migrated', '# Migrated Skill');
+
+    const gitConfigPath = join(tempRoot, 'vercel-migrate-remove-gitconfig');
+    await writeFile(
+      gitConfigPath,
+      [
+        `[url "${pathToFileURL(githubRepo).href}"]`,
+        '\tinsteadOf = https://github.com/acme/vercel-remove.git',
+        '',
+      ].join('\n')
+    );
+    await writeFile(
+      join(projectDir, 'skills-lock.json'),
+      JSON.stringify({
+        version: 1,
+        skills: {
+          migrated: {
+            source: 'acme/vercel-remove',
+            sourceType: 'github',
+            skillPath: 'skills/migrated/SKILL.md',
+            computedHash: 'd'.repeat(64),
+          },
+        },
+      })
+    );
+
+    const result = await runCliProcess(
+      projectDir,
+      {
+        GIT_CONFIG_GLOBAL: gitConfigPath,
+      },
+      [
+        '--ai',
+        'skills',
+        'vercel-migrate',
+        '--remove-lock',
+        '--skip-existing',
+        '--yes',
+      ]
+    );
+
+    expect(result.code).toBe(0);
+    await expect(
+      readFile(join(projectDir, 'ai-package.json'), 'utf-8')
+    ).resolves.toContain('github:acme/vercel-remove');
+    await expect(
+      readFile(join(projectDir, 'skills-lock.json'), 'utf-8')
+    ).rejects.toThrow();
+  });
+
+  it('does not replace malformed existing manifests during migration', async () => {
+    const githubRepo = join(tempRoot, 'vercel-migrate-malformed-repo');
+    const projectDir = join(tempRoot, 'vercel-migrate-malformed-project');
+    await mkdir(projectDir, { recursive: true });
+    await createGitRepo(githubRepo, 'skills/migrated', '# Migrated Skill');
+
+    const gitConfigPath = join(tempRoot, 'vercel-migrate-malformed-gitconfig');
+    await writeFile(
+      gitConfigPath,
+      [
+        `[url "${pathToFileURL(githubRepo).href}"]`,
+        '\tinsteadOf = https://github.com/acme/vercel-malformed.git',
+        '',
+      ].join('\n')
+    );
+    await writeFile(
+      join(projectDir, 'skills-lock.json'),
+      JSON.stringify({
+        version: 1,
+        skills: {
+          migrated: {
+            source: 'acme/vercel-malformed',
+            sourceType: 'github',
+            skillPath: 'skills/migrated/SKILL.md',
+            computedHash: 'e'.repeat(64),
+          },
+        },
+      })
+    );
+    await writeFile(join(projectDir, 'ai-package.json'), '{"skills":');
+
+    const result = await runCliProcess(
+      projectDir,
+      {
+        GIT_CONFIG_GLOBAL: gitConfigPath,
+      },
+      ['--ai', 'skills', 'vercel-migrate', '--force', '--yes'],
+      { allowFailure: true }
+    );
+
+    expect(result.code).toBe(1);
+    await expect(
+      readFile(join(projectDir, 'ai-package.json'), 'utf-8')
+    ).resolves.toBe('{"skills":');
+    await expect(
+      readFile(join(projectDir, 'skills-lock.json'), 'utf-8')
+    ).resolves.toContain('computedHash');
   });
 
   it('installs pinned github and gitlab skills through the CLI', async () => {

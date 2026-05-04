@@ -52,6 +52,22 @@ ai-pkgs skills add ./local-skills \
   --yes
 ```
 
+Migrate a legacy Vercel `skills-lock.json` into `ai-package.json`:
+
+```bash
+ai-pkgs skills vercel-migrate --skip-existing
+```
+
+To migrate and then install the full manifest:
+
+```bash
+ai-pkgs skills vercel-migrate \
+  --install \
+  --agent cursor \
+  --force \
+  --yes
+```
+
 Run in strict AI/automation mode:
 
 ```bash
@@ -77,6 +93,12 @@ selected agent targets. It does not mutate the manifest.
 entries to `ai-package.json`, then installs them. Add `--install-only` for
 one-off installs that skip all manifest reads and writes.
 
+`skills vercel-migrate` reads legacy Vercel `skills-lock.json` files and writes
+their GitHub skills into `ai-package.json`. It keeps the lock file by default;
+pass `--remove-lock` to delete it after a successful manifest write. Conflicts
+prompt in TTY mode, or require `--force` / `--skip-existing` in non-interactive
+mode.
+
 `skills list`, `skills remove`, and `skills update` maintain the manifest.
 Marketplace `skills search` is reserved for the backend marketplace API.
 
@@ -98,6 +120,10 @@ ai-pkgs skills add ./local-skills --registry file
 
 Git sources are cloned and pinned as `<ref>@<sha>` in `ai-package.json`. Local
 file sources preserve their local source root.
+
+Legacy Vercel migrations support `sourceType: "github"` entries. The old
+`computedHash` field is validated as legacy lock metadata, but the manifest uses
+Git pins instead, so it is not written to `ai-package.json`.
 
 ## Agent Targets
 
@@ -140,7 +166,7 @@ The CLI follows a small boundary-oriented architecture:
 - `src/cli.ts` builds the `cac` parser, installs custom help, and delegates
 execution to `src/cli/runtime.ts`.
 - `src/commands/*` registers command surfaces. `skills [...args]` is a dispatcher
-for `add`, `list`, `remove`, `update`, and `search`.
+for `add`, `list`, `remove`, `update`, `vercel-migrate`, and `search`.
 - `src/cli/help.ts` renders help only. Help content lives in
 `src/cli/help-data/*`.
 - `src/cli/ai-mode.ts` owns strict AI/non-interactive mode helpers.
@@ -174,6 +200,16 @@ ai-package.json
   -> installSkills()
   -> registry.materialize()
   -> installPlan()
+```
+
+High-level data flow for `skills vercel-migrate`:
+
+```text
+skills-lock.json
+  -> parse legacy GitHub entries
+  -> resolve GitHub default-branch pins
+  -> merge with ai-package.json
+  -> optionally run install
 ```
 
 ## Development
@@ -220,4 +256,3 @@ The package `files` field intentionally publishes only:
 
 - `dist`
 - `README.md`
-

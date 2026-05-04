@@ -11,10 +11,12 @@ import type { GitProgressEvent } from './git';
 import { installSkills } from './install';
 import { parseAiPackageManifest } from './manifest';
 import type {
+  AgentTarget,
   AiPackageManifest,
   ConflictPolicy,
   InstallMode,
   InstallProgress,
+  InstalledSkill,
 } from './types';
 
 export type InstallCommandOptions = {
@@ -29,6 +31,7 @@ export type InstallCommandOptions = {
   ai?: boolean;
   project?: boolean;
   refresh?: boolean;
+  verbose?: boolean;
 };
 
 export type ReadTextFile = (
@@ -75,6 +78,7 @@ export const runInstallCommand = async (
   try {
     const aiMode = isAICommand(options);
     const promptAllowed = canPrompt(options);
+    const verbose = options.verbose === true;
     const projectDir = resolve(runtime.cwd, options.dir ?? '.');
     const manifestPath = resolveManifestPath(
       projectDir,
@@ -112,26 +116,33 @@ export const runInstallCommand = async (
       yes: options.yes === true,
       canPrompt: promptAllowed,
     });
-    const spinner = aiMode ? undefined : p.spinner();
+    const mode = resolveInstallMode(options);
+    const conflict = resolveConflictPolicy(options);
     if (aiMode) {
-      process.stdout.write(renderAiStep('Installing skills'));
+      process.stdout.write(renderAiStep('Materializing sources'));
     } else {
-      spinner?.start('Installing skills');
+      p.note(
+        'Resolving declared package sources and Git cache entries.',
+        'Materializing sources'
+      );
     }
     const result = await runtime.install({
       manifest,
       projectDir,
       targets,
-      mode: resolveInstallMode(options),
-      conflict: resolveConflictPolicy(options),
+      mode,
+      conflict,
       canPrompt: promptAllowed,
       refresh: options.refresh === true,
       onProgress: (progress) => {
+        if (!verbose) {
+          return;
+        }
         const message = formatProgress(progress);
         if (aiMode) {
           process.stdout.write(renderAiStep(message));
         } else {
-          spinner?.message(message);
+          p.log.info(message);
         }
       },
       onGitProgress: (progress) => {
@@ -142,20 +153,32 @@ export const runInstallCommand = async (
         if (aiMode) {
           process.stdout.write(renderAiStep(message));
         } else {
-          spinner?.message(message);
+          p.note(message, 'Git cache');
         }
       },
     });
 
+    const installedCount = countInstalled(result.installed);
+    const installSummary = formatInstallResultSummary({
+      installed: result.installed,
+      targets,
+      mode,
+    });
     if (aiMode) {
+      process.stdout.write(renderAiStep(installSummary));
       process.stdout.write(
-        renderAiDone(`Installed ${result.installed.length} skill(s)`)
+        renderAiDone(`Installed ${installedCount} skill(s)`)
       );
     } else {
-      spinner?.stop(`Installed ${result.installed.length} skill(s)`);
+      p.note(installSummary, 'Installing skills');
+      p.log.success(`Installed ${installedCount} skill(s)`);
     }
     for (const skill of result.installed) {
-      p.log.success(`${pc.cyan(skill.name)} -> ${pc.dim(skill.targetDir)}`);
+      if (skill.skipped === true) {
+        writeInstallDetail(skill, aiMode, 'skipped');
+      } else if (verbose) {
+        writeInstallDetail(skill, aiMode, 'installed');
+      }
     }
     p.outro(pc.green('Skills install complete'));
     return 0;
@@ -209,6 +232,29 @@ export const formatProgress = (progress: InstallProgress): string =>
     .with('installed', () => `installed: ${progress.name}`)
     .exhaustive();
 
+export const formatInstallResultSummary = ({
+  installed,
+  targets,
+  mode,
+}: {
+  installed: InstalledSkill[];
+  targets: AgentTarget[];
+  mode: InstallMode;
+}): string => {
+  const installedCount = countInstalled(installed);
+  const skippedCount = installed.length - installedCount;
+  const targetSummary = formatTargetSummary(targets);
+  const lines = [
+    `${mode}: ${installedCount} ${formatSkillUnit(installedCount)} -> ${targetSummary}`,
+  ];
+
+  if (skippedCount > 0) {
+    lines.push(`skipped: ${skippedCount} ${formatSkillUnit(skippedCount)}`);
+  }
+
+  return lines.join('\n');
+};
+
 export const formatGitProgress = (progress: GitProgressEvent): string => {
   if (progress.status === 'cache-hit') {
     return [
@@ -226,6 +272,37 @@ export const formatGitProgress = (progress: GitProgressEvent): string => {
   }
   return '';
 };
+
+const writeInstallDetail = (
+  skill: InstalledSkill,
+  aiMode: boolean,
+  status: 'installed' | 'skipped'
+) => {
+  const message = `${status}: ${skill.name} -> ${skill.targetDir}`;
+  if (aiMode) {
+    process.stdout.write(renderAiStep(message));
+    return;
+  }
+
+  if (status === 'skipped') {
+    p.log.info(
+      `${pc.yellow(skill.name)} skipped -> ${pc.dim(skill.targetDir)}`
+    );
+  } else {
+    p.log.success(`${pc.cyan(skill.name)} -> ${pc.dim(skill.targetDir)}`);
+  }
+};
+
+const countInstalled = (installed: InstalledSkill[]): number =>
+  installed.filter((skill) => skill.skipped !== true).length;
+
+const formatTargetSummary = (targets: AgentTarget[]): string =>
+  targets
+    .map((target) => `${target.displayName} (${target.skillsDir})`)
+    .join(', ');
+
+const formatSkillUnit = (count: number): string =>
+  count === 1 ? 'skill' : 'skills';
 
 export const formatInstallError = (error: unknown): string => {
   if (error instanceof Error) {

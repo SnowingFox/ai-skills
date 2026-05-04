@@ -71,9 +71,6 @@ export const installSkills = async ({
 
   try {
     for (const skill of manifest.skills) {
-      if (skill.provider !== 'file') {
-        onProgress?.({ name: skill.name, status: 'cloning' });
-      }
       const registry = getRegistry(registries, skill.provider);
       const cacheKey = [
         skill.provider,

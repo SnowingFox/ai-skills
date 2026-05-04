@@ -44,6 +44,10 @@ const SKILLS_GROUP_EXAMPLES: HelpExampleGroup[] = [
     title: 'Inspect and maintain the manifest',
     examples: [
       [
+        'ai-pkgs skills vercel-migrate --skip-existing',
+        'Migrate legacy Vercel skills-lock.json entries into ai-package.json.',
+      ],
+      [
         'ai-pkgs skills list',
         'List skills currently declared in ai-package.json.',
       ],
@@ -167,6 +171,26 @@ const SKILLS_UPDATE_EXAMPLES: HelpExampleGroup[] = [
   },
 ];
 
+const SKILLS_VERCEL_MIGRATE_EXAMPLES: HelpExampleGroup[] = [
+  {
+    title: 'Migrate legacy Vercel locks',
+    examples: [
+      [
+        'ai-pkgs skills vercel-migrate --skip-existing',
+        'Read skills-lock.json, add missing GitHub skills to ai-package.json, and keep existing manifest entries.',
+      ],
+      [
+        'ai-pkgs skills vercel-migrate --force --remove-lock',
+        'Overwrite conflicting manifest entries and remove the old lock file after a successful write.',
+      ],
+      [
+        'ai-pkgs skills vercel-migrate --install --agent cursor --force --yes',
+        'Migrate, then install the full ai-package.json into Cursor without prompts.',
+      ],
+    ],
+  },
+];
+
 const SKILLS_SEARCH_EXAMPLES: HelpExampleGroup[] = [
   {
     title: 'Marketplace discovery',
@@ -189,6 +213,8 @@ const SKILLS_SEARCH_EXAMPLES: HelpExampleGroup[] = [
  * - `ai-pkgs skills add <source> --install-only` uses the same discovery and
  *   install pipeline, but deliberately skips all manifest writes for one-off
  *   installs.
+ * - `ai-pkgs skills vercel-migrate` migrates legacy Vercel
+ *   `skills-lock.json` declarations into `ai-package.json`.
  *
  * The group help intentionally repeats important add/install flags so users do
  * not have to jump between `skills --help` and `skills add --help` to discover
@@ -206,6 +232,10 @@ export const SKILLS_GROUP_COMMAND: HelpCommand = {
     ['skills list [options]', 'List manifest skills'],
     ['skills remove <skill...> [options]', 'Remove skills from the manifest'],
     ['skills update [skill...] [options]', 'Update pinned Git skill versions'],
+    [
+      'skills vercel-migrate [options]',
+      'Migrate Vercel skills-lock.json into ai-package.json',
+    ],
     ['skills search [query]', 'Search marketplace skills'],
   ],
   optionGroups: [
@@ -217,7 +247,8 @@ export const SKILLS_GROUP_COMMAND: HelpCommand = {
         ['--path <path>', 'Path to scan inside the source'],
         ['-s, --skill <skill>', 'Skill name to add (repeatable)'],
         ['--all', 'Select all discovered skills'],
-        ['--refresh', 'Refresh Git cache before installing'],
+        ['--refresh', 'Refresh Git cache before installing or migrating'],
+        ['--lockfile <path>', 'Path to legacy skills-lock.json'],
       ],
     },
     {
@@ -229,8 +260,10 @@ export const SKILLS_GROUP_COMMAND: HelpCommand = {
         ['--force', 'Overwrite existing skill directories'],
         ['--skip-existing', 'Skip existing skill directories'],
         ['--install-only', 'Install without writing ai-package.json'],
+        ['--install', 'Install ai-package.json after migrating'],
         ['--project', 'Install into project-local agent skill directories'],
         ['--global', 'Install into global agent skill directories'],
+        ['--verbose', 'Show per-skill install progress and paths'],
         ['-y, --yes', 'Skip confirmation prompts'],
         ['--ai', 'Strict non-interactive mode for AI/automation'],
       ],
@@ -240,6 +273,7 @@ export const SKILLS_GROUP_COMMAND: HelpCommand = {
       options: [
         ['-C, --dir <path>', 'Project directory'],
         ['-m, --manifest <path>', 'Path to ai-package.json'],
+        ['--remove-lock', 'Remove skills-lock.json after migration'],
       ],
     },
   ],
@@ -249,6 +283,7 @@ export const SKILLS_GROUP_COMMAND: HelpCommand = {
     '`--install-only` cannot be combined with `--manifest` because no manifest is read or written.',
     '`skills add` prompts for project/global scope in TTY; non-TTY and `--ai` default to project unless `--global` is passed.',
     '`--all` selects every discovered skill and cannot be combined with `--skill`.',
+    '`skills vercel-migrate` supports legacy GitHub lock entries only; use `--force` or `--skip-existing` for non-interactive conflicts.',
     '`--ai` disables all prompts; pass `--agent`, `--skill`, `--force`, `--skip-existing`, or `--yes` explicitly when needed.',
   ],
   options: [],
@@ -289,6 +324,7 @@ export const SKILLS_COMMANDS: HelpCommand[] = [
           ['--install-only', 'Install without writing ai-package.json'],
           ['--project', 'Install into project-local agent skill directories'],
           ['--global', 'Install into global agent skill directories'],
+          ['--verbose', 'Show per-skill install progress and paths'],
           ['-y, --yes', 'Skip confirmation prompts'],
           ['--ai', 'Strict non-interactive mode for AI/automation'],
         ],
@@ -333,6 +369,51 @@ export const SKILLS_COMMANDS: HelpCommand[] = [
       ['-m, --manifest <path>', 'Path to ai-package.json'],
     ],
     exampleGroups: SKILLS_UPDATE_EXAMPLES,
+  },
+  {
+    name: 'skills vercel-migrate',
+    description: 'Migrate Vercel skills-lock.json into ai-package.json',
+    usageText: 'skills vercel-migrate [options]',
+    optionGroups: [
+      {
+        title: 'Migration files',
+        options: [
+          ['--lockfile <path>', 'Path to legacy skills-lock.json'],
+          ['-m, --manifest <path>', 'Path to ai-package.json'],
+          ['-C, --dir <path>', 'Project directory'],
+          ['--remove-lock', 'Remove skills-lock.json after migration'],
+        ],
+      },
+      {
+        title: 'Conflict behavior',
+        options: [
+          ['--force', 'Overwrite existing manifest entries'],
+          ['--skip-existing', 'Keep existing manifest entries'],
+          ['--refresh', 'Refresh Git cache while resolving GitHub pins'],
+          ['--ai', 'Strict non-interactive mode for AI/automation'],
+        ],
+      },
+      {
+        title: 'Optional install',
+        options: [
+          ['--install', 'Install ai-package.json after migrating'],
+          ['-a, --agent <agent>', 'Target agent (repeatable)'],
+          ['--copy', 'Copy skill directories (default)'],
+          ['--link', 'Symlink skill directories'],
+          ['--project', 'Install into project-local agent skill directories'],
+          ['--verbose', 'Show per-skill install progress and paths'],
+          ['-y, --yes', 'Skip confirmation prompts'],
+        ],
+      },
+    ],
+    exampleGroups: SKILLS_VERCEL_MIGRATE_EXAMPLES,
+    notes: [
+      'Only legacy GitHub lock entries are supported.',
+      '`computedHash` is legacy integrity data and is not written to ai-package.json.',
+      'Non-interactive conflicts require `--force` or `--skip-existing`.',
+      '`--install` runs the normal install flow for the full migrated ai-package.json.',
+    ],
+    options: [],
   },
   {
     name: 'skills search',

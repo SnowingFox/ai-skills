@@ -26,6 +26,8 @@ const silentOutput = new Writable({
   },
 });
 
+const ANSI_RE = new RegExp(`${String.fromCharCode(27)}\\[[0-9;]*m`, 'g');
+
 /**
  * Searchable multiselect for long lists like agent targets.
  *
@@ -60,16 +62,7 @@ export const searchMultiselect = async <T>({
     const selected = new Set<T>(initialSelected);
 
     const filteredItems = () => {
-      const normalized = query.trim().toLowerCase();
-      if (!normalized) {
-        return items;
-      }
-
-      return items.filter((item) =>
-        [item.label, item.hint, String(item.value)]
-          .filter(Boolean)
-          .some((part) => part?.toLowerCase().includes(normalized))
-      );
+      return filterSearchMultiselectItems(items, query);
     };
 
     const clear = () => {
@@ -102,7 +95,7 @@ export const searchMultiselect = async <T>({
           `${pc.dim('│')}  ${pc.dim('Search:')} ${query}${pc.inverse(' ')}`
         );
         const hint = enableToggleAll
-          ? 'Type to filter, ↑↓ move, space select, a toggle all, enter confirm'
+          ? 'Type to filter, ↑↓ move, space select, option+a toggle all, enter confirm'
           : 'Type to filter, ↑↓ move, space select, enter confirm';
         lines.push(`${pc.dim('│')}  ${pc.dim(hint)}`);
         lines.push(pc.dim('│'));
@@ -155,7 +148,7 @@ export const searchMultiselect = async <T>({
       }
 
       process.stdout.write(`${lines.join('\n')}\n`);
-      lastRenderHeight = lines.length;
+      lastRenderHeight = measureRenderedRows(lines, process.stdout.columns);
     };
 
     const cleanup = () => {
@@ -213,8 +206,8 @@ export const searchMultiselect = async <T>({
         render();
         return;
       }
-      if (enableToggleAll && key.name === 'a') {
-        const visibleValues = visible.map((item) => item.value);
+      if (enableToggleAll && isToggleAllKey(key)) {
+        const visibleValues = getToggleAllValues(visible);
         const allVisibleSelected =
           visibleValues.length > 0 &&
           visibleValues.every((value) => selected.has(value));
@@ -247,3 +240,52 @@ export const searchMultiselect = async <T>({
     render();
   });
 };
+
+/**
+ * Filter prompt items by label, hint, or raw value text.
+ */
+export const filterSearchMultiselectItems = <T>(
+  items: SearchMultiselectItem<T>[],
+  query: string
+): SearchMultiselectItem<T>[] => {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) {
+    return items;
+  }
+
+  return items.filter((item) =>
+    [item.label, item.hint, String(item.value)]
+      .filter(Boolean)
+      .some((part) => part?.toLowerCase().includes(normalized))
+  );
+};
+
+/**
+ * Count terminal rows occupied by rendered prompt lines.
+ *
+ * Long descriptions wrap in the terminal, so clearing by logical line count
+ * leaves stale wrapped rows behind. ANSI color sequences are ignored.
+ */
+export const measureRenderedRows = (lines: string[], columns = 80): number => {
+  const width = Math.max(columns, 1);
+  return lines.reduce((rows, line) => {
+    const visibleWidth = line.replace(ANSI_RE, '').length;
+    return rows + Math.max(1, Math.ceil(visibleWidth / width));
+  }, 0);
+};
+
+/**
+ * Detect option/meta+a without stealing plain `a` from search input.
+ */
+export const isToggleAllKey = (key: readline.Key): boolean => {
+  if (key.meta === true && key.name === 'a') {
+    return true;
+  }
+  return key.sequence === '\x1ba' || key.sequence === 'å' || key.name === 'å';
+};
+
+/**
+ * Return the values affected by toggle-all for the current filtered set.
+ */
+export const getToggleAllValues = <T>(items: SearchMultiselectItem<T>[]): T[] =>
+  items.map((item) => item.value);

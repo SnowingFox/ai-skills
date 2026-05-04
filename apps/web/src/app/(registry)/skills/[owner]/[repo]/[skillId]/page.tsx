@@ -1,3 +1,4 @@
+import { InstallCommand } from '@/components/skills/install-command';
 import { SkillMarkdown } from '@/components/skills/skill-markdown';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -127,11 +128,7 @@ export default async function SkillDetailPage({
           <div className="min-w-0 overflow-hidden lg:col-span-9">
             <section className="my-10 flex flex-col gap-2">
               <SectionLabel>Installation</SectionLabel>
-              <div className="flex min-w-0 items-center gap-2 rounded-md bg-muted px-3 py-2 font-mono text-muted-foreground text-sm">
-                <code className="truncate">
-                  <span className="opacity-50">$</span> {detail.installCommand}
-                </code>
-              </div>
+              <InstallCommand command={detail.installCommand} />
             </section>
 
             <section className="mb-8">

@@ -200,7 +200,7 @@ export function parseSkillDownloadPayload(
     name,
     title: extractTitle(content, name),
     description,
-    installCommand: `npx skills add ${repositoryUrl} --skill ${params.skillId}`,
+    installCommand: `npx ai-pkgs skills add ${repositoryUrl} --skill ${params.skillId}`,
     repositoryUrl,
     skillMarkdown: skillFile.contents,
     markdownContent: content,
