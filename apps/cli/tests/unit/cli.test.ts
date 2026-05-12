@@ -4,6 +4,12 @@ import {
   formatCliError,
   resolveCliResult,
   runCli,
+} from '../../src/cli/app';
+import {
+  formatUnsupportedNodeVersionMessage,
+  isSupportedNodeVersion,
+  parseNodeVersion,
+  runCli as runBootstrapCli,
 } from '../../src/cli';
 import {
   createInstallCommandRuntime,
@@ -416,5 +422,55 @@ describe('cli result helpers', () => {
   it('formats Error and non-Error thrown values', () => {
     expect(formatCliError(new Error('boom'))).toBe('boom');
     expect(formatCliError('plain failure')).toBe('plain failure');
+  });
+});
+
+describe('node runtime guard', () => {
+  it('parses plain and v-prefixed node versions', () => {
+    expect(parseNodeVersion('20.19.0')).toEqual({
+      major: 20,
+      minor: 19,
+      patch: 0,
+    });
+    expect(parseNodeVersion('v22.12.1')).toEqual({
+      major: 22,
+      minor: 12,
+      patch: 1,
+    });
+    expect(parseNodeVersion('not-node')).toBeUndefined();
+  });
+
+  it('requires Node.js 20.19.0 or newer', () => {
+    expect(isSupportedNodeVersion('18.19.1')).toBe(false);
+    expect(isSupportedNodeVersion('20.18.0')).toBe(false);
+    expect(isSupportedNodeVersion('20.19.0')).toBe(true);
+    expect(isSupportedNodeVersion('22.12.0')).toBe(true);
+  });
+
+  it('formats a clear upgrade message for unsupported runtimes', () => {
+    expect(formatUnsupportedNodeVersionMessage('18.19.1')).toContain(
+      'ai-pkgs requires Node.js >= 20.19.0.'
+    );
+    expect(formatUnsupportedNodeVersionMessage('18.19.1')).toContain(
+      'Current Node.js version: 18.19.1.'
+    );
+  });
+
+  it('returns a failure code before running on unsupported Node.js', async () => {
+    const errors: string[] = [];
+    vi.spyOn(process.stderr, 'write').mockImplementation((chunk) => {
+      errors.push(String(chunk));
+      return true;
+    });
+
+    const code = await runBootstrapCli(
+      ['node', 'ai-pkgs'],
+      '/repo',
+      {},
+      '18.19.1'
+    );
+
+    expect(code).toBe(1);
+    expect(errors.join('')).toContain('Node.js >= 20.19.0');
   });
 });

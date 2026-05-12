@@ -6,6 +6,7 @@ import { renderLogo } from '../ui/banner';
 import { getAgent, listAgents } from './registry';
 import type { ResolvedAgentTarget } from './types';
 
+/** Inputs for resolving CLI `--agent` flags or interactive selection into targets. */
 export type ResolveAgentTargetsOptions = {
   agentIds?: string[];
   cwd: string;
@@ -102,11 +103,25 @@ const promptForAgents = async ({
   return selected;
 };
 
+/**
+ * Build the final filesystem path for one skill inside a target agent directory.
+ *
+ * @example
+ * buildSkillTargetPath(target, 'My Skill'); // '/repo/.cursor/skills/my-skill'
+ */
 export const buildSkillTargetPath = (
   target: ResolvedAgentTarget,
   skillName: string
 ): string => join(target.skillsDir, sanitizeInstallName(skillName));
 
+/**
+ * Normalize a skill name into a safe filesystem directory segment.
+ * Lowercases, replaces non-alphanumeric characters with hyphens, and
+ * trims leading/trailing dots or hyphens.
+ *
+ * @example
+ * sanitizeInstallName('My Cool Skill!'); // 'my-cool-skill'
+ */
 export const sanitizeInstallName = (name: string): string =>
   name
     .toLowerCase()

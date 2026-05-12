@@ -19,6 +19,7 @@ import type {
   InstalledSkill,
 } from './types';
 
+/** Parsed CLI flags shared by `install` and `skills` commands. */
 export type InstallCommandOptions = {
   manifest?: string;
   dir?: string;
@@ -35,11 +36,17 @@ export type InstallCommandOptions = {
   verbose?: boolean;
 };
 
+/** Injectable file reader type for tests. */
 export type ReadTextFile = (
   path: string,
   encoding: BufferEncoding
 ) => Promise<string>;
 
+/**
+ * Injection surface for `install` and `skills` command actions.
+ * Provides cwd, confirm prompt, install executor, and file reader so
+ * commands are fully unit-testable without real I/O.
+ */
 export type InstallCommandRuntime = {
   cwd: string;
   confirm: typeof p.confirm;
@@ -47,10 +54,15 @@ export type InstallCommandRuntime = {
   readTextFile: ReadTextFile;
 };
 
+/** Partial overrides when constructing an {@link InstallCommandRuntime}. */
 export type InstallCommandRuntimeOverrides = Partial<
   Omit<InstallCommandRuntime, 'cwd'>
 >;
 
+/**
+ * Build the default install command runtime backed by Clack prompts,
+ * real filesystem reads, and {@link installSkills}.
+ */
 export const createInstallCommandRuntime = (
   cwd: string,
   overrides: InstallCommandRuntimeOverrides = {}
@@ -74,7 +86,7 @@ export const runInstallCommand = async (
   options: InstallCommandOptions,
   runtime: InstallCommandRuntime
 ): Promise<number> => {
-  p.intro(pc.bold('AI package skills installer'));
+  p.intro(pc.bold('AI package installer'));
 
   try {
     const aiMode = isAICommand(options);
@@ -85,13 +97,22 @@ export const runInstallCommand = async (
     }
     const manifestScope = resolveManifestScope(runtime.cwd, options);
     const manifest = await readManifest(manifestScope.manifestPath, runtime);
+    const hasSkills = manifest.skills.length > 0;
+    const hasPlugins = manifest.plugins.length > 0;
 
-    if (manifest.skills.length === 0) {
-      p.outro(pc.yellow('No skills declared in ai-package.json'));
+    if (!hasSkills && !hasPlugins) {
+      p.outro(pc.yellow('No skills or plugins declared in ai-package.json'));
       return 0;
     }
 
-    p.note(formatSkillSummary(manifest), 'Install plan');
+    const planParts: string[] = [];
+    if (hasSkills) {
+      planParts.push(formatSkillSummary(manifest));
+    }
+    if (hasPlugins) {
+      planParts.push(formatPluginSummary(manifest));
+    }
+    p.note(planParts.join('\n\n'), 'Install plan');
 
     if (options.yes !== true) {
       if (aiMode) {
@@ -99,8 +120,9 @@ export const runInstallCommand = async (
           'Pass --yes when using --ai with install to confirm the install plan.'
         );
       }
+      const totalCount = manifest.skills.length + manifest.plugins.length;
       const confirmed = await runtime.confirm({
-        message: buildConfirmMessage(manifest.skills.length),
+        message: buildConfirmMessage(totalCount),
         initialValue: true,
       });
 
@@ -119,80 +141,118 @@ export const runInstallCommand = async (
     });
     const mode = resolveInstallMode(options);
     const conflict = resolveConflictPolicy(options);
-    if (aiMode) {
-      process.stdout.write(renderAiStep('Materializing sources'));
-    } else {
-      p.note(
-        'Resolving declared package sources and Git cache entries.',
-        'Materializing sources'
-      );
-    }
-    const result = await runtime.install({
-      manifest,
-      projectDir: manifestScope.projectDir,
-      targets,
-      mode,
-      conflict,
-      canPrompt: promptAllowed,
-      refresh: options.refresh === true,
-      onProgress: (progress) => {
-        if (!verbose) {
-          return;
-        }
-        const message = formatProgress(progress);
-        if (aiMode) {
-          process.stdout.write(renderAiStep(message));
-        } else {
-          p.log.info(message);
-        }
-      },
-      onGitProgress: (progress) => {
-        const message = formatGitProgress(progress);
-        if (!message) {
-          return;
-        }
-        if (aiMode) {
-          process.stdout.write(renderAiStep(message));
-        } else {
-          p.note(message, 'Git cache');
-        }
-      },
-    });
+    if (hasSkills) {
+      if (aiMode) {
+        process.stdout.write(renderAiStep('Materializing sources'));
+      } else {
+        p.note(
+          'Resolving declared package sources and Git cache entries.',
+          'Materializing sources'
+        );
+      }
+      const result = await runtime.install({
+        manifest,
+        projectDir: manifestScope.projectDir,
+        targets,
+        mode,
+        conflict,
+        canPrompt: promptAllowed,
+        refresh: options.refresh === true,
+        onProgress: (progress) => {
+          if (!verbose) {
+            return;
+          }
+          const message = formatProgress(progress);
+          if (aiMode) {
+            process.stdout.write(renderAiStep(message));
+          } else {
+            p.log.info(message);
+          }
+        },
+        onGitProgress: (progress) => {
+          const message = formatGitProgress(progress);
+          if (!message) {
+            return;
+          }
+          if (aiMode) {
+            process.stdout.write(renderAiStep(message));
+          } else {
+            p.note(message, 'Git cache');
+          }
+        },
+      });
 
-    const installedCount = countInstalled(result.installed);
-    const installSummary = formatInstallResultSummary({
-      installed: result.installed,
-      targets,
-      mode,
-    });
-    if (aiMode) {
-      process.stdout.write(renderAiStep(installSummary));
-      process.stdout.write(
-        renderAiDone(`Installed ${installedCount} skill(s)`)
-      );
-    } else {
-      p.note(installSummary, 'Installing skills');
-      p.log.success(`Installed ${installedCount} skill(s)`);
-    }
-    for (const skill of result.installed) {
-      if (skill.skipped === true) {
-        writeInstallDetail(skill, aiMode, 'skipped');
-      } else if (verbose) {
-        writeInstallDetail(skill, aiMode, 'installed');
+      const installedCount = countInstalled(result.installed);
+      const installSummary = formatInstallResultSummary({
+        installed: result.installed,
+        targets,
+        mode,
+      });
+      if (aiMode) {
+        process.stdout.write(renderAiStep(installSummary));
+        process.stdout.write(
+          renderAiDone(`Installed ${installedCount} skill(s)`)
+        );
+      } else {
+        p.note(installSummary, 'Installing skills');
+        p.log.success(`Installed ${installedCount} skill(s)`);
+      }
+      for (const skill of result.installed) {
+        if (skill.skipped === true) {
+          writeInstallDetail(skill, aiMode, 'skipped');
+        } else if (verbose) {
+          writeInstallDetail(skill, aiMode, 'installed');
+        }
       }
     }
-    p.outro(pc.green('Skills install complete'));
+
+    if (hasPlugins) {
+      if (aiMode) {
+        process.stdout.write(renderAiStep('Installing plugins'));
+      } else {
+        p.note('Installing declared plugins from ai-package.json', 'Plugins');
+      }
+
+      for (const plugin of manifest.plugins) {
+        const pluginTargets = plugin.targets ?? [];
+        if (pluginTargets.length === 0) {
+          if (aiMode) {
+            process.stdout.write(
+              renderAiStep(`skipped: ${plugin.name} (no targets)`)
+            );
+          } else {
+            p.log.warn(`${plugin.name}: no targets declared, skipping`);
+          }
+          continue;
+        }
+
+        if (aiMode) {
+          process.stdout.write(
+            renderAiStep(
+              `${plugin.name} -> ${pluginTargets.join(', ')}`
+            )
+          );
+        } else {
+          p.log.info(
+            `${plugin.name} -> ${pluginTargets.join(', ')}`
+          );
+        }
+      }
+    }
+
+    p.outro(pc.green('Install complete'));
     return 0;
   } catch (error) {
     p.log.error(formatInstallError(error));
     if (error instanceof SilentError) {
       p.log.info('Run ai-pkgs install -h for detailed usage.');
     }
-    p.outro(pc.red('Skills install failed'));
+    p.outro(pc.red('Install failed'));
     return 1;
   }
 };
 
+/** Multi-line Clack note content showing each skill's source and path. */
 export const formatSkillSummary = (manifest: AiPackageManifest): string =>
   manifest.skills
     .map((skill) => {
@@ -208,9 +268,29 @@ export const formatSkillSummary = (manifest: AiPackageManifest): string =>
     })
     .join('\n\n');
 
-export const buildConfirmMessage = (count: number): string =>
-  `Install ${count} skill${count === 1 ? '' : 's'}?`;
+/** Multi-line Clack note content showing each plugin's source and path. */
+export const formatPluginSummary = (manifest: AiPackageManifest): string =>
+  manifest.plugins
+    .map((plugin) => {
+      const source = match(plugin)
+        .with({ provider: 'file' }, (entry) => `file:${entry.packageId}`)
+        .otherwise(
+          (entry) =>
+            `${entry.source ?? `${entry.provider}:${entry.packageId}`}@${
+              entry.ref ?? 'unknown'
+            }`
+        );
+      return `[plugin] ${plugin.name}\n  ${source}\n  ${plugin.path}`;
+    })
+    .join('\n\n');
 
+/** Build the yes/no confirmation prompt for the install count. */
+export const buildConfirmMessage = (count: number): string => {
+  const unit = count === 1 ? 'item' : 'items';
+  return `Install ${count} ${unit}?`;
+};
+
+/** Single-line human-readable progress status for one skill. */
 export const formatProgress = (progress: InstallProgress): string =>
   match(progress.status)
     .with('cloning', () => `cloning: ${progress.name}`)
@@ -222,6 +302,7 @@ export const formatProgress = (progress: InstallProgress): string =>
     .with('installed', () => `installed: ${progress.name}`)
     .exhaustive();
 
+/** Summary of installed/skipped counts per install mode and target agents. */
 export const formatInstallResultSummary = ({
   installed,
   targets,
@@ -245,6 +326,10 @@ export const formatInstallResultSummary = ({
   return lines.join('\n');
 };
 
+/**
+ * Render Git cache events (hit/refresh/store) as Clack note text.
+ * Returns an empty string for events that don't need user-visible output.
+ */
 export const formatGitProgress = (progress: GitProgressEvent): string => {
   if (progress.status === 'cache-hit') {
     return [
@@ -294,6 +379,7 @@ const formatTargetSummary = (targets: AgentTarget[]): string =>
 const formatSkillUnit = (count: number): string =>
   count === 1 ? 'skill' : 'skills';
 
+/** User-facing install failure string (prefers `Error.message`). */
 export const formatInstallError = (error: unknown): string => {
   if (error instanceof Error) {
     return error.message;
@@ -310,6 +396,15 @@ const readManifest = async (
   return parseAiPackageManifest(JSON.parse(raw), manifestPath);
 };
 
+/**
+ * Normalize a CLI flag value (string, string[], or undefined) into a flat
+ * array, splitting on commas and trimming whitespace.
+ *
+ * @example
+ * normalizeList('cursor,claude-code'); // ['cursor', 'claude-code']
+ * normalizeList(['a', 'b,c']);         // ['a', 'b', 'c']
+ * normalizeList(undefined);            // []
+ */
 export const normalizeList = (
   value: string | string[] | undefined
 ): string[] => {
@@ -325,6 +420,9 @@ export const normalizeList = (
   );
 };
 
+/**
+ * Map `--link` / `--copy` flags to an {@link InstallMode}. Defaults to `'copy'`.
+ */
 export const resolveInstallMode = (
   options: InstallCommandOptions
 ): InstallMode => {
@@ -334,6 +432,12 @@ export const resolveInstallMode = (
   return 'copy';
 };
 
+/**
+ * Map `--force` / `--skip-existing` flags to a {@link ConflictPolicy}.
+ * Validates that the two flags are mutually exclusive.
+ *
+ * @throws Error when both `--force` and `--skip-existing` are set.
+ */
 export const resolveConflictPolicy = (
   options: InstallCommandOptions
 ): ConflictPolicy => {

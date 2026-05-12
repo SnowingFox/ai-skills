@@ -2,6 +2,11 @@ import { isAbsolute, resolve } from 'node:path';
 import type { SkillEntry } from '../types';
 import type { AddSourceInput, SourceRegistry } from './types';
 
+/**
+ * Local filesystem registry. Resolves `file:<path>` sources against the
+ * project cwd. Materialization returns the directory as-is with no cloning
+ * or caching.
+ */
 export const fileRegistry = (cwd: string): SourceRegistry => ({
   kind: 'file',
   resolve: async (input: AddSourceInput) => {

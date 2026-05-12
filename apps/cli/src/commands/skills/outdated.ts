@@ -6,6 +6,11 @@ import { createManifestStore, resolveManifestScope } from '../../manifest';
 import type { AiPackageManifest, SkillEntry } from '../../types';
 import type { SkillsCommandRuntime } from './types';
 
+/**
+ * Discriminated union for per-skill update check outcome.
+ * Each variant carries enough context for the UI formatter to render
+ * a meaningful line.
+ */
 export type SkillUpdateStatus =
   | {
       status: 'outdated';
@@ -31,6 +36,7 @@ export type SkillUpdateStatus =
       reason: string;
     };
 
+/** Aggregated result of an update check across all manifest skills. */
 export type SkillUpdateCheckResult = {
   outdated: Extract<SkillUpdateStatus, { status: 'outdated' }>[];
   upToDate: Extract<SkillUpdateStatus, { status: 'up-to-date' }>[];
@@ -38,6 +44,7 @@ export type SkillUpdateCheckResult = {
   failed: Extract<SkillUpdateStatus, { status: 'failed' }>[];
 };
 
+/** Optional injectable `resolveRef` for tests or custom remote resolution. */
 export type CheckSkillUpdatesOptions = {
   resolveRef?: (request: {
     provider: 'github' | 'gitlab';
@@ -208,6 +215,10 @@ export const formatUpdateCheckResult = (
   return `${lines.join('\n')}\n`;
 };
 
+/**
+ * Write the update check result to stdout (plain text) or as a Clack note
+ * (TTY), depending on the current output mode.
+ */
 export const writeUpdateCheckResult = (
   result: SkillUpdateCheckResult,
   options: { title: string; aiMode: boolean; includeUpToDate?: boolean }
@@ -224,6 +235,7 @@ export const writeUpdateCheckResult = (
   process.stdout.write(output);
 };
 
+/** Format one outdated skill entry as `- name ref@old -> ref@new`. */
 export const formatOutdatedLine = (
   item: Extract<SkillUpdateStatus, { status: 'outdated' }>
 ): string =>

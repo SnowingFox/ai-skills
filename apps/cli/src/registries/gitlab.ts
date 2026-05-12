@@ -34,6 +34,11 @@ const parseGitlabInput = (source: string): ParsedGitSource => {
   };
 };
 
+/**
+ * GitLab-flavored Git registry. Preserves full clone URLs (including
+ * self-hosted instances) as the package id since GitLab projects don't
+ * have a universal shorthand like GitHub's `owner/repo`.
+ */
 export const gitlabRegistry = createGitRegistry({
   kind: 'gitlab',
   buildCloneUrl: (packageId) => packageId,

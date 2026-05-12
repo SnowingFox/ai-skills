@@ -11,6 +11,7 @@ import {
 } from './outdated';
 import type { SkillsCommandRuntime } from './types';
 
+/** CLI options for `skills update`. */
 export type SkillsUpdateOptions = {
   dir?: string;
   global?: boolean;
@@ -89,6 +90,7 @@ export const applySkillUpdates = (
   );
 
   return {
+    plugins: manifest.plugins,
     skills: manifest.skills.map((skill): SkillEntry => {
       const update = updatesByName.get(skill.name);
       if (!update) {

@@ -34,10 +34,12 @@ export const GRAYS: readonly string[] = Object.freeze([
 
 const RESET = '\x1B[0m';
 
+/** Select the ANSI gray prefix by banner row index. */
 export function gray(index: number): string {
   return GRAYS[index] ?? '';
 }
 
+/** Apply the grayscale ramp to each banner line. */
 export function renderBannerLines(): string[] {
   return BANNER_LINES.map((line, index) => {
     const prefix = gray(index);
@@ -46,10 +48,15 @@ export function renderBannerLines(): string[] {
   });
 }
 
+/** Join colored banner lines into a single printable string. */
 export function renderLogo(): string {
   return renderBannerLines().join('\n');
 }
 
+/**
+ * Write the colored banner to a stream when it's a TTY. Pass `force: true`
+ * to skip the TTY check.
+ */
 export function banner(
   out: NodeJS.WritableStream = process.stdout,
   force = false

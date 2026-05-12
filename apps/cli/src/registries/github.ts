@@ -26,6 +26,10 @@ const parseGithubInput = (source: string): ParsedGitSource => {
   };
 };
 
+/**
+ * GitHub-flavored Git registry. Parses `github:owner/repo` shorthand and
+ * full `https://github.com/owner/repo` URLs into `owner/repo` package ids.
+ */
 export const githubRegistry = createGitRegistry({
   kind: 'github',
   buildCloneUrl: (packageId) => `https://github.com/${packageId}.git`,

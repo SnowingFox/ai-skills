@@ -22,6 +22,10 @@ type SkillsCommandOptions = SkillsAddOptions &
   SkillsUpdateOptions &
   InstallCommandOptions;
 
+/**
+ * Register the `skills` command group on the cac CLI instance. Wires all
+ * shared flags and delegates action dispatch to {@link runSkillsCommand}.
+ */
 export const registerSkillsCommand = (
   cli: CAC,
   runtime: SkillsCommandRuntime
@@ -58,6 +62,12 @@ export const registerSkillsCommand = (
     );
 };
 
+/**
+ * Dispatch `skills` subcommands (`add`, `list`, `remove`, `outdated`,
+ * `update`, `vercel-migrate`, `search`) based on the first positional arg.
+ *
+ * @throws {SilentError} when no subcommand or an unknown subcommand is given.
+ */
 export const runSkillsCommand = async (
   args: string[],
   options: SkillsCommandOptions,

@@ -41,6 +41,10 @@ export const runParsedCli = async (
   }
 };
 
+/**
+ * Coerce a command's return value (async, sync, number, or void) into a
+ * numeric exit code. Non-number values default to 0 (success).
+ */
 export const resolveCliResult = async (result: unknown): Promise<number> => {
   if (isPromiseLike(result)) {
     return (await result) as number;
@@ -53,6 +57,7 @@ export const resolveCliResult = async (result: unknown): Promise<number> => {
   return 0;
 };
 
+/** Format an error for stderr output (delegates to {@link formatError}). */
 export const formatCliError = (error: unknown): string => formatError(error);
 
 const isBareInvocation = (argv: string[]): boolean =>

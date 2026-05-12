@@ -3,8 +3,17 @@ import * as p from '@clack/prompts';
 import { SilentError } from '../errors';
 import type { ConflictPolicy } from '../types';
 
+/** Outcome of conflict handling: either replace or leave unchanged. */
 export type ConflictResolution = 'overwrite' | 'skip';
 
+/**
+ * Apply the conflict policy when a target directory already exists. Returns
+ * `'overwrite'` when the target is absent or the policy allows replacement.
+ * Prompts interactively when `policy` is `'prompt'` and a TTY is available.
+ *
+ * @throws {SilentError} when `policy` is `'fail'` or no TTY is available
+ *   for prompting and the target exists.
+ */
 export const resolveConflict = async (
   targetDir: string,
   policy: ConflictPolicy,

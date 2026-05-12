@@ -1,19 +1,36 @@
 # AI SKILLS / ai-pkgs
 
 AI SKILLS is a registry and package-management workflow for reusable AI agent
-skills. The CLI package is `ai-pkgs`; it installs skills into agent-specific
-skill directories such as Cursor, Claude Code, Codex, or the universal
-`.agents/skills` target.
+skills and plugins. The CLI package is `ai-pkgs`; it installs skills into
+agent-specific skill directories and plugins into vendor-specific plugin caches
+for Cursor, Claude Code, Codex, and other supported agents.
 
 ## What ai-pkgs does
 
-- Restores project-declared skills from `ai-package.json`.
+- Restores project-declared skills and plugins from `ai-package.json`.
 - Adds skills from GitHub, GitLab, local files, and a future Marketplace
   provider boundary.
+- Adds plugins (multi-artifact bundles with skills, commands, agents, rules,
+  hooks, MCP configs) from the same source types. Each manifest entry includes
+  a `targets` field recording which agents the plugin installs to.
+- Manages per-plugin agent targets with `plugins targets add|remove|list`.
+- Scaffolds new plugin templates with `plugins init`, generating
+  `.agents/plugins/marketplace.json` as the universal plugin format.
+- Lists declared manifest skills and plugins as grouped text or `--json`.
+- Reports outdated Git-backed skills and plugins without mutating
+  `ai-package.json`.
+- Updates all or selected Git-backed skill/plugin pins with explicit
+  confirmation.
 - Pins Git sources as `<ref>@<resolvedSha>` for reproducible installs.
-- Installs by copying skill directories by default, or by symlinking with
+- Installs skills by copying directories by default, or by symlinking with
   `--link`.
+- Installs plugins into vendor-specific caches (Claude plugin cache,
+  Cursor extensions, Codex plugin cache) with env-var translation.
+- Enables project-scope plugins for Claude Code by writing `enabledPlugins`
+  to `.claude/settings.json` in the project root.
 - Supports project-local and global target directories for `skills add`.
+- Supports a fixed global manifest at `~/.ai-pkgs/ai-package.json` with
+  `-g, --global`.
 - Uses a global Git cache keyed by provider, source, and commit SHA so repeated
   installs can reuse the same checkout.
 - Provides `--ai` for strict non-interactive automation with deterministic
@@ -26,11 +43,13 @@ Show help:
 ```bash
 ai-pkgs --help
 ai-pkgs skills -h
+ai-pkgs plugins -h
 ai-pkgs help skills add
+ai-pkgs help plugins add
 ai-pkgs help cache clear
 ```
 
-Restore skills declared in the current project's `ai-package.json`:
+Restore skills and plugins declared in the current project's `ai-package.json`:
 
 ```bash
 ai-pkgs install --agent cursor --force --yes
@@ -41,6 +60,35 @@ Add all discovered skills from a GitHub repository, save them to
 
 ```bash
 ai-pkgs skills add vercel-labs/skills --all --agent cursor --project
+```
+
+Add skills to the global manifest and install them globally:
+
+```bash
+ai-pkgs skills add vercel-labs/skills --global --skill tdd --agent cursor --force --yes
+```
+
+List manifest skills:
+
+```bash
+ai-pkgs skills list
+ai-pkgs skills list --json
+ai-pkgs skills list --global
+```
+
+Check Git pins without writing:
+
+```bash
+ai-pkgs skills outdated
+ai-pkgs skills outdated tdd to-prd
+```
+
+Update Git pins safely:
+
+```bash
+ai-pkgs skills update --yes
+ai-pkgs skills update tdd --yes
+ai-pkgs skills update --global --yes
 ```
 
 Add one skill from an explicit GitHub URL and source subdirectory:
@@ -63,7 +111,7 @@ ai-pkgs skills add vercel-labs/skills \
   --force
 ```
 
-Install to a global agent skill directory:
+Install globally without writing any manifest:
 
 ```bash
 ai-pkgs skills add vercel-labs/skills \
@@ -86,6 +134,50 @@ ai-pkgs --ai skills add vercel-labs/skills \
   --yes
 ```
 
+Scaffold a new plugin:
+
+```bash
+ai-pkgs plugins init my-plugin
+ai-pkgs plugins init my-plugin --agent claude-code --yes
+```
+
+Add plugins from a source:
+
+```bash
+ai-pkgs plugins add vercel/vercel-plugin --yes
+ai-pkgs plugins add ./my-plugin --plugin my-plugin
+```
+
+List manifest plugins:
+
+```bash
+ai-pkgs plugins list
+ai-pkgs plugins list --json
+ai-pkgs plugins list --global
+```
+
+Check and update plugin pins:
+
+```bash
+ai-pkgs plugins outdated
+ai-pkgs plugins update --yes
+```
+
+Manage per-plugin target agents:
+
+```bash
+ai-pkgs plugins targets add vercel-plugin cursor
+ai-pkgs plugins targets remove vercel-plugin codex
+ai-pkgs plugins targets list vercel-plugin
+```
+
+Remove a plugin from the manifest:
+
+```bash
+ai-pkgs plugins remove vercel-plugin
+ai-pkgs plugins remove vercel-plugin --uninstall
+```
+
 Clear cached Git checkouts:
 
 ```bash
@@ -98,8 +190,11 @@ ai-pkgs cache clear --provider github --source vercel-labs/skills
 
 ### `ai-pkgs install [options]`
 
-Restores every skill declared in `ai-package.json`. This command is project-only:
-it installs into project-local agent targets and does not provide `--global`.
+Restores every skill and plugin declared in `ai-package.json`. Skills install
+into project-local agent targets by default. Plugins install to the agents
+listed in each entry's `targets` array — no agent picker is shown because
+targets are already persisted. With `--global`, it reads
+`~/.ai-pkgs/ai-package.json` and installs into global agent targets.
 
 Flags:
 
@@ -111,6 +206,7 @@ Flags:
 - `--force`: overwrite existing skill directories.
 - `--skip-existing`: skip existing skill directories.
 - `--project`: explicit project-local install dimension.
+- `-g, --global`: restore the global manifest into global agent directories.
 - `--refresh`: refresh Git cache before installing.
 - `-y, --yes`: skip confirmation prompts.
 - Global `--ai`: strict non-interactive mode.
@@ -135,7 +231,8 @@ Install flags:
 
 - `-a, --agent <agent>`: target agent. Repeatable.
 - `--project`: install into project-local agent skill directories.
-- `--global`: install into user-level global agent skill directories.
+- `-g, --global`: write `~/.ai-pkgs/ai-package.json` and install into
+  user-level global agent skill directories.
 - `--copy`: copy skill directories. This is the default.
 - `--link`: symlink skill directories.
 - `--force`: overwrite existing skill directories.
@@ -149,7 +246,7 @@ Project flags:
 
 - `-C, --dir <path>`: project directory.
 - `-m, --manifest <path>`: path to `ai-package.json`. Cannot be combined with
-  `--install-only`.
+  `--install-only` or `--global`.
 
 TTY behavior:
 
@@ -163,6 +260,8 @@ TTY behavior:
 Non-interactive behavior:
 
 - In non-TTY and `--ai` mode, omitted `skills add` scope defaults to project.
+- `skills add --global --install-only` installs globally without writing
+  `~/.ai-pkgs/ai-package.json`.
 - In `--ai` mode, all prompts are disabled. Pass `--agent`, `--all` or
   `--skill`, `--force` or `--skip-existing`, and `--yes` when needed.
 
@@ -174,6 +273,8 @@ Flags:
 
 - `-C, --dir <path>`: project directory.
 - `-m, --manifest <path>`: path to `ai-package.json`.
+- `-g, --global`: read `~/.ai-pkgs/ai-package.json`.
+- `--json`: print machine-readable manifest skill entries.
 
 ### `ai-pkgs skills remove <skill...> [options]`
 
@@ -183,24 +284,133 @@ Flags:
 
 - `-C, --dir <path>`: project directory.
 - `-m, --manifest <path>`: path to `ai-package.json`.
+- `-g, --global`: edit `~/.ai-pkgs/ai-package.json`.
 
 ### `ai-pkgs skills update [skill...] [options]`
 
-Refreshes pinned Git SHAs for all or selected Git-backed manifest entries.
+Refreshes pinned Git SHAs for all or selected Git-backed manifest entries. TTY
+mode asks before writing; non-TTY and `--ai` require `--yes`. If any requested
+check fails, the command exits 1 and does not write a partial manifest.
 
 Flags:
 
 - `-C, --dir <path>`: project directory.
 - `-m, --manifest <path>`: path to `ai-package.json`.
+- `-g, --global`: update `~/.ai-pkgs/ai-package.json`.
+- `-y, --yes`: confirm writes without prompting.
+
+### `ai-pkgs skills outdated [skill...] [options]`
+
+Checks all or selected manifest skills for newer Git commits by resolving each
+stored `ref` and comparing it with `commitSha`. Outdated results are report-only
+and exit 0; failed remote checks exit 1.
+
+Flags:
+
+- `-C, --dir <path>`: project directory.
+- `-m, --manifest <path>`: path to `ai-package.json`.
+- `-g, --global`: check `~/.ai-pkgs/ai-package.json`.
 
 ### `ai-pkgs skills search [query]`
 
 Reserved for Marketplace search. Marketplace distribution is planned as a
 backend API that returns skill zip packages.
 
+### `ai-pkgs plugins init [name] [options]`
+
+Scaffolds a new plugin directory with vendor-specific manifests and component
+stubs. Generates `.agents/plugins/marketplace.json` as the universal plugin
+format alongside any vendor-specific manifests. Interactive prompts ask for
+name, directory, target agents (Claude Code, Cursor, Codex), and components
+(skills, commands, agents, rules, hooks, .mcp.json).
+
+Flags:
+
+- `-a, --agent <agent>`: target agent. Repeatable.
+- `-y, --yes`: use all defaults without prompts.
+
+### `ai-pkgs plugins add <source> [options]`
+
+Discovers plugins in a source repo, presents a target agent selector, installs
+to the selected agents, and writes entries (including the persisted `targets`
+array) to the `plugins` key in `ai-package.json`. The target selector detects
+vendor directories (`.claude-plugin/`, `.cursor-plugin/`, `.codex-plugin/`,
+`.agents/plugins/marketplace.json`) to determine compatible agents. For
+project-scope installs targeting Claude Code, also writes `enabledPlugins` to
+`.claude/settings.json` in the project root.
+
+Flags:
+
+- `--registry <registry>`: `github`, `gitlab`, `marketplace`, or `file`.
+- `--ref <ref>`: Git branch, tag, or commit to pin.
+- `--path <path>`: subdirectory to scan inside the source.
+- `-p, --plugin <plugin>`: plugin name to select. Repeatable.
+- `--refresh`: refresh Git cache before installing.
+- `-a, --agent <agent>`: target agent. Skips target selector. Repeatable.
+- `--scope <scope>`: install scope: user, project, local.
+- `--install-only`: install without writing `ai-package.json`.
+- `-g, --global`: write `~/.ai-pkgs/ai-package.json`.
+- `-y, --yes`: skip confirmation prompts.
+
+### `ai-pkgs plugins list [options]`
+
+Lists plugins declared in `ai-package.json`.
+
+Flags:
+
+- `-C, --dir <path>`: project directory.
+- `-m, --manifest <path>`: path to `ai-package.json`.
+- `-g, --global`: read `~/.ai-pkgs/ai-package.json`.
+- `--json`: print machine-readable manifest plugin entries.
+
+### `ai-pkgs plugins remove <plugin...> [options]`
+
+Removes plugin entries from `ai-package.json`. Installed cache directories are
+left untouched by default.
+
+Flags:
+
+- `-C, --dir <path>`: project directory.
+- `-m, --manifest <path>`: path to `ai-package.json`.
+- `-g, --global`: edit `~/.ai-pkgs/ai-package.json`.
+- `--uninstall`: also clean agent plugin cache directories.
+- `-a, --agent <agent>`: scope uninstall to specific agents.
+
+### `ai-pkgs plugins targets <add|remove|list> <plugin> [agent...]`
+
+Manage per-plugin target agents. `targets add` updates the manifest and
+prompts to install. `targets remove` updates the manifest and prompts to
+uninstall. `targets list` shows current targets.
+
+Flags:
+
+- `-y, --yes`: auto-confirm install/uninstall.
+- `--no-install`: skip the install/uninstall prompt.
+
+### `ai-pkgs plugins update [plugin...] [options]`
+
+Refreshes pinned Git SHAs for all or selected Git-backed plugin entries.
+
+Flags:
+
+- `-C, --dir <path>`: project directory.
+- `-m, --manifest <path>`: path to `ai-package.json`.
+- `-g, --global`: update `~/.ai-pkgs/ai-package.json`.
+- `-y, --yes`: confirm writes without prompting.
+
+### `ai-pkgs plugins outdated [plugin...] [options]`
+
+Checks all or selected manifest plugins for newer Git commits. Report-only.
+
+Flags:
+
+- `-C, --dir <path>`: project directory.
+- `-m, --manifest <path>`: path to `ai-package.json`.
+- `-g, --global`: check `~/.ai-pkgs/ai-package.json`.
+
 ### `ai-pkgs cache clear [options]`
 
-Clears the global Git cache used by `skills add` and `install`.
+Clears the global Git cache used by `skills add`, `plugins add`, and `install`.
 
 Flags:
 

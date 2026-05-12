@@ -2,7 +2,8 @@ import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-export const TAGLINE = 'Composable skills for AI agents.';
+/** Short product tagline shown in root help output. */
+export const TAGLINE = 'Skills and plugins for AI agents.';
 
 /**
  * Read the package version from the nearest ai-pkgs package.json.
@@ -40,11 +41,17 @@ export const getCliVersion = (): string => {
   return '0.0.0';
 };
 
+/** Static hints pointing users to deeper help commands from root help. */
 export const DETAILED_HELP: [command: string, description: string][] = [
   [
     'ai-pkgs skills -h',
     'Show grouped AI/skills usage, install-only flows, and notes',
   ],
   ['ai-pkgs help skills add', 'Show detailed usage for adding skills'],
+  [
+    'ai-pkgs plugins -h',
+    'Show grouped plugin management, init, and install flows',
+  ],
+  ['ai-pkgs help plugins add', 'Show detailed usage for adding plugins'],
   ['ai-pkgs help cache clear', 'Show cache cleanup options'],
 ];

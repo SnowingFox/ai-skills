@@ -3,11 +3,17 @@ import { materializeCachedGitSource } from '../git-cache';
 import type { SkillEntry } from '../types';
 import type { AddSourceInput, ResolvedPackage, SourceRegistry } from './types';
 
+/** Parsed package identifier and clone URL from a Git source string. */
 export type ParsedGitSource = {
   packageId: string;
   cloneUrl: string;
 };
 
+/**
+ * Provider-specific hooks for building clone URLs, parsing user input,
+ * and rendering manifest source strings. Passed to {@link createGitRegistry}
+ * to build the shared Git registry boundary.
+ */
 export type GitProviderConfig = {
   kind: 'github' | 'gitlab';
   buildCloneUrl: (packageId: string) => string;
@@ -89,5 +95,6 @@ export const createGitRegistry = (
   },
 });
 
+/** Remove a trailing `.git` suffix from a URL or path segment. */
 export const stripGitSuffix = (value: string): string =>
   value.replace(/\.git$/, '');

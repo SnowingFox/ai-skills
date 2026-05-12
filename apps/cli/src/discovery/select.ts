@@ -2,6 +2,7 @@ import { SilentError } from '../errors';
 import { cancelSymbol, searchMultiselect } from '../prompts/search-multiselect';
 import type { DiscoveredSkill } from './discover';
 
+/** Options for resolving discovered skills against CLI flags and prompts. */
 export type SelectSkillsOptions = {
   skills: DiscoveredSkill[];
   requestedNames?: string[];
@@ -10,6 +11,14 @@ export type SelectSkillsOptions = {
   canPrompt?: boolean;
 };
 
+/**
+ * Resolve discovered skills to the user's selection via `--all`, `--skill`,
+ * single-skill shortcut, or interactive multiselect prompt. Validates that
+ * `--all` and `--skill` are mutually exclusive.
+ *
+ * @throws {SilentError} when no skills match, or when multiple skills exist
+ *   in non-interactive mode without explicit `--skill` flags.
+ */
 export const selectDiscoveredSkills = async ({
   skills,
   requestedNames = [],
@@ -70,6 +79,10 @@ export const selectDiscoveredSkills = async ({
   return skills.filter((skill) => names.has(skill.name));
 };
 
+/**
+ * Build an error message listing available skills when the requested names
+ * don't match any discovered skills.
+ */
 export const formatNoMatchingSkills = (
   requestedNames: string[],
   skills: DiscoveredSkill[]

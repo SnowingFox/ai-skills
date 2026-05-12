@@ -5,6 +5,23 @@ import { resolveConflict } from './conflicts';
 import { linkDirectory } from './link';
 import type { InstallPlan, InstallPlanResult } from './types';
 
+/**
+ * Execute an install plan: for each skill × target pair, resolve conflicts,
+ * then copy or symlink the source directory into the agent's skills directory.
+ *
+ * Target paths are validated to stay inside the agent's skills root to
+ * prevent directory traversal.
+ *
+ * @example
+ * await installPlan({
+ *   skills: [{ name: 'caveman', sourceDir: '/tmp/ai-pkgs-xxx/skills/caveman' }],
+ *   targets: [{ agentId: 'cursor', displayName: 'Cursor', skillsDir }],
+ *   mode: 'copy',
+ *   conflict: 'overwrite',
+ * });
+ * // Side effects:
+ * //   <skillsDir>/caveman/  ← copied from source
+ */
 export const installPlan = async ({
   skills,
   targets,

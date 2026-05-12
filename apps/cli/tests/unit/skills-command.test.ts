@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { GitCommandError } from '../../src/git';
+import { formatCloneProgress } from '../../src/cli/clone-progress';
 import {
-  formatCloneProgress,
   formatGitCloneError,
   resolveInstallScope,
   resolveRegistry,
@@ -181,6 +181,7 @@ describe('skills outdated checks', () => {
             path: 'skills/other',
           },
         ],
+        plugins: [],
       },
       [],
       {
@@ -255,4 +256,5 @@ const sampleManifest = (): AiPackageManifest => ({
       sourceRoot: '/tmp/local-skills',
     },
   ],
+  plugins: [],
 });

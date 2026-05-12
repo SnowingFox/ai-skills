@@ -6,8 +6,10 @@ import { cloneRepository } from './git';
 import type { GitProgressEvent } from './git';
 import type { MaterializedSource } from './types';
 
+/** Providers whose clones are eligible for the on-disk Git cache. */
 export type GitCacheProvider = 'github' | 'gitlab';
 
+/** Full inputs for a cache-aware Git materialization. */
 export type GitCacheRequest = {
   provider: GitCacheProvider;
   packageId: string;
@@ -18,6 +20,7 @@ export type GitCacheRequest = {
   onProgress?: (event: GitProgressEvent) => void;
 };
 
+/** Optional filters for cache eviction via {@link clearGitCache}. */
 export type ClearGitCacheOptions = {
   provider?: GitCacheProvider;
   source?: string;

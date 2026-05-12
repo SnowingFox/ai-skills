@@ -74,6 +74,7 @@ describe('install command helpers', () => {
             path: 'skills/remote',
           },
         ],
+        plugins: [],
       })
     ).toBe(
       [
@@ -84,8 +85,8 @@ describe('install command helpers', () => {
   });
 
   it('formats confirmation and progress states', () => {
-    expect(buildConfirmMessage(1)).toBe('Install 1 skill?');
-    expect(buildConfirmMessage(2)).toBe('Install 2 skills?');
+    expect(buildConfirmMessage(1)).toBe('Install 1 item?');
+    expect(buildConfirmMessage(2)).toBe('Install 2 items?');
     expect(formatProgress({ name: 'one', status: 'cloning' })).toBe(
       'cloning: one'
     );

@@ -6,7 +6,12 @@ import type {
   SkillEntry,
   SkillProvider,
 } from '../types';
-import type { RawAiPackageManifest, RawSkillEntry } from './types';
+import type {
+  FilePluginEntry,
+  PluginEntry,
+  RemotePluginEntry,
+} from '../plugins/types';
+import type { RawAiPackageManifest, RawPluginEntry, RawSkillEntry } from './types';
 
 const COMMIT_SHA_RE = /^[0-9a-f]{7,40}$/i;
 const PROVIDERS = new Set<SkillProvider>([
@@ -16,6 +21,16 @@ const PROVIDERS = new Set<SkillProvider>([
   'file',
 ]);
 
+/**
+ * Validate and parse a raw JSON value into a normalized {@link AiPackageManifest}.
+ * Converts the `{ skills: { name: entry }, plugins: { name: entry } }` object
+ * maps into flat arrays and resolves file-based source paths relative to the
+ * manifest directory.
+ *
+ * At least one of `skills` or `plugins` must be present.
+ *
+ * @throws Error when the JSON shape is invalid (missing both keys, wrong types).
+ */
 export const parseAiPackageManifest = (
   raw: unknown,
   manifestPath: string
@@ -25,25 +40,43 @@ export const parseAiPackageManifest = (
   }
 
   const manifest = raw as RawAiPackageManifest;
-  if (manifest.skills === undefined) {
+  const hasSkills = manifest.skills !== undefined;
+  const hasPlugins = manifest.plugins !== undefined;
+
+  if (!hasSkills && !hasPlugins) {
     if (manifest.skill !== undefined) {
       throw new Error(
         `${manifestPath} must use the top-level "skills" object, not "skill"`
       );
     }
-    throw new Error(`${manifestPath} must contain a top-level "skills" object`);
+    throw new Error(
+      `${manifestPath} must contain a top-level "skills" or "plugins" object`
+    );
   }
 
-  if (!isRecord(manifest.skills)) {
+  if (hasSkills && !isRecord(manifest.skills)) {
     throw new Error(`${manifestPath} top-level "skills" must be an object`);
   }
 
-  const manifestDir = dirname(resolve(manifestPath));
-  const skills = Object.entries(manifest.skills).map(([name, value]) =>
-    parseSkillEntry(name, value, manifestDir)
-  );
+  if (hasPlugins && !isRecord(manifest.plugins)) {
+    throw new Error(`${manifestPath} top-level "plugins" must be an object`);
+  }
 
-  return { skills };
+  const manifestDir = dirname(resolve(manifestPath));
+
+  const skills = hasSkills
+    ? Object.entries(manifest.skills as Record<string, unknown>).map(
+        ([name, value]) => parseSkillEntry(name, value, manifestDir)
+      )
+    : [];
+
+  const plugins = hasPlugins
+    ? Object.entries(manifest.plugins as Record<string, unknown>).map(
+        ([name, value]) => parsePluginEntry(name, value, manifestDir)
+      )
+    : [];
+
+  return { skills, plugins };
 };
 
 /**
@@ -101,6 +134,63 @@ export const parseSkillEntry = (
 };
 
 /**
+ * Validate and normalize one manifest plugin entry.
+ *
+ * Mirrors {@link parseSkillEntry} but uses "Plugin" labels in error messages.
+ * Reuses the same source locator parsing and path sanitization logic.
+ */
+export const parsePluginEntry = (
+  name: string,
+  raw: unknown,
+  manifestDir: string
+): PluginEntry => {
+  validatePluginName(name);
+
+  if (!isRecord(raw)) {
+    throw new Error(`Plugin "${name}" must be an object`);
+  }
+
+  const entry = raw as RawPluginEntry;
+  if (typeof entry.source !== 'string' || entry.source.trim().length === 0) {
+    throw new Error(`Plugin "${name}" source is required`);
+  }
+
+  if (typeof entry.path !== 'string' || entry.path.trim().length === 0) {
+    throw new Error(`Plugin "${name}" path is required`);
+  }
+
+  const source = parseSourceLocator(entry.source, name);
+  const path = sanitizeManifestPath(entry.path, `Plugin "${name}" path`);
+
+  const targets = parsePluginTargets(entry.targets, name);
+
+  if (source.provider === 'file') {
+    return {
+      name,
+      provider: 'file',
+      source: entry.source,
+      packageId: source.packageId,
+      sourceRoot: resolveFileSource(manifestDir, source.packageId),
+      path,
+      targets,
+    } satisfies FilePluginEntry;
+  }
+
+  const version = parseRemoteVersion(entry.version, name);
+  return {
+    name,
+    provider: source.provider,
+    source: entry.source,
+    packageId: source.packageId,
+    version: version.raw,
+    ref: version.ref,
+    commitSha: version.commitSha,
+    path,
+    targets,
+  } satisfies RemotePluginEntry;
+};
+
+/**
  * Split a manifest source locator (`github:owner/repo`,
  * `gitlab:https://host/group/repo.git`, `file:.`, or
  * `marketplace:owner/package`) and apply provider-specific shape checks.
@@ -134,6 +224,13 @@ export const parseSourceLocator = (
   return { provider, packageId };
 };
 
+/**
+ * Parse a remote version string in `<ref>@<commitSha>` format.
+ * Also accepts limited `@sha256:` prefixed digests.
+ *
+ * @throws Error when the version is missing, empty, or doesn't contain
+ *   a valid `<ref>@<commitSha>` separator.
+ */
 export const parseRemoteVersion = (
   version: unknown,
   skillName: string
@@ -162,6 +259,16 @@ export const parseRemoteVersion = (
   return { raw: version, ref, commitSha };
 };
 
+/**
+ * Normalize and validate a relative manifest skill path. Rejects absolute
+ * paths and `..` segments that would escape the source root.
+ *
+ * @example
+ * sanitizeManifestPath('./skills/my-skill');    // 'skills/my-skill'
+ * sanitizeManifestPath('../escape');             // throws
+ *
+ * @throws Error when the path is empty, absolute, or contains `..`.
+ */
 export const sanitizeManifestPath = (path: string, label = 'path'): string => {
   const normalized = path
     .trim()
@@ -215,6 +322,43 @@ const validateSkillName = (name: string) => {
     name.includes('\\')
   ) {
     throw new Error(`Invalid skill name "${name}"`);
+  }
+};
+
+const VALID_PLUGIN_TARGETS = new Set(['claude-code', 'cursor', 'codex']);
+
+const parsePluginTargets = (
+  raw: unknown,
+  pluginName: string
+): string[] | undefined => {
+  if (raw === undefined || raw === null) {
+    return undefined;
+  }
+
+  if (!Array.isArray(raw)) {
+    throw new Error(`Plugin "${pluginName}" targets must be an array`);
+  }
+
+  for (const target of raw) {
+    if (typeof target !== 'string' || !VALID_PLUGIN_TARGETS.has(target)) {
+      throw new Error(
+        `Plugin "${pluginName}" target "${target}" is invalid. Allowed: claude-code, cursor, codex`
+      );
+    }
+  }
+
+  return raw as string[];
+};
+
+const validatePluginName = (name: string) => {
+  if (
+    name.trim().length === 0 ||
+    name === '.' ||
+    name === '..' ||
+    name.includes('/') ||
+    name.includes('\\')
+  ) {
+    throw new Error(`Invalid plugin name "${name}"`);
   }
 };
 

@@ -20,6 +20,7 @@ const CACHE_CLEAR_EXAMPLES: HelpExampleGroup[] = [
   },
 ];
 
+/** Help metadata for the `cache` command group. */
 export const CACHE_GROUP_COMMAND: HelpCommand = {
   name: 'cache',
   description: 'Manage ai-pkgs cache',
@@ -42,6 +43,7 @@ export const CACHE_GROUP_COMMAND: HelpCommand = {
   options: [],
 };
 
+/** Per-subcommand help entries for `cache` subcommands. */
 export const CACHE_COMMANDS: HelpCommand[] = [
   {
     name: 'cache clear',

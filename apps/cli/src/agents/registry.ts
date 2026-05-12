@@ -13,6 +13,12 @@ const vibeHome = process.env.VIBE_HOME?.trim() || join(home, '.vibe');
 const homePath = (path: string) => join(home, path);
 const configPath = (path: string) => join(configHome, path);
 
+/**
+ * Registry of all supported AI agent targets. Each entry maps an agent id
+ * to its skill directory conventions (project-local and global). New agents
+ * are added here; the picker, detection, and install paths all read from
+ * this registry.
+ */
 export const agents: Record<string, AgentConfig> = {
   universal: agent(
     'universal',
@@ -152,6 +158,11 @@ export const agents: Record<string, AgentConfig> = {
   zencoder: agent('zencoder', 'Zencoder', '.zencoder/skills'),
 };
 
+/**
+ * Look up an agent by id. Throws when the id is not in the registry.
+ *
+ * @throws Error when `id` is not a known agent.
+ */
 export const getAgent = (id: string): AgentConfig => {
   const found = agents[id];
   if (!found) {
@@ -161,9 +172,19 @@ export const getAgent = (id: string): AgentConfig => {
   return found;
 };
 
+/** Return all agents eligible for the interactive picker (`showInPicker !== false`). */
 export const listAgents = (): AgentConfig[] =>
   Object.values(agents).filter((agent) => agent.showInPicker !== false);
 
+/**
+ * Detect which agents are installed on the current system. Uses custom
+ * `detectInstalled` hooks when provided, otherwise falls back to checking
+ * for `~/.{agentId}` directory existence.
+ *
+ * @example
+ * const installed = await detectInstalledAgents({ cwd: '/repo' });
+ * // returns: [cursorAgent, claudeCodeAgent]  (both ~/.cursor and ~/.claude exist)
+ */
 export const detectInstalledAgents = async (
   ctx: Partial<AgentDetectContext> = {}
 ): Promise<AgentConfig[]> => {

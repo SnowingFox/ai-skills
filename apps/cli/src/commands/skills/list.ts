@@ -4,6 +4,7 @@ import { createManifestStore, resolveManifestScope } from '../../manifest';
 import type { AiPackageManifest, SkillEntry } from '../../types';
 import type { SkillsCommandRuntime, SkillsListOptions } from './types';
 
+/** JSON output shape for `skills list --json`. */
 export type ListedSkill = {
   name: string;
   source: string;

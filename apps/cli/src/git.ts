@@ -4,6 +4,20 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { CloneRequest, ClonedSource, MaterializedSource } from './types';
 
+/**
+ * Structured error thrown by Git subprocess operations. Carries the original
+ * args, stderr output, and a classified {@link GitErrorKind} so callers can
+ * render targeted remediation hints.
+ *
+ * @example
+ * try {
+ *   await execGit(['clone', url]);
+ * } catch (error) {
+ *   if (error instanceof GitCommandError && error.kind === 'auth') {
+ *     console.error('Check your SSH keys or personal access token.');
+ *   }
+ * }
+ */
 export class GitCommandError extends Error {
   constructor(
     message: string,
@@ -16,6 +30,10 @@ export class GitCommandError extends Error {
   }
 }
 
+/**
+ * Taxonomy of Git subprocess failures. Used by {@link classifyGitError} to
+ * map stderr heuristics into actionable categories for CLI error messages.
+ */
 export type GitErrorKind =
   | 'timeout'
   | 'auth'
@@ -24,6 +42,10 @@ export type GitErrorKind =
   | 'git-missing'
   | 'unknown';
 
+/**
+ * Progress events emitted during clone, checkout, and cache operations.
+ * Consumed by UI formatters to render user-visible status lines.
+ */
 export type GitProgressEvent =
   | {
       status: 'resolving-remote';
@@ -58,6 +80,21 @@ export type GitProgressEvent =
       cachePath: string;
     };
 
+/**
+ * Clone a Git remote at its pinned commit SHA. Thin wrapper around
+ * {@link cloneRepository} that unpacks a {@link CloneRequest} into
+ * clone options.
+ *
+ * @example
+ * const source = await cloneRemoteSource({
+ *   provider: 'github',
+ *   packageId: 'acme/skills',
+ *   cloneUrl: 'https://github.com/acme/skills.git',
+ *   ref: 'main',
+ *   commitSha: 'abc123...',
+ * });
+ * // Side effects: spawns `git clone` + `git checkout` in a temp directory.
+ */
 export const cloneRemoteSource = async (
   request: CloneRequest
 ): Promise<ClonedSource> => {
@@ -67,6 +104,7 @@ export const cloneRemoteSource = async (
   });
 };
 
+/** Options for a temporary Git clone with optional ref/SHA checkout. */
 export type CloneRepositoryOptions = {
   cloneUrl: string;
   ref?: string;
@@ -74,6 +112,27 @@ export type CloneRepositoryOptions = {
   onProgress?: (event: GitProgressEvent) => void;
 };
 
+/**
+ * Clone a repository into a temporary directory and optionally check out
+ * a specific ref or commit SHA. The returned {@link MaterializedSource}
+ * carries a `cleanup` callback that removes the temp directory.
+ *
+ * When `commitSha` is provided the clone uses `--no-checkout` and then
+ * `git checkout --detach <sha>`. When only `ref` is provided the clone
+ * uses `--branch <ref>`.
+ *
+ * @example
+ * const source = await cloneRepository({
+ *   cloneUrl: 'https://github.com/acme/skills.git',
+ *   commitSha: 'abc123...',
+ * });
+ * // Side effects:
+ * //   /tmp/ai-pkgs-XXXXX/  ← cloned repo at pinned SHA
+ * // Cleanup:
+ * //   await source.cleanup();  ← removes the temp directory
+ *
+ * @throws {GitCommandError} on clone or checkout failure (temp dir is cleaned up).
+ */
 export const cloneRepository = async ({
   cloneUrl,
   ref,
@@ -110,9 +169,23 @@ export const cloneRepository = async ({
   };
 };
 
+/**
+ * Return the full SHA of HEAD in a local repository.
+ *
+ * @example
+ * await resolveHeadSha('/repo'); // 'abc123def456...'
+ */
 export const resolveHeadSha = async (cwd: string): Promise<string> =>
   runGit(['rev-parse', 'HEAD'], cwd);
 
+/**
+ * Best-effort default branch name for a local repository. Tries the current
+ * symbolic ref first, then `refs/remotes/origin/HEAD`, and falls back to
+ * `'HEAD'` when neither is available.
+ *
+ * @example
+ * await resolveDefaultBranch('/repo'); // 'main'
+ */
 export const resolveDefaultBranch = async (cwd: string): Promise<string> => {
   const symbolicRef = await runGit(
     ['symbolic-ref', '--quiet', '--short', 'HEAD'],
@@ -129,11 +202,28 @@ export const resolveDefaultBranch = async (cwd: string): Promise<string> => {
   return remoteHead.replace(/^origin\//, '') || 'HEAD';
 };
 
+/** Resolved ref name and its commit SHA from a remote repository. */
 export type ResolvedRemoteRef = {
   ref: string;
   commitSha: string;
 };
 
+/**
+ * Resolve a Git ref on a remote repository using `git ls-remote`. When no
+ * `ref` is provided the remote's default branch is used. A bare 40-character
+ * hex string is accepted as a direct SHA reference.
+ *
+ * @throws {GitCommandError} with `kind: 'ref'` when the ref is not found.
+ *
+ * @example
+ * await resolveRemoteRef({
+ *   cloneUrl: 'https://github.com/acme/skills.git',
+ *   ref: 'v1.2.0',
+ * });
+ * // returns: { ref: 'v1.2.0', commitSha: 'abc123...' }
+ *
+ * // Side effects: spawns `git ls-remote`
+ */
 export const resolveRemoteRef = async ({
   cloneUrl,
   ref,
@@ -163,6 +253,13 @@ export const resolveRemoteRef = async ({
   return { ref, commitSha };
 };
 
+/**
+ * Detached checkout at a specific commit SHA.
+ *
+ * @example
+ * await checkoutCommit('/repo', 'abc123...');
+ * // Side effects: spawns `git checkout --detach abc123...`
+ */
 export const checkoutCommit = async (
   cwd: string,
   commitSha: string
@@ -170,6 +267,15 @@ export const checkoutCommit = async (
   await runGit(['checkout', '--detach', commitSha], cwd);
 };
 
+/**
+ * Execute a Git CLI command. Returns trimmed stdout on success; throws
+ * {@link GitCommandError} on non-zero exit. Terminal prompts are disabled
+ * via `GIT_TERMINAL_PROMPT=0` and LFS smudge is skipped.
+ *
+ * @example
+ * await execGit(['status', '--porcelain'], '/repo');
+ * // returns: ' M src/index.ts'
+ */
 export const execGit = async (args: string[], cwd?: string): Promise<string> =>
   runGit(args, cwd);
 
@@ -261,6 +367,15 @@ const runGit = async (args: string[], cwd?: string): Promise<string> => {
   });
 };
 
+/**
+ * Map Git stderr text and command args to a {@link GitErrorKind} using
+ * heuristic pattern matching. The classification drives user-facing error
+ * messages with targeted remediation hints.
+ *
+ * @example
+ * classifyGitError(['clone', url], 'Authentication failed');
+ * // returns: 'auth'
+ */
 export const classifyGitError = (
   args: string[],
   output: string

@@ -1231,7 +1231,7 @@ describe('ai-pkgs install e2e', () => {
     );
 
     expect(result.code).toBe(0);
-    expect(result.output).toContain('Skills install complete');
+    expect(result.output).toContain('Install complete');
     await expect(
       readFile(
         join(projectDir, '.cursor/skills/github-installed/SKILL.md'),

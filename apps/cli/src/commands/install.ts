@@ -4,6 +4,10 @@ import {
   type InstallCommandRuntime,
 } from '../install-command';
 
+/**
+ * Register the `install` command on the cac CLI instance. Wires all
+ * install-related flags and binds the action to {@link runInstallCommand}.
+ */
 export const registerInstallCommand = (
   cli: CAC,
   runtime: InstallCommandRuntime

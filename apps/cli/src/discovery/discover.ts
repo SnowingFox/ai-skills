@@ -4,6 +4,7 @@ import { basename, join, normalize, relative, resolve, sep } from 'node:path';
 import { sanitizeManifestPath } from '../manifest';
 import { parseSkillFrontmatter } from './frontmatter';
 
+/** Skill metadata discovered from a `SKILL.md` file plus its relative path. */
 export type DiscoveredSkill = {
   name: string;
   description?: string;
@@ -12,6 +13,7 @@ export type DiscoveredSkill = {
   rawSkillMd: string;
 };
 
+/** Options for skill discovery: optional scan root override and name filter. */
 export type DiscoverSkillsOptions = {
   path?: string;
   skillNames?: string[];
@@ -83,6 +85,11 @@ export const discoverSkills = async (
   return found.filter((skill) => requested.has(skill.name.toLowerCase()));
 };
 
+/**
+ * Assert that a directory exists and contains a `SKILL.md` file.
+ *
+ * @throws Error when the directory is missing, not a directory, or lacks `SKILL.md`.
+ */
 export const assertSkillDirectory = async (skillDir: string, name: string) => {
   let dirStats: Stats;
   try {
@@ -101,6 +108,12 @@ export const assertSkillDirectory = async (skillDir: string, name: string) => {
   }
 };
 
+/**
+ * Resolve a subpath under a root directory. Rejects `..` traversals that
+ * would escape the root.
+ *
+ * @throws Error when the resolved path escapes the root directory.
+ */
 export const resolveInside = (rootDir: string, path: string): string => {
   const root = resolve(rootDir);
   const resolved = resolve(root, path);

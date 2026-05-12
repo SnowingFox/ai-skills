@@ -33,6 +33,7 @@ type RawLegacyVercelLock = {
   skills?: unknown;
 };
 
+/** Typed legacy `skills-lock.json` skill row after validation. */
 export type LegacyVercelLockEntry = {
   name: string;
   source: string;
@@ -41,36 +42,44 @@ export type LegacyVercelLockEntry = {
   computedHash: string;
 };
 
+/** Migration candidate before path resolution. */
 export type PendingVercelMigrationSkill = {
   name: string;
   rawSource: string;
   path?: string;
 };
 
+/** Migration candidate with a resolved manifest-relative skill path. */
 export type ResolvedVercelMigrationSkill = PendingVercelMigrationSkill & {
   path: string;
 };
 
+/** Remote manifest fields after resolving a GitHub pin during migration. */
 export type VercelMigrationSourcePin = Pick<
   RemoteSkillEntry,
   'provider' | 'source' | 'packageId' | 'version' | 'ref' | 'commitSha'
 >;
 
+/** Callable: resolve a raw lock source string to pinned remote fields. */
 export type ResolveVercelMigrationSource = (
   rawSource: string
 ) => Promise<VercelMigrationSourcePin>;
 
+/** Callable: discover skills under a materialized GitHub source. */
 export type DiscoverVercelMigrationSkills = (
   rawSource: string
 ) => Promise<DiscoveredSkill[]>;
 
+/** Callable: interactive path picker when the skill path is ambiguous. */
 export type SelectVercelMigrationSkillPath = (
   skill: PendingVercelMigrationSkill,
   discovered: DiscoveredSkill[]
 ) => Promise<string>;
 
+/** Conflict policy when merging migrated skills into an existing manifest. */
 export type VercelMigrationMergePolicy = 'overwrite' | 'skip' | 'fail';
 
+/** Outcome of merging migrated skills: the final manifest plus per-skill disposition. */
 export type VercelMigrationMergeResult = {
   manifest: AiPackageManifest;
   added: string[];
@@ -78,6 +87,7 @@ export type VercelMigrationMergeResult = {
   skipped: string[];
 };
 
+/** CLI options for `skills vercel-migrate` including lockfile path and post-migrate install. */
 export type SkillsVercelMigrateOptions = InstallCommandOptions & {
   lockfile?: string;
   removeLock?: boolean;
@@ -248,7 +258,10 @@ export const mergeVercelMigrationSkills = (
   }
 
   return {
-    manifest: { skills: [...byName.values()].sort(compareByName) },
+    manifest: {
+      skills: [...byName.values()].sort(compareByName),
+      plugins: existing.plugins,
+    },
     added,
     overwritten,
     skipped,
@@ -500,7 +513,7 @@ const readExistingManifest = async (
     return await store.read();
   } catch (error) {
     if (isNotFoundError(error)) {
-      return { skills: [] };
+      return { skills: [], plugins: [] };
     }
     throw error;
   }

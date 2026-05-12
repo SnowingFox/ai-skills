@@ -2,8 +2,10 @@ import * as readline from 'node:readline';
 import { Writable } from 'node:stream';
 import pc from 'picocolors';
 
+/** Sentinel returned when the user cancels the multiselect prompt. */
 export const cancelSymbol = Symbol('cancel');
 
+/** One selectable row in the multiselect list with optional hint text. */
 export type SearchMultiselectItem<T> = {
   label: string;
   value: T;
@@ -11,6 +13,7 @@ export type SearchMultiselectItem<T> = {
   separatorAfter?: boolean;
 };
 
+/** Configuration for the interactive search-as-you-type multiselect prompt. */
 export type SearchMultiselectOptions<T> = {
   message: string;
   items: SearchMultiselectItem<T>[];

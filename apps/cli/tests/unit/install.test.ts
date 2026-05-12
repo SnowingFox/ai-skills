@@ -63,6 +63,7 @@ describe('installSkills', () => {
             path: 'packages/reviewer',
           },
         ],
+        plugins: [],
       },
       projectDir,
       cloneSource,
@@ -121,6 +122,7 @@ describe('installSkills', () => {
             path: 'skills/local',
           },
         ],
+        plugins: [],
       },
       projectDir,
       targetDir,
@@ -156,6 +158,7 @@ describe('installSkills', () => {
           commitSha: 'abcdef1234567890abcdef1234567890abcdef12',
           path: `skills/${name}`,
         })),
+        plugins: [],
       },
       projectDir,
       cloneSource: async () => {
@@ -193,6 +196,7 @@ describe('installSkills', () => {
               path: 'skills/empty',
             },
           ],
+          plugins: [],
         },
         projectDir,
         cloneSource: async () => sourceRoot,
@@ -219,6 +223,7 @@ describe('installSkills', () => {
               path: 'missing',
             },
           ],
+          plugins: [],
         },
         projectDir,
       })
@@ -236,6 +241,7 @@ describe('installSkills', () => {
               path: 'SKILL.md',
             },
           ],
+          plugins: [],
         },
         projectDir,
       })
@@ -260,6 +266,7 @@ describe('installSkills', () => {
               path: '../outside',
             },
           ],
+          plugins: [],
         },
         projectDir,
       })
@@ -284,6 +291,7 @@ describe('installSkills', () => {
               path: 'skills/bad',
             },
           ],
+          plugins: [],
         },
         projectDir,
       })
@@ -308,6 +316,7 @@ describe('installSkills', () => {
               path: 'skills/one',
             },
           ],
+          plugins: [],
         },
         projectDir,
         cloneSource: async () => {
@@ -347,6 +356,7 @@ describe('installSkills', () => {
               path: 'skills/missing',
             },
           ],
+          plugins: [],
         },
         projectDir,
         cloneSource: async () => ({

@@ -1,6 +1,10 @@
 import { SilentError } from '../errors';
 import type { SourceRegistry } from './types';
 
+/**
+ * Stub registry for the marketplace provider. All operations throw
+ * {@link SilentError} until marketplace zip installation is implemented.
+ */
 export const marketplaceRegistry: SourceRegistry = {
   kind: 'marketplace',
   resolve: async () => {

@@ -240,6 +240,7 @@ describe('skills vercel-migrate helpers', () => {
           path: 'skills/existing',
         }),
       ],
+      plugins: [],
     };
     const migrated = [
       remoteSkill({

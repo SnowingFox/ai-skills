@@ -17,7 +17,7 @@ describe('cli/help', () => {
 
     expect(output).toContain('█████╗ ██╗');
     expect(output).toContain('╚═╝  ╚═╝╚═╝');
-    expect(output).toContain('Composable skills for AI agents.');
+    expect(output).toContain('Skills and plugins for AI agents.');
     expect(output).toContain(`v${packageVersion.version}`);
     expect(output).toContain('Usage:');
     expect(output).toContain('ai-pkgs <command>');
