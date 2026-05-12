@@ -1,11 +1,14 @@
 {
   "name": "ai-pkgs",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "A package manager for installing and managing AI agent skills.",
   "module": "dist/cli.js",
   "type": "module",
   "bin": {
     "ai-pkgs": "./dist/cli.js"
+  },
+  "engines": {
+    "node": ">=20.19.0"
   },
   "files": [
     "dist",
