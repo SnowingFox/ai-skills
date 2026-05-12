@@ -1,0 +1,28 @@
+➜  cli git:(main) ai-pkgs plugins add entireio/skills
+┌  Plugin add
+│
+◇  Git cache ──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                                              │
+│  reusing Git cache for verified remote ref                                                                   │
+│  source: github:entireio/skills                                                                              │
+│  ref: main@c376dc9                                                                                           │
+│  cache: /Users/bytedance/.cache/ai-pkgs/git/github/entireio/skills/c376dc971045eb38c094802ca43875d1cfa00ea4  │
+│                                                                                                              │
+├──────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+│
+▲  No plugins found in source
+│
+└  Add failed
+
+为什么失败了，之前还是可以的？你做了什么？e2e 单测有加吗这些？
+/grill-me
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+you can using this repo `entireio/skills` to recheck

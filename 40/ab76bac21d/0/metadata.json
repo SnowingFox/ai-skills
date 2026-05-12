@@ -1,0 +1,70 @@
+{
+  "checkpoint_id": "40ab76bac21d",
+  "session_id": "c00ee709-9c00-4f0d-80c2-91b8e5591ab9",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-12T07:29:02.831Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "apps/cli/src/plugins/discover.ts",
+    "apps/cli/tests/unit/plugins-discover.test.ts"
+  ],
+  "agent": "Cursor",
+  "model": "claude-opus-4-6",
+  "turn_id": "dac2f84ec31c",
+  "is_task": false,
+  "tool_use_id": "",
+  "transcript_identifier_at_start": "",
+  "checkpoint_transcript_start": 0,
+  "transcript_lines_at_start": 0,
+  "session_metrics": {
+    "duration_ms": 1420171,
+    "turn_count": 3,
+    "context_tokens": 0,
+    "context_window_size": 0,
+    "active_duration_ms": 1384072,
+    "turn_metrics": [
+      {
+        "turn_id": "4a9d84ba5a7d",
+        "started_at": "2026-05-12T06:55:43.000Z",
+        "ended_at": "2026-05-12T07:15:57.844Z",
+        "duration_ms": 1214844
+      },
+      {
+        "turn_id": "02fcd652516c",
+        "started_at": "2026-05-12T07:16:12.000Z",
+        "ended_at": "2026-05-12T07:16:18.133Z",
+        "duration_ms": 6133
+      },
+      {
+        "turn_id": "dac2f84ec31c",
+        "started_at": "2026-05-12T07:16:41.000Z",
+        "ended_at": "2026-05-12T07:19:24.095Z",
+        "duration_ms": 163095
+      }
+    ]
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-12T07:29:02.765Z",
+    "agent_lines": 167,
+    "agent_removed": 1,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 167,
+    "total_lines_changed": 168,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    }
+  ]
+}

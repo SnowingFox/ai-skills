@@ -1,0 +1,18 @@
+{
+  "checkpoint_id": "40ab76bac21d",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "apps/cli/src/plugins/discover.ts",
+    "apps/cli/tests/unit/plugins-discover.test.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/40/ab76bac21d/0/metadata.json",
+      "prompt": "/40/ab76bac21d/0/prompt.txt",
+      "transcript": "/40/ab76bac21d/0/full.jsonl",
+      "content_hash": "/40/ab76bac21d/0/content_hash.txt"
+    }
+  ]
+}
