@@ -29,8 +29,15 @@ const VENDOR_DIRS = [
   '.codex-plugin',
 ] as const;
 
+/**
+ * Directories probed for a `marketplace.json` discovery file.
+ *
+ * `.agents/plugins/marketplace.json` is intentionally excluded: it uses the
+ * Codex/AWS object-source schema (`{ source: { source: 'local', path } }`)
+ * which `discoverFromMarketplace` cannot resolve as a local directory.
+ * It is a publishing artifact consumed by installers, not a discovery target.
+ */
 const MARKETPLACE_LOCATIONS = [
-  '.agents/plugins',
   '',
   '.claude-plugin',
   '.cursor-plugin',
