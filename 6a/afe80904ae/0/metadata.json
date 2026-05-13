@@ -1,0 +1,63 @@
+{
+  "checkpoint_id": "6aafe80904ae",
+  "session_id": "c00ee709-9c00-4f0d-80c2-91b8e5591ab9",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-13T09:08:23.053Z",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "README.md"
+  ],
+  "agent": "Cursor",
+  "model": "claude-opus-4-6",
+  "turn_id": "9e540226b046",
+  "is_task": false,
+  "tool_use_id": "",
+  "transcript_identifier_at_start": "",
+  "checkpoint_transcript_start": 727,
+  "transcript_lines_at_start": 727,
+  "session_metrics": {
+    "duration_ms": 3744014,
+    "turn_count": 2,
+    "context_tokens": 0,
+    "context_window_size": 0,
+    "active_duration_ms": 301964,
+    "turn_metrics": [
+      {
+        "turn_id": "c99b3a85c3e5",
+        "started_at": "2026-05-13T08:11:24.000Z",
+        "ended_at": "2026-05-13T08:16:22.177Z",
+        "duration_ms": 298177
+      },
+      {
+        "turn_id": "33ef0803f8f5",
+        "started_at": "2026-05-13T09:05:30.000Z",
+        "ended_at": "2026-05-13T09:05:33.787Z",
+        "duration_ms": 3787
+      }
+    ]
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-13T09:08:22.954Z",
+    "agent_lines": 63,
+    "agent_removed": 31,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 63,
+    "total_lines_changed": 94,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    }
+  ]
+}
