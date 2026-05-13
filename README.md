@@ -67,7 +67,7 @@ See [`apps/cli/README.md`](apps/cli/README.md) for the full CLI documentation.
 Cursor, Claude Code, Codex, Windsurf, GitHub Copilot, Gemini CLI, Cline,
 Roo Code, Amp, Continue, Kilo Code, Trae, Devin, Goose, and 30+ more.
 
-Run `ai-pkgs skills -h` to see all 47+ supported agents.
+Run `ai-pkgs skills -h` for the full list of 47+ supported agents.
 
 ## Development
 
