@@ -1,52 +1,84 @@
-# MkSaaS
+# AI Skills
 
-Make AI SaaS in a weekend.
+AI Skills is a platform for distributing and managing AI agent components —
+skills, plugins, and workspace iteration — across 47+ AI coding assistants.
 
-The complete Next.js boilerplate for building profitable SaaS, with auth, payments, i18n, newsletter, dashboard, blog, docs, blocks, themes, SEO and more.
+This is a Bun workspace containing:
 
-## Branches
+- **`apps/web`** — The AI Skills website (Next.js, deployed on Cloudflare)
+- **`apps/cli`** — The `ai-pkgs` CLI package manager
 
-- [main](https://github.com/MkSaaSHQ/mksaas-template): The `main` branch can be deployed on Vercel, and uses Postgres as database by default, you can check out this [deployment guide](https://mksaas.com/zh/docs/deployment/vercel) for more details.
-- [cloudflare](https://github.com/MkSaaSHQ/mksaas-template/tree/cloudflare): The `cloudflare` branch can be deployed on Cloudflare Worker, and uses Postgres as database by default, you can check out this [deployment guide](https://mksaas.com/zh/docs/deployment/cloudflare) for more details.
-- [cloudflare-d1](https://github.com/MkSaaSHQ/mksaas-template/tree/cloudflare-d1): The `cloudflare-d1` branch can be deployed on Cloudflare Worker, and uses Cloudflare D1 as database by default, you can check out this [deployment guide](https://mksaas.com/zh/docs/deployment/cloudflare-d1) for more details.
+## ai-pkgs CLI
 
-## Author
+Install skills, plugins, and iterate on skills locally with Git push/pull.
 
-This project is created by [Fox](https://x.com/indie_maker_fox), the founder of [MkSaaS](https://mksaas.com) and [Mkdirs](https://mkdirs.com). The official X account for [MkSaaS](https://mksaas.com) is [@mksaascom](https://x.com/mksaascom), you can follow this account for the updates about MkSaaS.
+```bash
+npx ai-pkgs@latest --help
+```
 
-## Documentation
+### Skills
 
-The documentation is available on the [website](https://mksaas.com/docs). It includes guides, tutorials, and detailed explanations of the code. I designed it to be as beginner-friendly as possible, so you can start making money from day one.
+```bash
+ai-pkgs skills add vercel-labs/skills --skill tdd --agent cursor --project
+ai-pkgs skills list
+ai-pkgs skills outdated
+ai-pkgs skills update --yes
+```
 
-If you found anything that could be improved, please let me know.
+### Plugins
 
-## Links
+```bash
+ai-pkgs plugins init my-plugin
+ai-pkgs plugins add vercel/vercel-plugin --yes
+ai-pkgs plugins list
+```
 
-- 🔥 website: [mksaas.com](https://mksaas.com)
-- 🌐 demo: [demo.mksaas.com](https://demo.mksaas.com)
-- 📚 documentation: [mksaas.com/docs](https://mksaas.com/docs)
-- 🗓️ roadmap: [mksaas roadmap](https://mksaas.link/roadmap)
-- 👨‍💻 discord: [mksaas.link/discord](https://mksaas.link/discord)
-- 📹 video: [mksaas.link/youtube](https://mksaas.link/youtube)
+### Workspace
 
-## Repositories
+```bash
+ai-pkgs workspace link explain
+ai-pkgs workspace push explain -m "feat: improve examples"
+ai-pkgs workspace pull explain
+ai-pkgs workspace status
+```
 
-By default, you should have access to all 5 repositories. If you find that you’re unable to access any of them, please don’t hesitate to reach out to me, and I’ll assist you in resolving the issue.
+### Restore from manifest
 
-- [mksaas-template](https://github.com/MkSaaSHQ/mksaas-template): https://demo.mksaas.com
-- [mksaas-blog](https://github.com/MkSaaSHQ/mksaas-blog): https://mksaas.me
-- [mksaas-haitang](https://github.com/MkSaaSHQ/mksaas-haitang): https://haitang.app
-- [mksaas-app](https://github.com/MkSaaSHQ/mksaas-app): https://mkdollar.com
-- [mksaas-outfit](https://github.com/MkSaaSHQ/mksaas-outfit): built by [@yihui_indie](https://x.com/yihui_indie)
+```bash
+ai-pkgs install --agent cursor --force --yes
+```
 
-## Notice
+See [`apps/cli/README.md`](apps/cli/README.md) for the full CLI documentation.
 
-> If you have any questions, please [submit an issue](https://github.com/MkSaaSHQ/mksaas-template/issues/new), or contact me at [support@mksaas.com](mailto:support@mksaas.com), or join our [discord community](https://mksaas.link/discord) and ask for help there.
+## Development
 
-> If you want to receive notifications whenever code changes, please click `Watch` button in the top right.
+```bash
+bun install
+bun run dev              # Start apps/web Next.js dev server
+bun run dev:cli          # Run apps/cli in watch mode
+bun run build            # Production build for apps/web
+bun run build:cli        # Production build for apps/cli
+bun run lint             # Biome checks across the workspace
+bun run format           # Biome formatter across the workspace
+bun run type-check:cli   # Type-check apps/cli
+```
 
-> When submitting any content to the  issues of the repository, please use **English** as the main Language, so that everyone can read it and help you, thank you for your supports.
+### CLI testing
+
+```bash
+bun run --cwd apps/cli test:unit
+bun run --cwd apps/cli test:e2e
+```
+
+### Database (apps/web)
+
+```bash
+bun run db:generate      # Generate Drizzle migration files
+bun run db:migrate       # Apply pending migrations
+bun run db:push          # Push schema directly (dev only)
+bun run db:studio        # Open Drizzle Studio GUI
+```
 
 ## License
 
-For any details on the license, please refer to the [License](LICENSE) file.
+See [LICENSE](LICENSE).
