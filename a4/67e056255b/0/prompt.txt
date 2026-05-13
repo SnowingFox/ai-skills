@@ -1,0 +1,18 @@
+clear
+
+---
+
+/grill-me 
+➜  ai-skills git:(main) ai-pkgs skills add snowingfox/ai-skills --workspace
+Unknown option `--workspace`
+Run ai-pkgs --help for usage.
+
+why failed? did you forget to add workspace flag or not support add skills workspace?
+
+---
+
+oh... it's too complex, i think we just execute ai-pkgs workspace link to create workspace will be better, remove skills add `--workspace` flag in help & llms.txt
+
+---
+
+更新一下 README.md
