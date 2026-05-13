@@ -1,0 +1,293 @@
+{
+  "checkpoint_id": "342974de5333",
+  "session_id": "c00ee709-9c00-4f0d-80c2-91b8e5591ab9",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-13T07:26:46.735Z",
+  "branch": "main",
+  "checkpoints_count": 14,
+  "files_touched": [
+    "apps/cli/ai-package.json",
+    "apps/cli/src/cli/help-data/root.ts",
+    "apps/cli/src/cli/help-data/workspace.ts",
+    "apps/cli/src/cli/help.ts",
+    "apps/cli/src/commands/index.ts",
+    "apps/cli/src/commands/plugins/add.ts",
+    "apps/cli/src/commands/skills/update.ts",
+    "apps/cli/src/commands/skills/vercel-migrate.ts",
+    "apps/cli/src/commands/workspace/git-ops.ts",
+    "apps/cli/src/commands/workspace/index.ts",
+    "apps/cli/src/commands/workspace/link.ts",
+    "apps/cli/src/commands/workspace/list.ts",
+    "apps/cli/src/commands/workspace/pull.ts",
+    "apps/cli/src/commands/workspace/push.ts",
+    "apps/cli/src/commands/workspace/remove.ts",
+    "apps/cli/src/commands/workspace/status.ts",
+    "apps/cli/src/commands/workspace/types.ts",
+    "apps/cli/src/manifest/parse.ts",
+    "apps/cli/src/manifest/store.ts",
+    "apps/cli/src/manifest/types.ts",
+    "apps/cli/src/plugins/installer/cursor.ts",
+    "apps/cli/src/plugins/installer/uninstall.ts",
+    "apps/cli/src/types.ts",
+    "apps/cli/tests/e2e/workspace.e2e.test.ts",
+    "apps/cli/tests/unit/install-command.test.ts",
+    "apps/cli/tests/unit/install.test.ts",
+    "apps/cli/tests/unit/manifest.test.ts",
+    "apps/cli/tests/unit/skills-command.test.ts",
+    "apps/cli/tests/unit/skills-vercel-migrate.test.ts",
+    "apps/cli/tests/unit/workspace-commands.test.ts",
+    "apps/cli/tests/unit/workspace-manifest.test.ts",
+    "apps/cli/tests/unit/workspace-store.test.ts",
+    "apps/web/public/llms.txt",
+    "apps/web/public/llms/agent-targets.txt",
+    "apps/web/public/llms/cache.txt",
+    "apps/web/public/llms/install.txt",
+    "apps/web/public/llms/overview.txt",
+    "apps/web/public/llms/plugins/add.txt",
+    "apps/web/public/llms/plugins/index.txt",
+    "apps/web/public/llms/plugins/init.txt",
+    "apps/web/public/llms/plugins/list.txt",
+    "apps/web/public/llms/plugins/outdated.txt",
+    "apps/web/public/llms/plugins/remove.txt",
+    "apps/web/public/llms/plugins/targets.txt",
+    "apps/web/public/llms/plugins/update.txt",
+    "apps/web/public/llms/skills/add.txt",
+    "apps/web/public/llms/skills/index.txt",
+    "apps/web/public/llms/skills/list.txt",
+    "apps/web/public/llms/skills/outdated.txt",
+    "apps/web/public/llms/skills/remove.txt",
+    "apps/web/public/llms/skills/update.txt",
+    "apps/web/public/llms/skills/vercel-migrate.txt",
+    "apps/web/public/llms/sources.txt",
+    "apps/web/public/llms/workflows.txt",
+    "apps/web/public/llms/workspace/index.txt",
+    "apps/web/public/llms/workspace/link.txt",
+    "apps/web/public/llms/workspace/list.txt",
+    "apps/web/public/llms/workspace/pull.txt",
+    "apps/web/public/llms/workspace/push.txt",
+    "apps/web/public/llms/workspace/remove.txt",
+    "apps/web/public/llms/workspace/status.txt",
+    "docs/ai-package-workspace.md"
+  ],
+  "agent": "Cursor",
+  "model": "claude-opus-4-7",
+  "turn_id": "833773e94d28",
+  "is_task": false,
+  "tool_use_id": "",
+  "transcript_identifier_at_start": "",
+  "checkpoint_transcript_start": 357,
+  "transcript_lines_at_start": 357,
+  "session_metrics": {
+    "duration_ms": 84560133,
+    "turn_count": 17,
+    "context_tokens": 0,
+    "context_window_size": 0,
+    "active_duration_ms": 17817629,
+    "turn_metrics": [
+      {
+        "turn_id": "4a9d84ba5a7d",
+        "started_at": "2026-05-12T06:55:43.000Z",
+        "ended_at": "2026-05-12T07:15:57.844Z",
+        "duration_ms": 1214844
+      },
+      {
+        "turn_id": "02fcd652516c",
+        "started_at": "2026-05-12T07:16:12.000Z",
+        "ended_at": "2026-05-12T07:16:18.133Z",
+        "duration_ms": 6133
+      },
+      {
+        "turn_id": "dac2f84ec31c",
+        "started_at": "2026-05-12T07:16:41.000Z",
+        "ended_at": "2026-05-12T07:19:24.095Z",
+        "duration_ms": 163095
+      },
+      {
+        "turn_id": "2fa172f1f790",
+        "started_at": "2026-05-12T07:31:34.000Z",
+        "ended_at": "2026-05-12T07:32:53.633Z",
+        "duration_ms": 79633
+      },
+      {
+        "turn_id": "130025d2462a",
+        "started_at": "2026-05-12T07:33:21.000Z",
+        "ended_at": "2026-05-12T07:34:37.882Z",
+        "duration_ms": 76882
+      },
+      {
+        "turn_id": "1751613ea85c",
+        "started_at": "2026-05-12T08:16:56.000Z",
+        "ended_at": "2026-05-12T12:00:57.488Z",
+        "duration_ms": 13441488
+      },
+      {
+        "turn_id": "22db0f758a01",
+        "started_at": "2026-05-13T05:14:30.000Z",
+        "ended_at": "2026-05-13T05:22:04.063Z",
+        "duration_ms": 454063
+      },
+      {
+        "turn_id": "671f08b4c4aa",
+        "started_at": "2026-05-13T05:37:29.000Z",
+        "ended_at": "2026-05-13T05:42:16.290Z",
+        "duration_ms": 287290
+      },
+      {
+        "turn_id": "05fdee61391f",
+        "started_at": "2026-05-13T05:48:21.000Z",
+        "ended_at": "2026-05-13T06:04:07.144Z",
+        "duration_ms": 946144
+      },
+      {
+        "turn_id": "833773e94d28",
+        "started_at": "2026-05-13T06:05:56.000Z",
+        "ended_at": "2026-05-13T06:25:04.057Z",
+        "duration_ms": 1148057
+      }
+    ]
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-13T07:26:46.595Z",
+    "agent_lines": 4380,
+    "agent_removed": 334,
+    "human_added": 235,
+    "human_modified": 175,
+    "human_removed": 0,
+    "total_committed": 4790,
+    "total_lines_changed": 5124,
+    "agent_percentage": 91.9984387197502,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 10,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "apps/cli/ai-package.json": 10
+      },
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 10,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 24,
+      "agent_lines_removed": 3,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 24,
+      "agent_lines_removed": 3,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 714,
+      "agent_lines_removed": 3,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 40,
+      "user_lines_removed": 9,
+      "agent_lines_added": 969,
+      "agent_lines_removed": 11,
+      "user_added_per_file": {
+        "docs/ai-package-workspace.md": 40
+      },
+      "user_removed_per_file": {
+        "docs/ai-package-workspace.md": 9
+      }
+    },
+    {
+      "checkpoint_number": 9,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 10,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1000,
+      "agent_lines_removed": 11,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 11,
+      "user_lines_added": 229,
+      "user_lines_removed": 124,
+      "agent_lines_added": 1006,
+      "agent_lines_removed": 11,
+      "user_added_per_file": {
+        "apps/cli/src/cli/help-data/workspace.ts": 29,
+        "docs/ai-package-workspace.md": 200
+      },
+      "user_removed_per_file": {
+        "apps/cli/src/cli/help-data/workspace.ts": 26,
+        "docs/ai-package-workspace.md": 98
+      }
+    },
+    {
+      "checkpoint_number": 12,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 13,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1111,
+      "agent_lines_removed": 11,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 14,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2948,
+      "agent_lines_removed": 32,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    }
+  ]
+}

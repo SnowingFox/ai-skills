@@ -1,0 +1,159 @@
+/grill-me ➜  cli git:(main) ai-pkgs plugins add entireio/skills 
+┌  Plugin add
+│
+◇  Git cache ──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                                              │
+│  reusing Git cache for verified remote ref                                                                   │
+│  source: github:entireio/skills                                                                              │
+│  ref: main@c376dc9                                                                                           │
+│  cache: /Users/bytedance/.cache/ai-pkgs/git/github/entireio/skills/c376dc971045eb38c094802ca43875d1cfa00ea4  │
+│                                                                                                              │
+├──────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+│
+◇  Target agents?
+│  Cursor
+│
+◇  Installing to cursor...
+│
+◆  Installed 1 plugin(s) to cursor
+│
+◆  Wrote 1 plugin(s) to ai-package.json
+│
+◆  Enabled in .claude/settings.json
+│
+└  Add complete
+
+合理吗。。。我安装 cursor 为什么会 enable .claude/settings？
+
+---
+
+ok，add this feature to code comment, i don't know before
+
+---
+
+/grill-me 我觉得还有迭代的问题
+
+在 ai-package.json 里面加个 workspace 字段，用来迭代对应的 SKILL
+
+目前只支持迭代 SKILL，plugin 暂时不管，你觉得怎么说？
+
+我可以指定 local: "./cursor/skills/my-skill/SKILL.md" 作为我要迭代的 SKILL
+
+然后加上 github 的配置
+
+workspace: {
+   skills: {
+      "my-skill": {
+          file: "./cursor/skills/my-skill",
+          git: "git@github.com/owner/repo",
+          path: "skills/my-skills"
+      }
+  }
+}
+
+然后每次迭代都可以发自动帮忙发和更新对应的 SKILL（文件夹维度？）
+
+不过这里有个有意思的问题如果我安装了然后想来迭代，应该怎么使用？以及如果 plugin 想迭代应该怎么做？
+
+---
+
+keep going, is workspace field correct? i just want to impl a feature that user can iterate skill itself, and can update to specific branch or main branch, all update are based on git
+
+how do you think of this? and which way is the best?
+
+---
+
+reask, i select a wrong question
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+/grill-me 
+update docs/ai-package-workspace.md 
+
+unlink <name>         Move a workspace skill back to skills[]
+
+i think just remove this skill and delete skills folder & files from project
+
+finally, update llms.txt and help command
+
+---
+
+/grill-me update design doc
+/grill-me update link/unlink to add & remove
+
+
+$ ai-pkgs workspace link my-new-skill
+
+┌ Workspace link
+│
+▲ "my-new-skill" not found in skills. Creating new workspace entry.
+│
+◇ Local skill path?
+│ .claude/skills/my-new-skill
+
+and local skills path i think we can detect the local skills path is exist, if not, tells error and let user re-type it
+
+Git remote e.g. should also show https:// type
+
+hmmm, i think we should not provide link command
+
+just can using skills add owner/repo --workspace instead of workspace link, and using ai-pkgs ws remove my-skill to remove from workspace and delete it, and also should be in TTY mode and has --ai mode
+
+finally you should provide a flag `ws push --accept-my-change` and TTY to decide resolve it locally or accept all your changes when conflict happened
+
+how do you think of this?
+
+---
+
+/grill-me update design doc
+/grill-me update link/unlink to add & remove
+
+
+$ ai-pkgs workspace link my-new-skill
+
+┌ Workspace link
+│
+▲ "my-new-skill" not found in skills. Creating new workspace entry.
+│
+◇ Local skill path?
+│ .claude/skills/my-new-skill
+
+and local skills path i think we can detect the local skills path is exist, if not, tells error and let user re-type it
+
+Git remote e.g. should also show https:// type
+
+hmmm, i think we should not provide link command
+
+just can using skills add owner/repo --workspace instead of workspace link, and using ai-pkgs ws remove my-skill to remove from workspace and delete it, and also should be in TTY mode and has --ai mode
+
+finally you should provide a flag `ws push --accept-my-change` and TTY to decide resolve it locally or accept all your changes when conflict happened
+
+how do you think of this?
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+ok, write code using jsdoc commet
+
+---
+
+ok, write code using jsdoc commet with tdd tech design
+
+---
+
+ok, write code using jsdoc commet with tdd tech design @docs/ai-package-workspace.md
+
+---
+
+resume
