@@ -18,7 +18,7 @@ This is a Bun workspace containing:
 npm i -g ai-pkgs
 ```
 
-Or run directly:
+Or run without installing:
 
 ```bash
 npx ai-pkgs@latest --help
