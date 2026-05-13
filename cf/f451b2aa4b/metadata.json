@@ -1,0 +1,17 @@
+{
+  "checkpoint_id": "cff451b2aa4b",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "README.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/cf/f451b2aa4b/0/metadata.json",
+      "prompt": "/cf/f451b2aa4b/0/prompt.txt",
+      "transcript": "/cf/f451b2aa4b/0/full.jsonl",
+      "content_hash": "/cf/f451b2aa4b/0/content_hash.txt"
+    }
+  ]
+}
