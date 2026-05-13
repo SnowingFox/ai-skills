@@ -17,8 +17,6 @@ ai-pkgs workspace (alias: ws)
   ├── status [name]         Show dirty/clean state vs last push
   └── list                  List all workspace skills
 
-ai-pkgs skills add <source> --workspace
-  └── Install directly into workspace.skills (skip skills[])
 ```
 
 Shorthand: `ai-pkgs ws push explain` is equivalent to
@@ -77,8 +75,8 @@ works for skills already present in `skills[]`.
 directory from disk. The skill is fully removed — if you want it back as a
 dependency afterward, run `skills add` separately.
 
-For new skills that are not yet in `skills[]`, use
-`skills add owner/repo --workspace` to install directly into workspace.
+For new skills that are not yet in `skills[]`, run `skills add` first to
+install normally, then `workspace link` to move it into workspace mode.
 
 `skills add`, `skills update`, and `skills outdated` ignore workspace skills
 entirely. Workspace skills are managed exclusively through `workspace` commands.
@@ -94,7 +92,7 @@ iteration. The `source`, `path`, and `version` are auto-filled from the existing
 manifest entry. The only prompt is an agent-aware local path selector.
 
 `workspace link` only works for skills already in `skills[]`. For new skills,
-use `skills add --workspace` instead.
+run `skills add` first, then `workspace link`.
 
 ```
 $ ai-pkgs workspace link explain
@@ -177,7 +175,7 @@ Flags:
 Errors:
 
 - Skill not in `skills[]`: `"my-new-skill" is not in skills. Use
-  "skills add <source> --workspace" to add a new workspace skill.`
+  Run "skills add <source>" first, then link.`
 - Skill already in workspace: `"explain" is already a workspace skill.`
 - `--ai` mode without `--local`: `--local is required when linking in
   non-interactive mode.`
@@ -557,7 +555,7 @@ $ ai-pkgs workspace list
 │
 ▲  No workspace skills.
 │  Use "ai-pkgs workspace link <name>" to iterate on an installed skill,
-│  or "ai-pkgs skills add <source> --workspace" to add a new one.
+│  or run "ai-pkgs skills add <source>" first, then "workspace link".
 │
 └  Done.
 ```
@@ -581,54 +579,6 @@ JSON output:
 ]
 ```
 
-### `ai-pkgs skills add <source> --workspace`
-
-Install a skill directly into `workspace.skills`, skipping `skills[]`. Use this
-for new skills that are not yet in the manifest.
-
-```
-$ ai-pkgs skills add entireio/skills --skill explain --workspace
-
-┌  Skill add (workspace)
-│
-◇  Repository cloned (main@c376dc9)
-│
-◇  Discovered 5 skill(s)
-│
-◇  Local skill path?  (where to place the skill on disk)
-│  .cursor/skills/explain
-│
-◇  Installing skill...
-│
-│  copy: explain -> .cursor/skills/explain
-│
-◆  Wrote workspace entry for "explain"
-│
-│  local:   .cursor/skills/explain
-│  source:  github:entireio/skills
-│  path:    skills/explain
-│  version: main@c376dc9
-│
-└  Add complete
-```
-
-This combines `skills add` resolution + discovery with workspace entry writing.
-The skill is installed to the `local` path (not to agent target directories),
-and only the workspace entry is written.
-
-Flags:
-
-All standard `skills add` flags apply, plus:
-
-- `--workspace` — route the entry to `workspace.skills` instead of `skills[]`.
-  When set, the CLI prompts for a `local` path and skips the agent target
-  selector.
-
-Errors:
-
-- `--workspace` with `--global`: `--workspace and --global are mutually
-  exclusive. Workspace skills are always project-scoped.`
-
 ---
 
 ## Design Rules
@@ -636,12 +586,11 @@ Errors:
 ### Branch Locking
 
 The `version` field encodes both the branch name and the commit SHA:
-`main@c376dc9`. The branch is set at `workspace link` time (or `skills add
---workspace` time) and cannot be changed afterward. All push and pull operations
-target this locked branch.
+`main@c376dc9`. The branch is set at `workspace link` time and cannot be
+changed afterward. All push and pull operations target this locked branch.
 
-To switch branches, `remove` the workspace skill and re-add it with a new
-branch via `skills add --workspace --ref <new-branch>`.
+To switch branches, `remove` the workspace skill, re-add it with a different
+`--ref` via `skills add`, then `workspace link` again.
 
 ### No Fork / Upstream Tracking
 
@@ -649,8 +598,8 @@ branch via `skills add --workspace --ref <new-branch>`.
 pushed to. There is no separate `upstream` field.
 
 If you want to push to a different repo than where you installed from (fork
-workflow), create the target repo yourself, then use `skills add --workspace`
-with that repo as the source.
+workflow), create the target repo yourself, run `skills add` with that repo
+as the source, then `workspace link`.
 
 ### Commit Message
 
@@ -796,7 +745,7 @@ operations during push and pull.
 
 | Command | Behavior with workspace skills |
 |---------|-------------------------------|
-| `skills add` | Ignores workspace skills. `--workspace` flag routes to `workspace.skills`. |
+| `skills add` | Ignores workspace skills. To add a skill to workspace, run `skills add` then `workspace link`. |
 | `skills list` | Does not show workspace skills. |
 | `skills update` | Does not update workspace skills. |
 | `skills outdated` | Does not check workspace skills. |
@@ -820,4 +769,4 @@ operations during push and pull.
 - **Multi-skill push**: `workspace push --all` to push all modified workspace
   skills at once.
 - **Branch switching**: `workspace branch <name> <new-branch>` to change the
-  locked branch (currently requires remove + re-add via `skills add --workspace`).
+  locked branch (currently requires remove + re-add via `skills add` + `workspace link`).

@@ -15,15 +15,6 @@ const WORKSPACE_GROUP_EXAMPLES: HelpExampleGroup[] = [
     ],
   },
   {
-    title: 'Add a new skill directly to workspace',
-    examples: [
-      [
-        'ai-pkgs skills add entireio/skills --skill explain --workspace',
-        'Install a skill directly into workspace (skip skills[]).',
-      ],
-    ],
-  },
-  {
     title: 'Push and pull changes',
     examples: [
       [
@@ -105,7 +96,6 @@ export const WORKSPACE_GROUP_COMMAND: HelpCommand = {
     'Alias: "ws" (e.g. ai-pkgs ws push explain)',
     'A skill is in skills[] OR workspace.skills, never both.',
     'workspace link only works for skills already in skills[].',
-    'For new skills, use: skills add <source> --workspace.',
     'workspace remove deletes the entry and local files.',
     'The branch is locked at link time. Push and pull always target it.',
   ],

@@ -51,7 +51,8 @@ ai-pkgs workspace push explain -m "feat: improve examples"
 ## 5. Author a new skill from scratch and publish it
 
 ```bash
-ai-pkgs skills add myteam/agent-skills --skill new-thing --workspace
+ai-pkgs skills add myteam/agent-skills --skill new-thing --agent cursor --project
+ai-pkgs workspace link new-thing
 # (edit .cursor/skills/new-thing/SKILL.md)
 ai-pkgs workspace push new-thing -m "feat: introduce new-thing"
 ```

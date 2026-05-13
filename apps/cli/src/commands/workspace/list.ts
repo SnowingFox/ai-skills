@@ -79,7 +79,7 @@ export const runWorkspaceListCommand = async (
     p.intro('Workspace skills');
     if (skills.length === 0) {
       p.log.warn(
-        'No workspace skills.\n  Use "ai-pkgs workspace link <name>" to iterate on an installed skill,\n  or "ai-pkgs skills add <source> --workspace" to add a new one.'
+        'No workspace skills.\n  Use "ai-pkgs workspace link <name>" to iterate on an installed skill.'
       );
     } else {
       p.note(formatNote(skills), `Workspace skills (${skills.length})`);

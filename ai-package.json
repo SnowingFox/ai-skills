@@ -25,11 +25,6 @@
       "path": "skills/misc/git-guardrails-claude-code",
       "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
     },
-    "grill-me": {
-      "source": "github:mattpocock/skills",
-      "path": "skills/productivity/grill-me",
-      "version": "main@b843cb5ea74b1fe5e58a0fc23cddef9e66076fb8"
-    },
     "grill-with-docs": {
       "source": "github:mattpocock/skills",
       "path": "skills/engineering/grill-with-docs",

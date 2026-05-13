@@ -8,8 +8,6 @@ Prompts only for the local path with an agent-aware selector (scans every
 agent's project skill directory for a folder matching `<name>`). A
 "Custom path" option opens a text input that re-prompts on missing paths.
 
-For new skills, use `skills add <source> --workspace` instead.
-
 ## Flags
 
 - `--local <path>`: local skill path on disk (skip selector; required in `--ai` mode)
@@ -19,7 +17,7 @@ For new skills, use `skills add <source> --workspace` instead.
 
 ## Errors
 
-- Skill not in `skills[]`: `"<name>" is not in skills. Use "skills add <source> --workspace" to add a new workspace skill.`
+- Skill not in `skills[]`: `"<name>" is not in skills. Run "skills add <source>" first, then link.`
 - Skill already in workspace: `"<name>" is already a workspace skill.`
 - `--ai` without `--local`: `--local is required when linking in non-interactive mode.`
 - `--local` path does not exist: `Path does not exist: <local>`

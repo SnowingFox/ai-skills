@@ -159,7 +159,7 @@ export const createManifestStore = (
       const source = existing.skills.find((skill) => skill.name === name);
       if (!source) {
         throw new Error(
-          `"${name}" is not in skills. Use "skills add --workspace" to add a new workspace skill.`
+          `"${name}" is not in skills. Run "skills add <source>" first, then link.`
         );
       }
       if (source.provider !== 'github' && source.provider !== 'gitlab') {

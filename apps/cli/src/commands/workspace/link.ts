@@ -129,7 +129,7 @@ export const runWorkspaceLinkCommand = async (
   const existing = manifest.skills.find((skill) => skill.name === name);
   if (!existing) {
     throw new SilentError(
-      `"${name}" is not in skills. Use "skills add <source> --workspace" to add a new workspace skill.`
+      `"${name}" is not in skills. Run "skills add <source>" first, then link.`
     );
   }
 
