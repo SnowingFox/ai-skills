@@ -97,6 +97,11 @@ bun run db:push          # Push schema directly (dev only)
 bun run db:studio        # Open Drizzle Studio GUI
 ```
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. Use Conventional Commits
+(`feat:`, `fix:`, `chore:`) for all commit messages.
+
 ## License
 
 See [LICENSE](LICENSE).
