@@ -15,7 +15,7 @@ This is a Bun workspace containing:
 ## Install
 
 ```bash
-npm i -g ai-pkgs
+npm install -g ai-pkgs
 ```
 
 Or run without installing:
