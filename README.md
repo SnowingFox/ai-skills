@@ -2,6 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/ai-pkgs)](https://www.npmjs.com/package/ai-pkgs)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20.19-brightgreen)](https://nodejs.org)
+[![License](https://img.shields.io/github/license/anthropics/ai-skills)](LICENSE)
 
 AI Skills is a platform for distributing and managing AI agent components —
 skills, plugins, and workspace iteration — across 47+ AI coding assistants.
