@@ -1,0 +1,25 @@
+{
+  "checkpoint_id": "5b2cfdebb60a",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".cursor/skills/grill-me/SKILL.md",
+    "ai-package.json",
+    "apps/cli/src/cli/help-data/workspace.ts",
+    "apps/cli/src/commands/workspace/link.ts",
+    "apps/cli/src/commands/workspace/list.ts",
+    "apps/cli/src/manifest/store.ts",
+    "apps/web/public/llms/workflows.txt",
+    "apps/web/public/llms/workspace/link.txt",
+    "docs/ai-package-workspace.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/5b/2cfdebb60a/0/metadata.json",
+      "prompt": "/5b/2cfdebb60a/0/prompt.txt",
+      "transcript": "/5b/2cfdebb60a/0/full.jsonl",
+      "content_hash": "/5b/2cfdebb60a/0/content_hash.txt"
+    }
+  ]
+}
