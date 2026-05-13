@@ -1,178 +1,149 @@
 # ai-pkgs
 
-Package manager for installing and managing AI agent skills across Cursor,
-Claude Code, Codex, and other agent runtimes.
+Package manager for AI agent skills, plugins, and workspace iteration across
+Cursor, Claude Code, Codex, and 47+ other agent runtimes.
 
-## Usage
-
-Show help:
+## Quick start
 
 ```bash
-ai-pkgs --help
-ai-pkgs skills -h
+npx ai-pkgs@latest --help
 ```
 
-Restore skills from `ai-package.json`:
+## Skills
+
+Add skills from a GitHub repository:
+
+```bash
+ai-pkgs skills add vercel-labs/skills --skill tdd --agent cursor --project
+```
+
+Add from a local directory:
+
+```bash
+ai-pkgs skills add ./local-skills --registry file --skill to-prd --agent cursor --link
+```
+
+List, check, and update manifest skills:
+
+```bash
+ai-pkgs skills list
+ai-pkgs skills outdated
+ai-pkgs skills update --yes
+```
+
+## Plugins
+
+Scaffold a new plugin:
+
+```bash
+ai-pkgs plugins init my-plugin
+```
+
+Add plugins from a source and select target agents:
+
+```bash
+ai-pkgs plugins add vercel/vercel-plugin --yes
+```
+
+Manage per-plugin targets:
+
+```bash
+ai-pkgs plugins targets add vercel-plugin cursor
+ai-pkgs plugins targets list vercel-plugin
+```
+
+List, check, and update manifest plugins:
+
+```bash
+ai-pkgs plugins list
+ai-pkgs plugins outdated
+ai-pkgs plugins update --yes
+```
+
+## Workspace
+
+Iterate on skills locally with Git push/pull. Move an installed skill into
+workspace mode, edit it, then push your changes back to the remote:
+
+```bash
+ai-pkgs workspace link explain
+# edit .cursor/skills/explain/SKILL.md
+ai-pkgs workspace status
+ai-pkgs workspace push explain -m "feat: improve examples"
+ai-pkgs workspace pull explain
+```
+
+Remove a workspace skill (deletes local files):
+
+```bash
+ai-pkgs workspace remove explain --yes
+```
+
+Alias: `ws` (e.g. `ai-pkgs ws push explain`).
+
+## Install / restore
+
+Restore every skill and plugin from `ai-package.json`:
 
 ```bash
 ai-pkgs install --agent cursor --force --yes
 ```
 
-Add skills from a GitHub repository, save them to `ai-package.json`, and
-install them:
+## Non-interactive mode
+
+`--ai` disables prompts, spinners, and dynamic TUI. Anything that would prompt
+fails with a clear next-step message. Pass explicit flags such as `--agent`,
+`--skill`, `--force`, `--skip-existing`, or `--yes`:
 
 ```bash
-ai-pkgs skills add mattpocock/skills \
-  --skill tdd \
-  --agent cursor \
-  --force \
-  --yes
+ai-pkgs --ai skills add vercel-labs/skills --all --agent cursor --force --yes
 ```
 
-Add skills from a local directory:
+## Manifest
 
-```bash
-ai-pkgs skills add ./local-skills \
-  --registry file \
-  --skill to-prd \
-  --agent universal \
-  --link \
-  --yes
+`ai-package.json` is the declarative restore file:
+
+```json
+{
+  "skills": {
+    "tdd": {
+      "source": "github:mattpocock/skills",
+      "version": "main@b843cb5...",
+      "path": "skills/engineering/tdd"
+    }
+  },
+  "plugins": {
+    "vercel-plugin": {
+      "source": "github:vercel/vercel-plugin",
+      "version": "main@abc1234...",
+      "path": ".",
+      "targets": ["claude-code", "cursor"]
+    }
+  },
+  "workspace": {
+    "skills": {
+      "explain": {
+        "local": ".cursor/skills/explain",
+        "source": "github:entireio/skills",
+        "path": "skills/explain",
+        "version": "main@c376dc9..."
+      }
+    }
+  }
+}
 ```
 
-Add skills to the global ai-pkgs manifest and install them globally:
-
-```bash
-ai-pkgs skills add mattpocock/skills \
-  --global \
-  --skill tdd \
-  --agent cursor \
-  --force \
-  --yes
-```
-
-Install directly without writing `ai-package.json`:
-
-```bash
-ai-pkgs skills add ./local-skills \
-  --registry file \
-  --install-only \
-  --skill to-prd \
-  --agent cursor \
-  --force \
-  --yes
-```
-
-Global one-off installs can also skip the global manifest:
-
-```bash
-ai-pkgs skills add mattpocock/skills \
-  --global \
-  --install-only \
-  --skill tdd \
-  --agent cursor \
-  --force \
-  --yes
-```
-
-Migrate a legacy Vercel `skills-lock.json` into `ai-package.json`:
-
-```bash
-ai-pkgs skills vercel-migrate --skip-existing
-```
-
-To migrate and then install the full manifest:
-
-```bash
-ai-pkgs skills vercel-migrate \
-  --install \
-  --agent cursor \
-  --force \
-  --yes
-```
-
-List declared skills as grouped text or JSON:
-
-```bash
-ai-pkgs skills list
-ai-pkgs skills list --json
-ai-pkgs skills list --global
-```
-
-Check and update Git-backed skill pins:
-
-```bash
-ai-pkgs skills outdated
-ai-pkgs skills outdated tdd to-prd
-ai-pkgs skills update --yes
-ai-pkgs skills update tdd --yes
-ai-pkgs skills update --global --yes
-```
-
-Run in strict AI/automation mode:
-
-```bash
-ai-pkgs --ai skills add mattpocock/skills \
-  --install-only \
-  --skill tdd \
-  --agent cursor \
-  --force \
-  --yes
-```
-
-`--ai` disables prompts, spinners, and dynamic TUI behavior. Anything that would
-prompt fails with a clear next-step message, so automation callers must pass
-explicit flags such as `--agent`, `--skill`, `--force`, `--skip-existing`, or
-`--yes`.
-
-## Commands
-
-`install` reads `ai-package.json` and installs every declared skill into the
-selected agent targets. It does not mutate the manifest.
-
-`skills add <source>` resolves a source, discovers skill folders, writes selected
-entries to `ai-package.json`, then installs them. Add `--install-only` for
-one-off installs that skip all manifest reads and writes.
-
-`skills add -g, --global` writes selected entries to
-`~/.ai-pkgs/ai-package.json` and installs them into global agent directories.
-`--global --install-only` performs a one-off global install without writing the
-global manifest. `--global` cannot be combined with `--manifest`.
-
-`skills vercel-migrate` reads legacy Vercel `skills-lock.json` files and writes
-their GitHub skills into `ai-package.json`. It keeps the lock file by default;
-pass `--remove-lock` to delete it after a successful manifest write. Conflicts
-prompt in TTY mode, or require `--force` / `--skip-existing` in non-interactive
-mode.
-
-`skills list` prints manifest skills grouped by source; pass `--json` for
-machine-readable output. Add `--global` to read `~/.ai-pkgs/ai-package.json`.
-
-`skills outdated [skill...]` checks every manifest skill, or only named skills,
-by resolving each Git-backed entry's stored ref and comparing the latest SHA to
-the manifest `commitSha`. It reports file and Marketplace sources as skipped,
-exits 0 when skills are merely outdated, and exits 1 only when checks fail.
-
-`skills update [skill...]` reuses the same outdated check and writes only entries
-whose Git pin moved. TTY mode asks before writing with default Yes; non-TTY and
-`--ai` require `--yes`. If any requested check fails, no partial manifest write
-is performed. Add `--global` to update `~/.ai-pkgs/ai-package.json`.
-
-`install -g, --global` restores `~/.ai-pkgs/ai-package.json` into global agent
-skill directories. Without `--global`, `install` remains project-scoped.
-
-`skills remove` edits manifest entries by name. Marketplace `skills search` is
-reserved for the backend marketplace API.
+A skill is in `skills` **or** `workspace.skills`, never both.
 
 ## Sources
 
-GitHub is the default registry for shorthand sources:
+GitHub is the default registry:
 
 ```bash
 ai-pkgs skills add owner/repo
 ```
 
-Explicit registries are supported:
+Explicit registries:
 
 ```bash
 ai-pkgs skills add https://github.com/owner/repo --registry github
@@ -180,17 +151,9 @@ ai-pkgs skills add https://gitlab.example.com/group/repo.git --registry gitlab
 ai-pkgs skills add ./local-skills --registry file
 ```
 
-Git sources are cloned and pinned as `<ref>@<sha>` in `ai-package.json`. Local
-file sources preserve their local source root.
+Git sources are pinned as `<ref>@<sha>` for reproducible installs.
 
-Legacy Vercel migrations support `sourceType: "github"` entries. The old
-`computedHash` field is validated as legacy lock metadata, but the manifest uses
-Git pins instead, so it is not written to `ai-package.json`.
-
-## Agent Targets
-
-Target agents must be selected explicitly with `--agent`, or through the TTY
-picker when prompts are allowed.
+## Agent targets
 
 Common targets:
 
@@ -199,143 +162,103 @@ Common targets:
 - `codex` -> `.codex/skills`
 - `universal` -> `.agents/skills`
 
-Install mode defaults to `--copy`. Use `--link` for symlinks. Existing target
-folders prompt in TTY mode, or require `--force` / `--skip-existing` in
-non-interactive mode.
+47+ agents are supported. Run `ai-pkgs skills add <source>` and pick from the
+interactive selector, or pass `--agent <id>`.
 
-## Manifest
+## Plugin-capable agents
 
-`ai-package.json` is the declarative restore file. A minimal file looks like:
+| Target | Cache | Settings |
+|--------|-------|----------|
+| `claude-code` | `~/.claude/plugins/cache/` | `~/.claude/settings.json` or `.claude/settings.json` |
+| `cursor` | Shares Claude cache (macOS/Linux); `~/.cursor/extensions/` (Windows) | — |
+| `codex` | `~/.codex/plugins/cache/` | `~/.codex/config.toml` |
 
-```json
-{
-  "skills": {
-    "tdd": {
-      "source": "github:mattpocock/skills",
-      "version": "main@<resolved-sha>",
-      "path": "skills/engineering/tdd"
-    }
-  }
-}
+## Commands
+
+```text
+ai-pkgs
+  install                  Restore from ai-package.json
+  cache clear              Clear Git cache
+
+  skills add               Add skills from a source
+  skills list              List manifest skills
+  skills remove            Remove skill entries
+  skills outdated          Check for newer Git commits
+  skills update            Refresh pinned Git SHAs
+  skills vercel-migrate    Migrate legacy skills-lock.json
+
+  plugins init             Scaffold a plugin template
+  plugins add              Add plugins from a source
+  plugins list             List manifest plugins
+  plugins remove           Remove plugin entries
+  plugins targets          Manage per-plugin agent targets
+  plugins outdated         Check for newer Git commits
+  plugins update           Refresh pinned Git SHAs
+
+  workspace link           Move an installed skill to workspace
+  workspace remove         Remove workspace entry and delete local files
+  workspace push           Push local changes to remote
+  workspace pull           Pull latest from remote into local
+  workspace status         Show clean / modified / untracked state
+  workspace list           List workspace skills
 ```
 
-Use `ai-pkgs install` to restore from this file on another machine or project.
+Run `ai-pkgs <command> -h` for detailed usage. `workspace` is aliased to `ws`.
 
 ## Architecture
 
-The CLI follows a small boundary-oriented architecture:
-
-- `src/cli.ts` builds the `cac` parser, installs custom help, and delegates
-execution to `src/cli/runtime.ts`.
-- `src/commands/*` registers command surfaces. `skills [...args]` is a dispatcher
-  for `add`, `list`, `remove`, `outdated`, `update`, `vercel-migrate`, and
-  `search`; implementation files live under `src/commands/skills/`.
-- `src/cli/help.ts` renders help only. Help content lives in
-`src/cli/help-data/*`.
-- `src/cli/ai-mode.ts` owns strict AI/non-interactive mode helpers.
-- `src/registries/*` implements source providers for GitHub, GitLab, file, and
-the deferred marketplace boundary.
-- `src/git.ts` is the thin Git facade used by Git registries.
-- `src/discovery/*` finds `SKILL.md` directories and handles skill selection.
-- `src/agents/*` maps logical agent IDs to install directories.
-- `src/manifest/*` parses, validates, and writes `ai-package.json`.
-- `src/installer/*` materializes selected skills into target agent directories
-with copy/link and conflict policies.
-
-High-level data flow for `skills add`:
-
 ```text
-source string
-  -> registry.resolve()
-  -> discoverSkills()
-  -> selectDiscoveredSkills()
-  -> ManifestStore.addSkills() unless --install-only
-  -> resolveAgentTargets()
-  -> installPlan()
-```
-
-High-level data flow for `install`:
-
-```text
-ai-package.json
-  -> parseAiPackageManifest()
-  -> resolveAgentTargets()
-  -> installSkills()
-  -> registry.materialize()
-  -> installPlan()
-```
-
-High-level data flow for global manifest commands:
-
-```text
--g / --global
-  -> ~/.ai-pkgs/ai-package.json
-  -> existing Git cache/ref resolution
-  -> global agent skill directories
-```
-
-High-level data flow for `skills vercel-migrate`:
-
-```text
-skills-lock.json
-  -> parse legacy GitHub entries
-  -> resolve GitHub default-branch pins
-  -> merge with ai-package.json
-  -> optionally run install
-```
-
-High-level data flow for `skills outdated` and `skills update`:
-
-```text
-ai-package.json
-  -> select all skills or requested names
-  -> group Git checks by provider + packageId + ref
-  -> resolve each remote ref once
-  -> report outdated/up-to-date/skipped/failed
-  -> update writes only if no checks failed and confirmation is explicit
+src/
+  cli.ts                Bootstrap, Node.js version guard
+  cli/
+    app.ts              buildCli / runCli entrypoint
+    help.ts             Custom help renderer
+    help-data/          Static help content (skills, plugins, workspace, cache)
+    ai-mode.ts          --ai / non-interactive helpers
+    ai-output.ts        Deterministic text output
+    clone-progress.ts   Shared clone progress renderer
+  commands/
+    skills/             skills add, list, remove, outdated, update, vercel-migrate
+    plugins/            plugins init, add, list, remove, outdated, update, targets
+    workspace/          workspace link, remove, push, pull, status, list
+    cache.ts            cache clear
+    install.ts          install (restore from manifest)
+    help.ts             help <command>
+  manifest/
+    parse.ts            Validate and parse ai-package.json (skills, plugins, workspace)
+    store.ts            CRUD API (add/remove skills/plugins/workspace + moveSkillToWorkspace)
+  registries/           GitHub, GitLab, file, marketplace boundaries
+  discovery/            SKILL.md discovery and selection
+  plugins/
+    discover.ts         Plugin discovery from source trees
+    init.ts             Plugin template scaffolding
+    targets.ts          Target detection, vendor dir detection, selector
+    installer/          Per-target install/uninstall (Claude, Cursor, Codex)
+  agents/               Agent registry (47+ agents) and target resolution
+  git.ts                Git subprocess facade
+  git-cache.ts          Global Git cache (provider + source + SHA)
+  types.ts              SkillEntry, PluginEntry, WorkspaceSkillEntry, AiPackageManifest
 ```
 
 ## Development
 
-Install dependencies:
-
 ```bash
 bun install
-```
-
-Run from source:
-
-```bash
-bun run src/cli.ts --help
-```
-
-Useful scripts:
-
-```bash
-bun run start
-bun run check
-bun run build
-bun run test:unit
-bun run test:e2e
-bun run type-check
+bun run start           # run from source
+bun run dev             # watch mode
+bun run type-check      # tsc --noEmit
+bun run test:unit       # vitest unit tests
+bun run test:e2e        # vitest e2e tests
+bun run lint            # biome check
+bun run build           # tsup production build
+bun run check           # type-check + unit + e2e + lint
 ```
 
 ## Release
 
-Release scripts:
-
 ```bash
-bun run bump
-bun run release
-bun run publish:dry
-bun run release:publish
+bun run bump            # bump version, commit, tag
+bun run pub             # build + bump + npm publish
 ```
 
-Do not add a script named `publish` that wraps `npm publish`. `npm publish`
-executes the `publish` lifecycle script during publishing, which can trigger a
-second publish attempt for the same version. Use `release:publish` instead.
-
-The package `files` field intentionally publishes only:
-
-- `dist`
-- `README.md`
+The package `files` field publishes only `dist` and `README.md`.
