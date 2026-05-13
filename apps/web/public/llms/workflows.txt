@@ -1,0 +1,94 @@
+# Common workflows
+
+End-to-end recipes for the most common ai-pkgs scenarios.
+
+## 1. Bootstrap a project from `ai-package.json`
+
+Clone a repo that already has `ai-package.json`, then restore every skill
+and plugin into the local agent targets:
+
+```bash
+git clone owner/project
+cd project
+ai-pkgs install --yes
+```
+
+For CI:
+
+```bash
+ai-pkgs --ai install --yes
+```
+
+## 2. Add a skill from GitHub
+
+```bash
+ai-pkgs skills add vercel-labs/skills --skill tdd --agent cursor --project
+```
+
+After this, `ai-package.json` carries the entry and `.cursor/skills/tdd/`
+contains the SKILL.md.
+
+## 3. Add a plugin to multiple agents
+
+```bash
+ai-pkgs plugins add vercel/vercel-plugin --agent claude-code --agent cursor --yes
+```
+
+The persisted `targets: ["claude-code", "cursor"]` is what `ai-pkgs install`
+uses to restore the plugin later.
+
+## 4. Iterate on an installed skill
+
+Move it into workspace mode, edit in place, push back to its remote:
+
+```bash
+ai-pkgs workspace link explain
+# (edit .cursor/skills/explain/SKILL.md)
+ai-pkgs workspace status
+ai-pkgs workspace push explain -m "feat: improve examples"
+```
+
+## 5. Author a new skill from scratch and publish it
+
+```bash
+ai-pkgs skills add myteam/agent-skills --skill new-thing --workspace
+# (edit .cursor/skills/new-thing/SKILL.md)
+ai-pkgs workspace push new-thing -m "feat: introduce new-thing"
+```
+
+## 6. Resolve a workspace push conflict
+
+```bash
+ai-pkgs workspace push explain
+# remote diverged; pick "Accept my changes" or "Resolve locally"
+
+# Or in --ai mode, force-push:
+ai-pkgs workspace push explain --accept-my-change --ai -m "chore: force"
+
+# Or to merge manually:
+# the CLI prints a /tmp/ai-pkgs-ws-XXXXX/ path; cd in, run
+#   git pull --rebase origin <branch> && git push origin <branch>
+# then run:
+ai-pkgs workspace pull explain --force
+```
+
+## 7. Update Git-pinned skills and plugins
+
+```bash
+ai-pkgs skills outdated
+ai-pkgs skills update --yes
+ai-pkgs plugins outdated
+ai-pkgs plugins update --yes
+```
+
+## 8. Remove a plugin and clean agent caches
+
+```bash
+ai-pkgs plugins remove vercel-plugin --uninstall --yes
+```
+
+## 9. Clear the Git cache after a network hiccup
+
+```bash
+ai-pkgs cache clear --provider github --source vercel-labs/skills
+```

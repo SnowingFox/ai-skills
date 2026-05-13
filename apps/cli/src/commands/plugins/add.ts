@@ -207,10 +207,17 @@ export const runPluginsAddCommand = async (
       }
     }
 
+    // On non-Windows, Cursor shares the Claude plugin cache so installing
+    // to either target writes enabledPlugins into .claude/settings.json.
     if (targetIds.includes('claude-code') || targetIds.includes('cursor')) {
-      const settingsNote = isGlobal
-        ? 'Enabled in ~/.claude/settings.json'
-        : 'Enabled in .claude/settings.json';
+      const cursorOnly =
+        targetIds.includes('cursor') && !targetIds.includes('claude-code');
+      const settingsPath = isGlobal
+        ? '~/.claude/settings.json'
+        : '.claude/settings.json';
+      const settingsNote = cursorOnly
+        ? `Enabled in ${settingsPath} (Cursor shares Claude plugin cache)`
+        : `Enabled in ${settingsPath}`;
       if (aiMode) {
         process.stdout.write(renderAiStep(settingsNote));
       } else {

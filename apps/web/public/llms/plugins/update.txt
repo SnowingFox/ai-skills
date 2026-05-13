@@ -1,0 +1,22 @@
+# `ai-pkgs plugins update [plugin...] [options]`
+
+Refreshes pinned Git SHAs for all or selected Git-backed plugin entries.
+After writing the new SHAs to `ai-package.json`, re-installs each updated
+plugin to its persisted `targets` so cache directories and agent settings
+catch up.
+
+## Flags
+
+- `-C, --dir <path>`: project directory
+- `-m, --manifest <path>`: path to `ai-package.json`
+- `-g, --global`: update `~/.ai-pkgs/ai-package.json`
+- `-y, --yes`: confirm writes without prompting
+- `--ai`: strict non-interactive mode
+
+## Examples
+
+```bash
+ai-pkgs plugins update --yes
+ai-pkgs plugins update vercel-plugin --yes
+ai-pkgs plugins update --global --yes
+```

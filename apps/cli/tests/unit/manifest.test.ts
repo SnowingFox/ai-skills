@@ -69,7 +69,7 @@ describe('parseAiPackageManifest', () => {
       'must be a JSON object'
     );
     expect(() => parseAiPackageManifest({}, 'ai-package.json')).toThrow(
-      'top-level "skills" or "plugins" object'
+      'top-level "skills", "plugins", or "workspace" object'
     );
     expect(() =>
       parseAiPackageManifest({ skills: [] }, 'ai-package.json')

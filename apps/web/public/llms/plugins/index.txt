@@ -1,0 +1,39 @@
+# `ai-pkgs plugins` — plugin commands
+
+Plugins are multi-artifact bundles: skills, commands, agents, rules, hooks,
+MCP configs, and vendor-specific manifests (`.claude-plugin/plugin.json`,
+`.cursor-plugin/plugin.json`, `.codex-plugin/plugin.json`, or the universal
+`.agents/plugins/marketplace.json`).
+
+Each manifest entry carries a `targets` array recording which agents the
+plugin installs to. `ai-pkgs install` reuses these targets so plugins are
+restored to the same agents that were originally selected.
+
+## Subcommands
+
+- [plugins init](./init.txt): scaffold a plugin template with vendor manifests
+- [plugins add](./add.txt): discover plugins in a source, select targets, install, write manifest
+- [plugins list](./list.txt): list manifest plugins as grouped text or `--json`
+- [plugins targets](./targets.txt): manage per-plugin agent targets (add / remove / list)
+- [plugins outdated](./outdated.txt): report-only check for newer Git commits
+- [plugins update](./update.txt): refresh pinned Git SHAs
+- [plugins remove](./remove.txt): remove plugin entries, optionally uninstall
+
+## Plugin-capable agents
+
+Only three agents currently support plugins:
+
+| Target | Cache | Settings |
+|--------|-------|----------|
+| `claude-code` | `~/.claude/plugins/cache/` | global `~/.claude/settings.json` or project `.claude/settings.json` |
+| `cursor` | shares Claude cache on macOS/Linux; `~/.cursor/extensions/` on Windows | n/a |
+| `codex` | `~/.codex/plugins/cache/` | `~/.codex/config.toml` and `~/.agents/plugins/marketplace.json` |
+
+## Common flags
+
+- `-C, --dir <path>`: project directory
+- `-m, --manifest <path>`: alternative manifest path
+- `-g, --global`: read/write `~/.ai-pkgs/ai-package.json`
+- `-y, --yes`: skip confirmation prompts
+- `--ai`: strict non-interactive mode
+- `-h, --help`: show help

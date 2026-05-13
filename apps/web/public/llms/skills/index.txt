@@ -1,0 +1,24 @@
+# `ai-pkgs skills` — skill commands
+
+Skills are SKILL.md-bearing directories. ai-pkgs reads them from any
+configured source, writes manifest entries with pinned versions, and installs
+them into per-agent skill directories.
+
+## Subcommands
+
+- [skills add](./add.txt): resolve a source, discover SKILL.md, write manifest, install into agent targets
+- [skills list](./list.txt): list manifest skills as grouped text or `--json`
+- [skills remove](./remove.txt): remove skill entries from `ai-package.json`
+- [skills outdated](./outdated.txt): report-only check for newer Git commits
+- [skills update](./update.txt): refresh pinned Git SHAs with explicit confirmation
+- [skills vercel-migrate](./vercel-migrate.txt): migrate legacy `skills-lock.json`
+- skills search: reserved for the future marketplace API
+
+## Common flags
+
+- `-C, --dir <path>`: project directory
+- `-m, --manifest <path>`: alternative manifest path
+- `-g, --global`: read/write `~/.ai-pkgs/ai-package.json`
+- `-y, --yes`: skip confirmation prompts
+- `--ai`: strict non-interactive mode
+- `-h, --help`: show help

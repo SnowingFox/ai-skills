@@ -259,8 +259,8 @@ export const mergeVercelMigrationSkills = (
 
   return {
     manifest: {
+      ...existing,
       skills: [...byName.values()].sort(compareByName),
-      plugins: existing.plugins,
     },
     added,
     overwritten,
@@ -513,7 +513,7 @@ const readExistingManifest = async (
     return await store.read();
   } catch (error) {
     if (isNotFoundError(error)) {
-      return { skills: [], plugins: [] };
+      return { skills: [], plugins: [], workspace: { skills: [] } };
     }
     throw error;
   }

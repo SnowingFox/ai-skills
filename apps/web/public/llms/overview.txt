@@ -1,0 +1,105 @@
+# ai-pkgs overview
+
+ai-pkgs is a package manager for reusable AI agent components. It tracks every
+installed item in `ai-package.json` for reproducible setups across machines,
+CI, and teammates.
+
+## What ai-pkgs does
+
+- Restores project-declared skills and plugins from `ai-package.json`.
+- Adds skills from GitHub, GitLab, local files, and a future Marketplace
+  provider boundary.
+- Adds plugins (multi-artifact bundles with skills, commands, agents, rules,
+  hooks, MCP configs) from the same source types. Each manifest entry carries
+  a `targets` field listing which agents the plugin installs to.
+- Iterates on skills locally with the `workspace` section: link an installed
+  skill, edit it in place, push changes back to its Git remote, pull updates,
+  and check the modified/clean/untracked state.
+- Manages per-plugin agent targets with `plugins targets add|remove|list`.
+- Scaffolds new plugin templates with `plugins init`, generating
+  `.agents/plugins/marketplace.json` as the universal plugin format.
+- Lists declared manifest entries as grouped text or `--json`.
+- Reports outdated Git-backed skills and plugins without mutating
+  `ai-package.json`.
+- Updates all or selected Git-backed pins with explicit confirmation.
+- Pins Git sources as `<ref>@<resolvedSha>` for reproducible installs.
+- Installs skills by copying directories by default, or symlinking with
+  `--link`.
+- Installs plugins into vendor-specific caches (Claude plugin cache, Cursor
+  extensions, Codex plugin cache) with env-var translation.
+- Enables project-scope plugins for Claude Code by writing `enabledPlugins`
+  to `.claude/settings.json` in the project root.
+- Supports project-local and global target directories for `skills add`.
+- Supports a fixed global manifest at `~/.ai-pkgs/ai-package.json` with
+  `-g, --global`.
+- Uses a global Git cache keyed by provider, source, and commit SHA so
+  repeated installs can reuse the same checkout.
+- Provides `--ai` for strict non-interactive automation with deterministic
+  clack-style text output.
+
+## ai-package.json shape
+
+```json
+{
+  "skills": {
+    "tdd": {
+      "source": "github:mattpocock/skills",
+      "version": "main@b843cb5...",
+      "path": "skills/engineering/tdd"
+    }
+  },
+  "plugins": {
+    "vercel-plugin": {
+      "source": "github:vercel/vercel-plugin",
+      "version": "main@abc1234...",
+      "path": ".",
+      "targets": ["claude-code", "cursor"]
+    }
+  },
+  "workspace": {
+    "skills": {
+      "explain": {
+        "local": ".cursor/skills/explain",
+        "source": "github:entireio/skills",
+        "path": "skills/explain",
+        "version": "main@c376dc9..."
+      }
+    }
+  }
+}
+```
+
+Each entry uses `<ref>@<commitSha>` as its `version` for reproducibility.
+At least one of `skills`, `plugins`, or `workspace` must be present.
+
+## Dual mode design
+
+ai-pkgs detects two execution modes and degrades gracefully:
+
+- **TTY mode** (default in an interactive terminal): clack-style intro / outro,
+  spinners, selectors, and confirmation prompts.
+- **`--ai` / non-TTY mode**: deterministic plain-text output suitable for AI
+  agents, CI, and scripts. All prompts are disabled. Pass `--yes`, `--agent`,
+  and other selection flags up front when needed.
+
+## Global flags
+
+- `--ai`: strict non-interactive mode for automation
+- `-h, --help`: show help for the current command
+- `-C, --dir <path>`: project directory containing `ai-package.json`
+- `-m, --manifest <path>`: alternative manifest path (mutually exclusive with
+  `--global` and `--install-only`)
+- `-g, --global`: use `~/.ai-pkgs/ai-package.json` instead of the project
+  manifest
+
+## Help command tree
+
+```bash
+ai-pkgs --help
+ai-pkgs skills -h
+ai-pkgs plugins -h
+ai-pkgs workspace -h
+ai-pkgs help skills add
+ai-pkgs help plugins add
+ai-pkgs help cache clear
+```

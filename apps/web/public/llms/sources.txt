@@ -1,0 +1,48 @@
+# Source registries and locator syntax
+
+ai-pkgs reads sources via a pluggable registry boundary. The CLI auto-detects
+the registry from the source string, or it can be forced with `--registry`.
+
+## Source locator format
+
+Manifest entries store `source` as `<provider>:<package-id>`:
+
+- `github:owner/repo`
+- `gitlab:https://host/group/repo.git`
+- `gitlab:git@host:owner/repo.git`
+- `file:./relative-path`
+- `marketplace:owner/package` (reserved, not yet implemented)
+
+## CLI argument forms
+
+GitHub is the default registry:
+
+```bash
+ai-pkgs skills add owner/repo
+```
+
+Explicit source forms:
+
+```bash
+ai-pkgs skills add github:owner/repo
+ai-pkgs skills add https://github.com/owner/repo --registry github
+ai-pkgs skills add https://gitlab.example.com/group/repo.git --registry gitlab
+ai-pkgs skills add ./local-skills --registry file
+ai-pkgs skills add file:./local-skills
+```
+
+## Registries
+
+- **github**: owner/repo shorthand or full https URL. Always resolves via
+  `git ls-remote` and clones with `--no-checkout` for SHA-pinned reproducibility.
+- **gitlab**: requires a full clone URL (https or `git@`) so self-hosted
+  origins are preserved.
+- **file**: local path. No Git operations; the manifest stores `file:` as
+  the source so installs can be re-materialized later.
+- **marketplace**: provider boundary reserved for the future marketplace API.
+
+## Git cache
+
+All Git-backed sources share a global cache at `~/.cache/ai-pkgs` keyed by
+provider, source, and resolved commit SHA. See [cache](./cache.txt) for the
+cache layout and `cache clear` flags.

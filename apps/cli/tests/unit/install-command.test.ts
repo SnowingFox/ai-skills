@@ -75,6 +75,7 @@ describe('install command helpers', () => {
           },
         ],
         plugins: [],
+        workspace: { skills: [] },
       })
     ).toBe(
       [

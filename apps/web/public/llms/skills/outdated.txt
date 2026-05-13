@@ -1,0 +1,20 @@
+# `ai-pkgs skills outdated [skill...] [options]`
+
+Checks all or selected manifest skills for newer Git commits by resolving
+each stored `ref` and comparing it with `commitSha`. Outdated results are
+report-only and exit 0; failed remote checks exit 1.
+
+## Flags
+
+- `-C, --dir <path>`: project directory
+- `-m, --manifest <path>`: path to `ai-package.json`
+- `-g, --global`: check `~/.ai-pkgs/ai-package.json`
+- `--ai`: plain-text output
+
+## Examples
+
+```bash
+ai-pkgs skills outdated
+ai-pkgs skills outdated tdd to-prd
+ai-pkgs skills outdated --ai
+```

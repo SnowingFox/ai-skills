@@ -1,0 +1,29 @@
+# `ai-pkgs workspace status [name]`
+
+Shows the sync state of workspace skills. Clones the remote at the pinned
+`commitSha` for each entry (shallow / blobless) and diffs against the local
+directory.
+
+## Status values
+
+| Status | Meaning |
+|--------|---------|
+| `clean` | Local matches the last pushed version |
+| `modified` | Local has changes since last push / pull |
+| `untracked` | Version is `0000000` (never pushed) |
+
+## Flags
+
+- `--json`: machine-readable output (`name`, `status`, `local`, `version`)
+- `-C, --dir <path>`: project directory
+- `--manifest <path>`: path to `ai-package.json`
+- `--ai`: plain-text output
+
+## Examples
+
+```bash
+ai-pkgs workspace status
+ai-pkgs workspace status explain
+ai-pkgs workspace status --json
+ai-pkgs workspace status --ai
+```

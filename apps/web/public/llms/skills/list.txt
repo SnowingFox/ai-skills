@@ -1,0 +1,20 @@
+# `ai-pkgs skills list [options]`
+
+Lists skills declared in `ai-package.json`.
+
+## Flags
+
+- `-C, --dir <path>`: project directory
+- `-m, --manifest <path>`: path to `ai-package.json`
+- `-g, --global`: read `~/.ai-pkgs/ai-package.json`
+- `--json`: print machine-readable manifest skill entries
+- `--ai`: plain-text output
+
+## Examples
+
+```bash
+ai-pkgs skills list
+ai-pkgs skills list --json
+ai-pkgs skills list --global
+ai-pkgs skills list --ai
+```

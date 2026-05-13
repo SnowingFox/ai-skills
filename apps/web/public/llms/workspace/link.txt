@@ -1,0 +1,33 @@
+# `ai-pkgs workspace link <name> [options]`
+
+Moves an installed skill from `skills[]` into `workspace.skills` for local
+iteration. Only works for skills already in the manifest; auto-fills
+`source`, `path`, and `version` from the existing entry.
+
+Prompts only for the local path with an agent-aware selector (scans every
+agent's project skill directory for a folder matching `<name>`). A
+"Custom path" option opens a text input that re-prompts on missing paths.
+
+For new skills, use `skills add <source> --workspace` instead.
+
+## Flags
+
+- `--local <path>`: local skill path on disk (skip selector; required in `--ai` mode)
+- `-C, --dir <path>`: project directory
+- `--manifest <path>`: path to `ai-package.json`
+- `--ai`: strict non-interactive mode
+
+## Errors
+
+- Skill not in `skills[]`: `"<name>" is not in skills. Use "skills add <source> --workspace" to add a new workspace skill.`
+- Skill already in workspace: `"<name>" is already a workspace skill.`
+- `--ai` without `--local`: `--local is required when linking in non-interactive mode.`
+- `--local` path does not exist: `Path does not exist: <local>`
+
+## Examples
+
+```bash
+ai-pkgs workspace link explain
+ai-pkgs workspace link explain --local .cursor/skills/explain
+ai-pkgs workspace link explain --local .claude/skills/explain --ai
+```

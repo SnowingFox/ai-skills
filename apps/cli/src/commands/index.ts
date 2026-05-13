@@ -5,10 +5,12 @@ import { registerHelpCommand } from './help';
 import { registerInstallCommand } from './install';
 import { registerPluginsCommand } from './plugins/index';
 import { registerSkillsCommand } from './skills/index';
+import { registerWorkspaceCommand } from './workspace/index';
 
 /**
  * Register all top-level commands (`help`, `cache`, `install`, `skills`,
- * `plugins`) on the cac CLI instance. Called once from {@link buildCli}.
+ * `plugins`, `workspace`) on the cac CLI instance. Called once from
+ * {@link buildCli}.
  */
 export const registerCoreCommands = (
   cli: CAC,
@@ -19,4 +21,5 @@ export const registerCoreCommands = (
   registerInstallCommand(cli, runtime);
   registerSkillsCommand(cli, runtime);
   registerPluginsCommand(cli, runtime);
+  registerWorkspaceCommand(cli, runtime);
 };

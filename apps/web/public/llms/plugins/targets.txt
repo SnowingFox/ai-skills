@@ -1,0 +1,30 @@
+# `ai-pkgs plugins targets <add|remove|list> <plugin> [agent...]`
+
+Manage per-plugin target agents in `ai-package.json`.
+
+- `targets add` updates the manifest and prompts to install for any newly
+  added agents.
+- `targets remove` updates the manifest and prompts to uninstall from any
+  removed agents.
+- `targets list` shows current targets.
+
+Valid agents: `claude-code`, `cursor`, `codex`.
+
+## Flags
+
+- `-y, --yes`: auto-confirm install / uninstall
+- `--no-install`: skip the install / uninstall prompt entirely
+- `-C, --dir <path>`: project directory
+- `-m, --manifest <path>`: path to `ai-package.json`
+- `-g, --global`: edit `~/.ai-pkgs/ai-package.json`
+- `--ai`: strict non-interactive mode
+
+## Examples
+
+```bash
+ai-pkgs plugins targets add vercel-plugin cursor
+ai-pkgs plugins targets add vercel-plugin cursor codex --yes
+ai-pkgs plugins targets remove vercel-plugin codex
+ai-pkgs plugins targets list vercel-plugin
+ai-pkgs plugins targets add vercel-plugin cursor --no-install
+```

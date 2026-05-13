@@ -1,0 +1,86 @@
+# Agent targets
+
+ai-pkgs supports 47+ AI coding assistants. Each target maps to a project
+skill directory and a global skill directory. `skills add` writes copies (or
+symlinks with `--link`) into the chosen target's directory.
+
+## Common targets
+
+- `cursor`: project `.cursor/skills`, global `~/.cursor/skills`
+- `claude-code`: project `.claude/skills`, global `~/.claude/skills`
+- `codex`: project `.codex/skills`, global `~/.codex/skills`
+- `universal`: project `.agents/skills`, global `${XDG_CONFIG_HOME:-~/.config}/agents/skills`
+
+## All supported agents
+
+Run `ai-pkgs skills add <source>` and pick from the interactive selector, or
+pass `--agent <id>` repeatedly. The full list (with project skill paths) is:
+
+```
+adal               .adal/skills
+aider-desk         .aider-desk/skills
+amp                .agents/skills
+antigravity        .agents/skills
+augment            .augment/skills
+bob                .bob/skills
+claude-code        .claude/skills
+cline              .agents/skills
+codearts-agent     .codeartsdoer/skills
+codebuddy          .codebuddy/skills
+codemaker          .codemaker/skills
+codestudio         .codestudio/skills
+codex              .codex/skills
+command-code       .commandcode/skills
+continue           .continue/skills
+cortex             .cortex/skills
+crush              .crush/skills
+cursor             .cursor/skills
+deepagents         .agents/skills
+devin              .devin/skills
+dexto              .agents/skills
+droid              .factory/skills
+firebender         .agents/skills
+forgecode          .forge/skills
+gemini-cli         .agents/skills
+github-copilot     .agents/skills
+goose              .goose/skills
+iflow-cli          .iflow/skills
+junie              .junie/skills
+kilo               .kilocode/skills
+kimi-cli           .agents/skills
+kiro-cli           .kiro/skills
+kode               .kode/skills
+mcpjam             .mcpjam/skills
+mistral-vibe       .vibe/skills
+mux                .mux/skills
+neovate            .neovate/skills
+openclaw           skills
+opencode           .agents/skills
+openhands          .openhands/skills
+pi                 .pi/skills
+pochi              .pochi/skills
+qoder              .qoder/skills
+qwen-code          .qwen/skills
+roo                .roo/skills
+rovodev            .rovodev/skills
+tabnine-cli        .tabnine/agent/skills
+trae               .trae/skills
+trae-cn            .trae/skills
+warp               .agents/skills
+windsurf           .windsurf/skills
+zencoder           .zencoder/skills
+```
+
+## Plugin-capable agents
+
+Only three agents currently support plugins:
+
+- `claude-code`: cache at `~/.claude/plugins/cache/`, settings at
+  `~/.claude/settings.json` (global) or `.claude/settings.json` (project).
+- `cursor`: shares the Claude plugin cache on macOS / Linux; uses
+  `~/.cursor/extensions/` on Windows.
+- `codex`: cache at `~/.codex/plugins/cache/`, registers each plugin in
+  `~/.codex/config.toml` and `~/.agents/plugins/marketplace.json`.
+
+See [plugins/add](./plugins/add.txt) for the target selector and
+[plugins/targets](./plugins/targets.txt) for per-plugin target management.

@@ -1,0 +1,22 @@
+# `ai-pkgs skills update [skill...] [options]`
+
+Refreshes pinned Git SHAs for all or selected Git-backed manifest entries.
+TTY mode asks before writing; non-TTY and `--ai` require `--yes`. If any
+requested check fails, the command exits 1 and does not write a partial
+manifest.
+
+## Flags
+
+- `-C, --dir <path>`: project directory
+- `-m, --manifest <path>`: path to `ai-package.json`
+- `-g, --global`: update `~/.ai-pkgs/ai-package.json`
+- `-y, --yes`: confirm writes without prompting
+- `--ai`: strict non-interactive mode
+
+## Examples
+
+```bash
+ai-pkgs skills update --yes
+ai-pkgs skills update tdd --yes
+ai-pkgs skills update --global --yes
+```

@@ -1,0 +1,37 @@
+# `ai-pkgs workspace pull <name> [options]`
+
+Pulls the latest version of a skill from the remote into the local
+directory.
+
+## Flow
+
+1. Clone the remote at the latest commit on the locked branch.
+2. Detect local changes by diffing against the pinned `commitSha`.
+3. If local has changes and we're in TTY without `--force`, prompt to
+   confirm overwrite.
+4. Copy the clone's `path` directory into the local directory (full
+   replace).
+5. Update `version` in `ai-package.json` to `<branch>@<latestSha>`.
+
+`--ai` mode and `--force` always overwrite without prompting. Use
+`workspace status` first to check for local changes.
+
+## Flags
+
+- `--force`: skip overwrite confirmation
+- `-C, --dir <path>`: project directory
+- `--manifest <path>`: path to `ai-package.json`
+- `--ai`: strict non-interactive mode
+
+## Errors
+
+- Skill not in workspace: `"<name>" is not a workspace skill.`
+- Remote fetch failed: `Failed to fetch <source>. Check the remote URL and your network connection.`
+
+## Examples
+
+```bash
+ai-pkgs workspace pull explain
+ai-pkgs workspace pull explain --force
+ai-pkgs workspace pull explain --force --ai
+```

@@ -1,0 +1,28 @@
+# `ai-pkgs workspace remove <name> [options]`
+
+Removes a workspace skill entry from `ai-package.json` AND deletes the local
+skill directory from disk. Destructive — files are permanently removed.
+
+TTY prompts for confirmation; `--ai` requires `--yes` to proceed. If the
+local path is already missing, prints a warning and still removes the
+manifest entry.
+
+## Flags
+
+- `-y, --yes`: skip confirmation prompt (required in `--ai` mode)
+- `-C, --dir <path>`: project directory
+- `--manifest <path>`: path to `ai-package.json`
+- `--ai`: strict non-interactive mode
+
+## Errors
+
+- Skill not in workspace: `"<name>" is not a workspace skill. Available: <names>`
+- `--ai` without `--yes`: `Pass --yes to confirm removal in non-interactive mode.`
+
+## Examples
+
+```bash
+ai-pkgs workspace remove explain
+ai-pkgs workspace remove explain --yes
+ai-pkgs workspace remove explain --yes --ai
+```

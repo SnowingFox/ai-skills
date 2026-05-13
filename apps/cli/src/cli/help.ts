@@ -1,12 +1,13 @@
 import type { CAC, Command } from 'cac';
 import pc from 'picocolors';
 import { CACHE_COMMANDS, CACHE_GROUP_COMMAND } from './help-data/cache';
-import {
-  PLUGINS_COMMANDS,
-  PLUGINS_GROUP_COMMAND,
-} from './help-data/plugins';
+import { PLUGINS_COMMANDS, PLUGINS_GROUP_COMMAND } from './help-data/plugins';
 import { DETAILED_HELP, getCliVersion, TAGLINE } from './help-data/root';
 import { SKILLS_COMMANDS, SKILLS_GROUP_COMMAND } from './help-data/skills';
+import {
+  WORKSPACE_COMMANDS,
+  WORKSPACE_GROUP_COMMAND,
+} from './help-data/workspace';
 import type { HelpCommand } from './help-data/types';
 import { renderLogo } from '../ui/banner';
 
@@ -246,12 +247,14 @@ const visibleCommands = (cli: CAC): HelpCommand[] => [
         command.name !== '@@global@@' &&
         command.name !== 'cache' &&
         command.name !== 'skills' &&
-        command.name !== 'plugins'
+        command.name !== 'plugins' &&
+        command.name !== 'workspace'
     )
     .map(toHelpCommand),
   ...CACHE_COMMANDS,
   ...PLUGINS_COMMANDS,
   ...SKILLS_COMMANDS,
+  ...WORKSPACE_COMMANDS,
 ];
 
 const findCommand = (cli: CAC, name: string): HelpCommand | undefined => {
@@ -264,6 +267,9 @@ const findCommand = (cli: CAC, name: string): HelpCommand | undefined => {
   if (name === 'cache') {
     return CACHE_GROUP_COMMAND;
   }
+  if (name === 'workspace' || name === 'ws') {
+    return WORKSPACE_GROUP_COMMAND;
+  }
 
   const command = cli.commands.find(
     (command) => command.name === name || command.aliasNames.includes(name)
@@ -272,9 +278,12 @@ const findCommand = (cli: CAC, name: string): HelpCommand | undefined => {
     return toHelpCommand(command);
   }
 
-  return [...CACHE_COMMANDS, ...PLUGINS_COMMANDS, ...SKILLS_COMMANDS].find(
-    (command) => command.name === name
-  );
+  return [
+    ...CACHE_COMMANDS,
+    ...PLUGINS_COMMANDS,
+    ...SKILLS_COMMANDS,
+    ...WORKSPACE_COMMANDS,
+  ].find((command) => command.name === name);
 };
 
 const toHelpCommand = (command: Command): HelpCommand => ({

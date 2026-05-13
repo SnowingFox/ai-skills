@@ -1,0 +1,23 @@
+# `ai-pkgs plugins remove <plugin...> [options]`
+
+Removes plugin entries from `ai-package.json`. With `--uninstall`, also
+cleans agent plugin cache directories (Claude Code, Cursor, Codex) and
+removes the `enabledPlugins` keys from agent settings.
+
+## Flags
+
+- `--uninstall`: also clean agent plugin cache directories
+- `-a, --agent <agent>`: scope uninstall to specific agents
+- `-C, --dir <path>`: project directory
+- `-m, --manifest <path>`: path to `ai-package.json`
+- `-g, --global`: edit `~/.ai-pkgs/ai-package.json`
+- `-y, --yes`: skip confirmation
+- `--ai`: strict non-interactive mode
+
+## Examples
+
+```bash
+ai-pkgs plugins remove vercel-plugin
+ai-pkgs plugins remove vercel-plugin --uninstall
+ai-pkgs plugins remove vercel-plugin --uninstall --agent claude-code --yes
+```

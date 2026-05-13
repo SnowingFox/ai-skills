@@ -1,0 +1,20 @@
+# `ai-pkgs plugins list [options]`
+
+Lists plugins declared in `ai-package.json`, including the `targets` array
+for each entry.
+
+## Flags
+
+- `-C, --dir <path>`: project directory
+- `-m, --manifest <path>`: path to `ai-package.json`
+- `-g, --global`: read `~/.ai-pkgs/ai-package.json`
+- `--json`: print machine-readable manifest plugin entries
+- `--ai`: plain-text output
+
+## Examples
+
+```bash
+ai-pkgs plugins list
+ai-pkgs plugins list --json
+ai-pkgs plugins list --global
+```

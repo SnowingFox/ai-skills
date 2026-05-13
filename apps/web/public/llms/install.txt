@@ -1,0 +1,42 @@
+# `ai-pkgs install [options]`
+
+Restores every skill and plugin declared in `ai-package.json`. Skills install
+into project-local agent targets by default. Plugins install to the agents
+listed in each entry's `targets` array — no agent picker is shown because
+targets are already persisted. With `--global`, it reads
+`~/.ai-pkgs/ai-package.json` and installs into global agent targets.
+
+Workspace skills (`workspace.skills`) are NOT installed by `install`; they
+are already at their `local` path on disk. Use `workspace pull` to sync
+them from the remote.
+
+## Flags
+
+- `-m, --manifest <path>`: path to `ai-package.json`
+- `-C, --dir <path>`: project directory to install into
+- `-a, --agent <agent>`: target agent; repeat or pass comma-separated
+- `--copy`: copy skill directories (default)
+- `--link`: symlink skill directories
+- `--force`: overwrite existing skill directories
+- `--skip-existing`: skip existing skill directories
+- `--project`: explicit project-local install dimension
+- `-g, --global`: restore the global manifest into global agent directories
+- `--refresh`: refresh the Git cache before installing
+- `-y, --yes`: skip confirmation prompts
+- `--ai`: strict non-interactive mode
+- `-h, --help`: show help
+
+## Examples
+
+```bash
+ai-pkgs install --agent cursor --force --yes
+ai-pkgs install --link --agent claude-code
+ai-pkgs install --global --yes
+ai-pkgs --ai install --agent cursor --force --yes
+```
+
+## TTY behavior
+
+When stdin is a TTY and `--ai` is not set, `install` prints a confirmation
+plan as a clack note before proceeding. Without `--yes`, the user is asked
+to confirm. In `--ai` or non-TTY mode, `--yes` is required to proceed.

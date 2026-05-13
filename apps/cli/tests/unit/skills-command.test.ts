@@ -182,6 +182,7 @@ describe('skills outdated checks', () => {
           },
         ],
         plugins: [],
+        workspace: { skills: [] },
       },
       [],
       {
@@ -257,4 +258,5 @@ const sampleManifest = (): AiPackageManifest => ({
     },
   ],
   plugins: [],
+  workspace: { skills: [] },
 });

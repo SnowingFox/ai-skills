@@ -1,0 +1,66 @@
+# `ai-pkgs workspace` — local skill iteration
+
+Workspace turns ai-pkgs into a two-way Git client for skills you author or
+modify locally. Link an installed skill, edit it in place, push changes
+back to its Git remote, pull updates, and check the modified / clean /
+untracked state.
+
+Alias: `ws` (e.g. `ai-pkgs ws push explain`).
+
+## Subcommands
+
+- [workspace link](./link.txt): move an installed skill into `workspace.skills`
+- [workspace remove](./remove.txt): remove workspace entry and delete local files
+- [workspace push](./push.txt): push local changes to remote
+- [workspace pull](./pull.txt): pull latest from remote into local
+- [workspace status](./status.txt): show clean / modified / untracked per skill
+- [workspace list](./list.txt): list workspace skill entries
+
+## Manifest shape
+
+```json
+{
+  "workspace": {
+    "skills": {
+      "explain": {
+        "local": ".cursor/skills/explain",
+        "source": "github:entireio/skills",
+        "path": "skills/explain",
+        "version": "main@c376dc9..."
+      }
+    }
+  }
+}
+```
+
+### Field rules
+
+- `local`: relative path from project root to the skill directory on disk
+- `source`: Git remote, same format as `skills[].source` (github / gitlab /
+  raw clone URL). User must have push access.
+- `path`: directory inside the remote repo containing this skill
+- `version`: `<branch>@<commitSha>`. Branch is locked at link time; SHA
+  updates after each push or pull.
+
+### Exclusivity
+
+A skill name is in `skills` OR `workspace.skills`, never both. `workspace
+link` moves an existing dependency into workspace mode. `workspace remove`
+deletes both the workspace entry and the local skill directory.
+
+`skills add`, `skills list`, `skills update`, and `skills outdated` ignore
+workspace skills. `ai-pkgs install` does NOT install workspace skills (they
+are already at their `local` path) — use `workspace pull` to sync from
+remote.
+
+## Common flags
+
+- `--local <path>`: local skill path on disk (link)
+- `-m, --message <msg>`: commit message (push)
+- `--accept-my-change`: force push when remote has diverged (push)
+- `--force`: skip overwrite confirmation (pull)
+- `-y, --yes`: skip confirmation prompts (remove)
+- `--json`: machine-readable output (list, status)
+- `-C, --dir <path>`: project directory
+- `--manifest <path>`: path to `ai-package.json`
+- `--ai`: strict non-interactive mode

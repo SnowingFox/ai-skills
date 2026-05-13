@@ -1,0 +1,55 @@
+# `ai-pkgs plugins init [name] [options]`
+
+Scaffolds a new plugin directory with vendor-specific manifests and component
+stubs. Always generates `.agents/plugins/marketplace.json` as the universal
+plugin format alongside any vendor-specific manifests.
+
+Interactive prompts ask for:
+
+- Plugin name
+- Target directory
+- Target agents (Claude Code, Cursor, Codex)
+- Components (skills, commands, agents, rules, hooks, `.mcp.json`)
+
+## Generated structure (all agents, all components)
+
+```
+my-plugin/
+  .agents/
+    plugins/
+      marketplace.json
+  .claude-plugin/
+    plugin.json
+  .cursor-plugin/
+    plugin.json
+  .codex-plugin/
+    plugin.json
+  skills/
+    example-skill/
+      SKILL.md
+  commands/
+    example-command.md
+  agents/
+    example-agent.md
+  rules/
+    example-rule.mdc
+  hooks/
+    hooks.json
+  .mcp.json
+  README.md
+```
+
+## Flags
+
+- `-a, --agent <agent>`: pre-select target agents, skip prompt (repeatable)
+- `-y, --yes`: use all defaults (all agents, all components)
+- `--force`: overwrite existing directory without prompting
+- `--ai`: strict non-interactive mode (requires name + agents passed up front)
+
+## Examples
+
+```bash
+ai-pkgs plugins init my-plugin
+ai-pkgs plugins init my-plugin --agent claude-code --yes
+ai-pkgs plugins init my-plugin --agent claude-code --agent codex --force --ai
+```

@@ -241,6 +241,7 @@ describe('skills vercel-migrate helpers', () => {
         }),
       ],
       plugins: [],
+      workspace: { skills: [] },
     };
     const migrated = [
       remoteSkill({

@@ -1,0 +1,22 @@
+# `ai-pkgs skills remove <skill...> [options]`
+
+Removes manifest entries by name. Installed skill folders on disk are left
+untouched. To also delete files, use `workspace remove` (for workspace
+skills) or remove the agent directory manually.
+
+Workspace skills cannot be removed via `skills remove`. Use
+`workspace remove` instead.
+
+## Flags
+
+- `-C, --dir <path>`: project directory
+- `-m, --manifest <path>`: path to `ai-package.json`
+- `-g, --global`: edit `~/.ai-pkgs/ai-package.json`
+
+## Examples
+
+```bash
+ai-pkgs skills remove tdd
+ai-pkgs skills remove tdd to-prd --yes
+ai-pkgs skills remove tdd --global
+```

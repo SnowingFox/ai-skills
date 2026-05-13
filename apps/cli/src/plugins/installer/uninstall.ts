@@ -103,6 +103,8 @@ export const uninstallFromCursor = async (
     return;
   }
 
+  // On macOS/Linux, Cursor shares the Claude plugin cache so uninstalling
+  // a Cursor plugin also removes it from ~/.claude/settings.json.
   await uninstallFromClaude(pluginName, marketplaceName);
 };
 

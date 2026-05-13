@@ -1,0 +1,29 @@
+# Git cache
+
+ai-pkgs caches every Git-backed clone under `~/.cache/ai-pkgs` keyed by
+provider, source, and resolved commit SHA. `skills add`, `plugins add`,
+`workspace push`, `workspace pull`, and `install` all reuse the same cache
+to avoid repeated network round-trips.
+
+Override the cache root with the `AI_PKGS_CACHE_HOME` environment variable
+(useful in CI and tests).
+
+## `ai-pkgs cache clear [options]`
+
+Clears all cached Git checkouts, or a filtered subset.
+
+Flags:
+
+- `--provider <provider>`: filter by `github` or `gitlab`
+- `--source <source>`: filter by source, such as `owner/repo` or a full clone URL
+- `-y, --yes`: skip confirmation
+- `--ai`: strict non-interactive mode
+
+## Examples
+
+```bash
+ai-pkgs cache clear
+ai-pkgs cache clear --provider github
+ai-pkgs cache clear --provider github --source vercel-labs/skills
+ai-pkgs cache clear --ai --yes
+```

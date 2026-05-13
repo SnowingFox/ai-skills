@@ -4,7 +4,11 @@ import { dirname, isAbsolute, resolve } from 'node:path';
 import { join } from 'node:path';
 import { SilentError } from '../errors';
 import type { PluginEntry } from '../plugins/types';
-import type { AiPackageManifest, SkillEntry } from '../types';
+import type {
+  AiPackageManifest,
+  SkillEntry,
+  WorkspaceSkillEntry,
+} from '../types';
 import { parseAiPackageManifest } from './parse';
 
 /**
@@ -19,6 +23,12 @@ export type ManifestStore = {
   removeSkills: (names: string[]) => Promise<AiPackageManifest>;
   addPlugins: (plugins: PluginEntry[]) => Promise<AiPackageManifest>;
   removePlugins: (names: string[]) => Promise<AiPackageManifest>;
+  addWorkspaceSkill: (entry: WorkspaceSkillEntry) => Promise<AiPackageManifest>;
+  removeWorkspaceSkill: (name: string) => Promise<AiPackageManifest>;
+  moveSkillToWorkspace: (
+    name: string,
+    localPath: string
+  ) => Promise<AiPackageManifest>;
 };
 
 /** CLI inputs that affect manifest path resolution. */
@@ -63,10 +73,7 @@ export const createManifestStore = (
     read,
     write,
     addSkills: async (skills) => {
-      const existing = await read().catch(() => ({
-        skills: [],
-        plugins: [],
-      }));
+      const existing = await read().catch(() => emptyManifest());
       const byName = new Map(
         existing.skills.map((skill) => [skill.name, skill])
       );
@@ -74,8 +81,8 @@ export const createManifestStore = (
         byName.set(skill.name, skill);
       }
       const next: AiPackageManifest = {
+        ...existing,
         skills: [...byName.values()].sort(compareByName),
-        plugins: existing.plugins,
       };
       await write(next);
       return next;
@@ -84,19 +91,16 @@ export const createManifestStore = (
       const remove = new Set(names);
       const existing = await read();
       const next: AiPackageManifest = {
+        ...existing,
         skills: existing.skills
           .filter((skill) => !remove.has(skill.name))
           .sort(compareByName),
-        plugins: existing.plugins,
       };
       await write(next);
       return next;
     },
     addPlugins: async (plugins) => {
-      const existing = await read().catch(() => ({
-        skills: [],
-        plugins: [],
-      }));
+      const existing = await read().catch(() => emptyManifest());
       const byName = new Map(
         existing.plugins.map((plugin) => [plugin.name, plugin])
       );
@@ -104,7 +108,7 @@ export const createManifestStore = (
         byName.set(plugin.name, plugin);
       }
       const next: AiPackageManifest = {
-        skills: existing.skills,
+        ...existing,
         plugins: [...byName.values()].sort(comparePluginByName),
       };
       await write(next);
@@ -114,7 +118,7 @@ export const createManifestStore = (
       const remove = new Set(names);
       const existing = await read();
       const next: AiPackageManifest = {
-        skills: existing.skills,
+        ...existing,
         plugins: existing.plugins
           .filter((plugin) => !remove.has(plugin.name))
           .sort(comparePluginByName),
@@ -122,8 +126,97 @@ export const createManifestStore = (
       await write(next);
       return next;
     },
+    addWorkspaceSkill: async (entry) => {
+      const existing = await read().catch(() => emptyManifest());
+      const byName = new Map(
+        existing.workspace.skills.map((skill) => [skill.name, skill])
+      );
+      byName.set(entry.name, entry);
+      const next: AiPackageManifest = {
+        ...existing,
+        workspace: {
+          skills: [...byName.values()].sort(compareWorkspaceByName),
+        },
+      };
+      await write(next);
+      return next;
+    },
+    removeWorkspaceSkill: async (name) => {
+      const existing = await read();
+      const next: AiPackageManifest = {
+        ...existing,
+        workspace: {
+          skills: existing.workspace.skills
+            .filter((skill) => skill.name !== name)
+            .sort(compareWorkspaceByName),
+        },
+      };
+      await write(next);
+      return next;
+    },
+    moveSkillToWorkspace: async (name, localPath) => {
+      const existing = await read();
+      const source = existing.skills.find((skill) => skill.name === name);
+      if (!source) {
+        throw new Error(
+          `"${name}" is not in skills. Use "skills add --workspace" to add a new workspace skill.`
+        );
+      }
+      if (source.provider !== 'github' && source.provider !== 'gitlab') {
+        throw new Error(
+          `"${name}" provider "${source.provider}" cannot be moved to workspace (only github and gitlab)`
+        );
+      }
+      if (!source.ref || !source.commitSha || !source.version) {
+        throw new Error(
+          `"${name}" is missing ref/commitSha/version and cannot be moved to workspace`
+        );
+      }
+
+      const entry: WorkspaceSkillEntry = {
+        name: source.name,
+        local: localPath,
+        provider: source.provider,
+        source: source.source ?? `${source.provider}:${source.packageId}`,
+        packageId: source.packageId,
+        cloneUrl: source.cloneUrl,
+        version: source.version,
+        ref: source.ref,
+        commitSha: source.commitSha,
+        path: source.path,
+      };
+
+      const workspaceByName = new Map(
+        existing.workspace.skills.map((skill) => [skill.name, skill])
+      );
+      workspaceByName.set(entry.name, entry);
+
+      const next: AiPackageManifest = {
+        ...existing,
+        skills: existing.skills.filter((skill) => skill.name !== name),
+        workspace: {
+          skills: [...workspaceByName.values()].sort(compareWorkspaceByName),
+        },
+      };
+      await write(next);
+      return next;
+    },
   };
 };
+
+/**
+ * Build an empty manifest used as a fallback when `ai-package.json` does
+ * not exist yet. Always carries empty arrays for every section.
+ *
+ * @example
+ * emptyManifest();
+ * // { skills: [], plugins: [], workspace: { skills: [] } }
+ */
+export const emptyManifest = (): AiPackageManifest => ({
+  skills: [],
+  plugins: [],
+  workspace: { skills: [] },
+});
 
 /**
  * Resolve project or global manifest scope for commands that read/write
@@ -221,6 +314,23 @@ export const serializeManifest = (manifest: AiPackageManifest): string => {
     output.plugins = plugins;
   }
 
+  if (manifest.workspace.skills.length > 0) {
+    const workspaceSkills: Record<string, Record<string, string>> = {};
+    for (const entry of [...manifest.workspace.skills].sort(
+      compareWorkspaceByName
+    )) {
+      workspaceSkills[entry.name] = {
+        local: entry.local,
+        source: entry.source,
+        path: entry.path,
+        version: entry.version,
+      };
+    }
+    (output as Record<string, unknown>).workspace = {
+      skills: workspaceSkills,
+    };
+  }
+
   return `${JSON.stringify(output, null, 2)}\n`;
 };
 
@@ -229,3 +339,8 @@ const compareByName = (a: SkillEntry, b: SkillEntry) =>
 
 const comparePluginByName = (a: PluginEntry, b: PluginEntry) =>
   a.name.localeCompare(b.name);
+
+const compareWorkspaceByName = (
+  a: WorkspaceSkillEntry,
+  b: WorkspaceSkillEntry
+) => a.name.localeCompare(b.name);

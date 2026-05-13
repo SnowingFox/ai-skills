@@ -54,10 +54,34 @@ export type FileSkillEntry = SkillEntry & {
   sourceRoot: string;
 };
 
+/**
+ * One workspace skill as stored under `workspace.skills` after parsing.
+ *
+ * Carries every field of a remote {@link SkillEntry} plus a `local` path
+ * recording where the skill is checked out on disk. The branch portion of
+ * `version` is locked at link time; the commit SHA updates after each
+ * `workspace push` or `workspace pull`.
+ */
+export type WorkspaceSkillEntry = {
+  name: string;
+  local: string;
+  provider: RemoteProvider;
+  source: string;
+  packageId: string;
+  cloneUrl?: string;
+  version: string;
+  ref: string;
+  commitSha: string;
+  path: string;
+};
+
 /** Top-level `ai-package.json` document after parsing. */
 export type AiPackageManifest = {
   skills: SkillEntry[];
   plugins: PluginEntry[];
+  workspace: {
+    skills: WorkspaceSkillEntry[];
+  };
 };
 
 /**

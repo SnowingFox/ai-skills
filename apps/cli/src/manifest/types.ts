@@ -6,6 +6,15 @@ export type RawAiPackageManifest = {
   skills?: unknown;
   skill?: unknown;
   plugins?: unknown;
+  workspace?: unknown;
+};
+
+/** Loose per-workspace-skill JSON fields before type-checking and normalization. */
+export type RawWorkspaceSkillEntry = {
+  local?: unknown;
+  source?: unknown;
+  version?: unknown;
+  path?: unknown;
 };
 
 /** Loose per-skill JSON fields before type-checking and normalization. */

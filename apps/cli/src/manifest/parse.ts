@@ -2,16 +2,23 @@ import { dirname, isAbsolute, resolve } from 'node:path';
 import type {
   AiPackageManifest,
   FileSkillEntry,
+  RemoteProvider,
   RemoteSkillEntry,
   SkillEntry,
   SkillProvider,
+  WorkspaceSkillEntry,
 } from '../types';
 import type {
   FilePluginEntry,
   PluginEntry,
   RemotePluginEntry,
 } from '../plugins/types';
-import type { RawAiPackageManifest, RawPluginEntry, RawSkillEntry } from './types';
+import type {
+  RawAiPackageManifest,
+  RawPluginEntry,
+  RawSkillEntry,
+  RawWorkspaceSkillEntry,
+} from './types';
 
 const COMMIT_SHA_RE = /^[0-9a-f]{7,40}$/i;
 const PROVIDERS = new Set<SkillProvider>([
@@ -42,15 +49,16 @@ export const parseAiPackageManifest = (
   const manifest = raw as RawAiPackageManifest;
   const hasSkills = manifest.skills !== undefined;
   const hasPlugins = manifest.plugins !== undefined;
+  const hasWorkspace = manifest.workspace !== undefined;
 
-  if (!hasSkills && !hasPlugins) {
+  if (!hasSkills && !hasPlugins && !hasWorkspace) {
     if (manifest.skill !== undefined) {
       throw new Error(
         `${manifestPath} must use the top-level "skills" object, not "skill"`
       );
     }
     throw new Error(
-      `${manifestPath} must contain a top-level "skills" or "plugins" object`
+      `${manifestPath} must contain a top-level "skills", "plugins", or "workspace" object`
     );
   }
 
@@ -60,6 +68,10 @@ export const parseAiPackageManifest = (
 
   if (hasPlugins && !isRecord(manifest.plugins)) {
     throw new Error(`${manifestPath} top-level "plugins" must be an object`);
+  }
+
+  if (hasWorkspace && !isRecord(manifest.workspace)) {
+    throw new Error(`${manifestPath} top-level "workspace" must be an object`);
   }
 
   const manifestDir = dirname(resolve(manifestPath));
@@ -76,7 +88,50 @@ export const parseAiPackageManifest = (
       )
     : [];
 
-  return { skills, plugins };
+  const workspaceSkills = parseWorkspaceSection(manifest.workspace, skills);
+
+  return { skills, plugins, workspace: { skills: workspaceSkills } };
+};
+
+/**
+ * Parse the `workspace` top-level block, validating shape and ensuring
+ * no skill name appears in both `skills` and `workspace.skills`.
+ */
+const parseWorkspaceSection = (
+  raw: unknown,
+  parsedSkills: SkillEntry[]
+): WorkspaceSkillEntry[] => {
+  if (raw === undefined || raw === null) {
+    return [];
+  }
+
+  if (!isRecord(raw)) {
+    throw new Error('top-level "workspace" must be an object');
+  }
+
+  if (raw.skills === undefined) {
+    return [];
+  }
+
+  if (!isRecord(raw.skills)) {
+    throw new Error('"workspace.skills" must be an object');
+  }
+
+  const entries = Object.entries(raw.skills as Record<string, unknown>).map(
+    ([name, value]) => parseWorkspaceSkillEntry(name, value)
+  );
+
+  const skillNames = new Set(parsedSkills.map((skill) => skill.name));
+  const collisions = entries.filter((entry) => skillNames.has(entry.name));
+  if (collisions.length > 0) {
+    throw new Error(
+      `Workspace skill${collisions.length === 1 ? '' : 's'} "${collisions
+        .map((entry) => entry.name)
+        .join(', ')}" must not also appear in top-level "skills"`
+    );
+  }
+
+  return entries;
 };
 
 /**
@@ -188,6 +243,89 @@ export const parsePluginEntry = (
     path,
     targets,
   } satisfies RemotePluginEntry;
+};
+
+/**
+ * Validate and normalize one workspace skill entry.
+ *
+ * Workspace skills are always backed by a remote Git source (github or
+ * gitlab) and always carry a pinned `<ref>@<commitSha>` version plus a
+ * `local` path pointing at the working copy on disk.
+ *
+ * @throws Error when the entry is missing required fields, uses a
+ *   non-remote source, or fails source/version/path validation.
+ *
+ * @example
+ * parseWorkspaceSkillEntry('explain', {
+ *   local: '.cursor/skills/explain',
+ *   source: 'github:entireio/skills',
+ *   path: 'skills/explain',
+ *   version: 'main@c376dc9...',
+ * });
+ * // {
+ * //   name: 'explain',
+ * //   local: '.cursor/skills/explain',
+ * //   provider: 'github',
+ * //   source: 'github:entireio/skills',
+ * //   packageId: 'entireio/skills',
+ * //   version: 'main@c376dc9...',
+ * //   ref: 'main',
+ * //   commitSha: 'c376dc9...',
+ * //   path: 'skills/explain',
+ * // }
+ */
+export const parseWorkspaceSkillEntry = (
+  name: string,
+  raw: unknown
+): WorkspaceSkillEntry => {
+  validateWorkspaceSkillName(name);
+
+  if (!isRecord(raw)) {
+    throw new Error(`Workspace skill "${name}" must be an object`);
+  }
+
+  const entry = raw as RawWorkspaceSkillEntry;
+
+  if (typeof entry.local !== 'string' || entry.local.trim().length === 0) {
+    throw new Error(`Workspace skill "${name}" local path is required`);
+  }
+
+  if (typeof entry.source !== 'string' || entry.source.trim().length === 0) {
+    throw new Error(`Workspace skill "${name}" source is required`);
+  }
+
+  if (typeof entry.path !== 'string' || entry.path.trim().length === 0) {
+    throw new Error(`Workspace skill "${name}" path is required`);
+  }
+
+  const source = parseSourceLocator(entry.source, name);
+  if (source.provider !== 'github' && source.provider !== 'gitlab') {
+    throw new Error(
+      `Workspace skill "${name}" source must be github or gitlab (got "${source.provider}")`
+    );
+  }
+
+  const path = sanitizeManifestPath(
+    entry.path,
+    `Workspace skill "${name}" path`
+  );
+  const local = sanitizeManifestPath(
+    entry.local,
+    `Workspace skill "${name}" local`
+  );
+  const version = parseRemoteVersion(entry.version, name);
+
+  return {
+    name,
+    local,
+    provider: source.provider as RemoteProvider,
+    source: entry.source,
+    packageId: source.packageId,
+    version: version.raw,
+    ref: version.ref,
+    commitSha: version.commitSha,
+    path,
+  };
 };
 
 /**
@@ -348,6 +486,18 @@ const parsePluginTargets = (
   }
 
   return raw as string[];
+};
+
+const validateWorkspaceSkillName = (name: string) => {
+  if (
+    name.trim().length === 0 ||
+    name === '.' ||
+    name === '..' ||
+    name.includes('/') ||
+    name.includes('\\')
+  ) {
+    throw new Error(`Invalid workspace skill name "${name}"`);
+  }
 };
 
 const validatePluginName = (name: string) => {

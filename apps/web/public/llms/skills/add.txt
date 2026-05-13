@@ -1,0 +1,84 @@
+# `ai-pkgs skills add <source> [options]`
+
+Resolves a source, discovers `SKILL.md` directories, selects skills, writes
+selected entries to `ai-package.json`, and installs them into agent skill
+directories. Use `--install-only` for one-off installs with no manifest reads
+or writes.
+
+## Source flags
+
+- `--registry <registry>`: `github`, `gitlab`, `marketplace`, or `file`
+- `--ref <ref>`: Git branch, tag, or commit to pin
+- `--path <path>`: subdirectory to scan inside the source
+- `-s, --skill <skill>`: select a skill by name (repeatable)
+- `--all`: select all discovered skills (mutually exclusive with `--skill`)
+- `--refresh`: refresh Git cache before installing
+
+## Install flags
+
+- `-a, --agent <agent>`: target agent (repeatable)
+- `--project`: install into project-local agent skill directories
+- `-g, --global`: write `~/.ai-pkgs/ai-package.json` and install globally
+- `--copy`: copy skill directories (default)
+- `--link`: symlink skill directories
+- `--force`: overwrite existing skill directories
+- `--skip-existing`: skip existing skill directories
+- `--install-only`: install without writing `ai-package.json`
+- `-y, --yes`: skip confirmation prompts
+- `--ai`: strict non-interactive mode
+
+## Project flags
+
+- `-C, --dir <path>`: project directory
+- `-m, --manifest <path>`: path to `ai-package.json` (incompatible with
+  `--install-only` and `--global`)
+
+## TTY behavior
+
+- If no `--agent` is supplied and prompts are allowed, ai-pkgs opens a
+  searchable agent picker.
+- If no `--project` or `--global` is supplied, TTY mode prompts for the
+  install dimension.
+- Multi-skill selection supports type-to-filter, arrow keys, space to
+  select, `a` to toggle all matching skills, and enter to confirm.
+
+## Non-interactive behavior
+
+- In non-TTY and `--ai` mode, omitted scope defaults to project.
+- `skills add --global --install-only` installs globally without writing
+  `~/.ai-pkgs/ai-package.json`.
+- In `--ai` mode, all prompts are disabled. Pass `--agent`, `--all` or
+  `--skill`, `--force` or `--skip-existing`, and `--yes` as needed.
+
+## Examples
+
+```bash
+# Add all discovered skills from a GitHub repository
+ai-pkgs skills add vercel-labs/skills --all --agent cursor --project
+
+# Add a single skill globally
+ai-pkgs skills add vercel-labs/skills --global --skill tdd --agent cursor --force --yes
+
+# Add from an explicit GitHub URL with a source subdirectory
+ai-pkgs skills add https://github.com/mattpocock/skills \
+  --path skills \
+  --skill tdd \
+  --agent cursor \
+  --project
+
+# Install directly without writing the manifest
+ai-pkgs skills add vercel-labs/skills \
+  --install-only \
+  --all \
+  --agent cursor \
+  --force
+
+# Non-interactive automation
+ai-pkgs --ai skills add vercel-labs/skills \
+  --install-only \
+  --all \
+  --agent cursor \
+  --project \
+  --force \
+  --yes
+```

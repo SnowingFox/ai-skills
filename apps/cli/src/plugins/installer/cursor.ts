@@ -108,5 +108,7 @@ export const installToCursor = async (
     return;
   }
 
+  // Side-effect: this writes enabledPlugins into ~/.claude/settings.json
+  // because Cursor reads from the shared Claude plugin cache on macOS/Linux.
   await installToPluginCache(plugins, scope, repoPath, source);
 };

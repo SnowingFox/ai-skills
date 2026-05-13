@@ -1,0 +1,49 @@
+# `ai-pkgs plugins add <source> [options]`
+
+Discovers plugins in a source repo, presents a target agent selector,
+installs to the selected agents, and writes entries (including the persisted
+`targets` array) to the `plugins` key in `ai-package.json`.
+
+The target selector detects vendor directories (`.claude-plugin/`,
+`.cursor-plugin/`, `.codex-plugin/`, `.agents/plugins/marketplace.json`) to
+determine compatible agents. For project-scope installs targeting Claude
+Code, also writes `enabledPlugins` to `.claude/settings.json` in the project
+root.
+
+## Flags
+
+- `--registry <registry>`: `github`, `gitlab`, `marketplace`, or `file`
+- `--ref <ref>`: Git branch, tag, or commit to pin
+- `--path <path>`: subdirectory to scan inside the source
+- `-p, --plugin <plugin>`: plugin name to select (repeatable)
+- `--refresh`: refresh Git cache before installing
+- `-a, --agent <agent>`: target agent; skips the selector (repeatable)
+- `--scope <scope>`: install scope: user, project, local
+- `--install-only`: install without writing `ai-package.json`
+- `-g, --global`: write `~/.ai-pkgs/ai-package.json`
+- `--verbose`: show per-target install progress
+- `-y, --yes`: skip confirmation prompts
+- `--ai`: strict non-interactive mode
+
+## Target selector behavior
+
+| Found in plugin | Targets enabled |
+|-----------------|-----------------|
+| `.agents/plugins/marketplace.json` | All (claude-code, cursor, codex) |
+| `.claude-plugin/` only | claude-code, cursor (cursor translates) |
+| `.cursor-plugin/` only | cursor |
+| `.codex-plugin/` only | codex |
+| `.claude-plugin/` + `.codex-plugin/` | all |
+| No vendor dir but has `skills/`, `commands/`, etc. | all (installer generates vendor dirs) |
+
+Targets without vendor support are shown as disabled with a reason hint.
+`--agent <id>` skips the selector entirely.
+
+## Examples
+
+```bash
+ai-pkgs plugins add vercel/vercel-plugin --yes
+ai-pkgs plugins add ./my-plugin --plugin my-plugin
+ai-pkgs plugins add owner/repo --agent claude-code --agent cursor --yes
+ai-pkgs plugins add owner/repo --install-only --agent codex --yes
+```

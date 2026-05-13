@@ -1,0 +1,54 @@
+# `ai-pkgs workspace push <name> [options]`
+
+Pushes local skill changes to the remote Git repository.
+
+## Flow
+
+1. Clone the remote at the locked branch into a temp dir.
+2. Copy the local skill directory (`local`) into the clone at `path`
+   (full directory overwrite).
+3. `git add . && git commit -m "<message>"`.
+4. `git push origin <branch>`.
+5. On success: update `version` in `ai-package.json` to `<branch>@<newSha>`
+   and clean up the temp dir.
+
+## Conflict resolution
+
+When the remote has diverged and `git push` is rejected:
+
+| Mode | No flag | `--accept-my-change` |
+|------|---------|---------------------|
+| TTY | Show selector: "Accept my changes (force push)" vs "Resolve locally (manual merge)" | Force push without prompt |
+| `--ai` | Fail with bail-out message and temp clone path | Force push without prompt |
+
+"Accept my changes" runs `git push --force-with-lease`. "Resolve locally"
+preserves the temp clone for manual `git pull --rebase` + `git push`. After
+resolving, the user runs `workspace pull` to sync the resolved state back to
+their local directory.
+
+## Flags
+
+- `-m, --message <msg>`: commit message
+- `--accept-my-change`: force push on rejection (overwrite remote)
+- `-y, --yes`: skip commit message prompt (use the default)
+- `-C, --dir <path>`: project directory
+- `--manifest <path>`: path to `ai-package.json`
+- `--ai`: strict non-interactive mode (auto-generates commit message)
+
+Default commit message: `chore: update <skill-name>`.
+
+## Errors
+
+- Skill not in workspace: `"<name>" is not a workspace skill.`
+- Local path missing: `Local path "<local>" does not exist. Did you move or delete the skill?`
+- No changes: `No changes to push: local matches the remote at this commit.`
+
+## Examples
+
+```bash
+ai-pkgs workspace push explain
+ai-pkgs workspace push explain -m "feat: improve examples"
+ai-pkgs workspace push explain --accept-my-change
+ai-pkgs workspace push explain --ai -m "chore: e2e update"
+ai-pkgs workspace push explain --accept-my-change --ai
+```

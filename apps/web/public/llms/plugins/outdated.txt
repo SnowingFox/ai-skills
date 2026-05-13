@@ -1,0 +1,19 @@
+# `ai-pkgs plugins outdated [plugin...] [options]`
+
+Checks all or selected manifest plugins for newer Git commits. Report-only:
+outdated results exit 0; failed remote checks exit 1.
+
+## Flags
+
+- `-C, --dir <path>`: project directory
+- `-m, --manifest <path>`: path to `ai-package.json`
+- `-g, --global`: check `~/.ai-pkgs/ai-package.json`
+- `--ai`: plain-text output
+
+## Examples
+
+```bash
+ai-pkgs plugins outdated
+ai-pkgs plugins outdated vercel-plugin
+ai-pkgs plugins outdated --ai
+```

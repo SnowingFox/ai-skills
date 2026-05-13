@@ -1,0 +1,24 @@
+# `ai-pkgs workspace list [options]`
+
+Lists workspace skill entries declared in `ai-package.json`. Output modes:
+
+- TTY (default): clack-style intro / outro with a per-skill note showing
+  `local`, `source`, `path`, and `version`.
+- `--ai` or non-TTY: stable plain text, one line per skill.
+- `--json`: machine-readable JSON array.
+
+## Flags
+
+- `--json`: machine-readable output
+- `-C, --dir <path>`: project directory
+- `--manifest <path>`: path to `ai-package.json`
+- `--ai`: plain-text output
+
+## Examples
+
+```bash
+ai-pkgs workspace list
+ai-pkgs workspace list --ai
+ai-pkgs workspace list --json
+ai-pkgs ws list
+```

@@ -64,6 +64,7 @@ describe('installSkills', () => {
           },
         ],
         plugins: [],
+        workspace: { skills: [] },
       },
       projectDir,
       cloneSource,
@@ -123,6 +124,7 @@ describe('installSkills', () => {
           },
         ],
         plugins: [],
+        workspace: { skills: [] },
       },
       projectDir,
       targetDir,
@@ -159,6 +161,7 @@ describe('installSkills', () => {
           path: `skills/${name}`,
         })),
         plugins: [],
+        workspace: { skills: [] },
       },
       projectDir,
       cloneSource: async () => {
@@ -197,6 +200,7 @@ describe('installSkills', () => {
             },
           ],
           plugins: [],
+          workspace: { skills: [] },
         },
         projectDir,
         cloneSource: async () => sourceRoot,
@@ -224,6 +228,7 @@ describe('installSkills', () => {
             },
           ],
           plugins: [],
+          workspace: { skills: [] },
         },
         projectDir,
       })
@@ -242,6 +247,7 @@ describe('installSkills', () => {
             },
           ],
           plugins: [],
+          workspace: { skills: [] },
         },
         projectDir,
       })
@@ -267,6 +273,7 @@ describe('installSkills', () => {
             },
           ],
           plugins: [],
+          workspace: { skills: [] },
         },
         projectDir,
       })
@@ -292,6 +299,7 @@ describe('installSkills', () => {
             },
           ],
           plugins: [],
+          workspace: { skills: [] },
         },
         projectDir,
       })
@@ -317,6 +325,7 @@ describe('installSkills', () => {
             },
           ],
           plugins: [],
+          workspace: { skills: [] },
         },
         projectDir,
         cloneSource: async () => {
@@ -357,6 +366,7 @@ describe('installSkills', () => {
             },
           ],
           plugins: [],
+          workspace: { skills: [] },
         },
         projectDir,
         cloneSource: async () => ({

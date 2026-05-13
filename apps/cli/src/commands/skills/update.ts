@@ -90,7 +90,7 @@ export const applySkillUpdates = (
   );
 
   return {
-    plugins: manifest.plugins,
+    ...manifest,
     skills: manifest.skills.map((skill): SkillEntry => {
       const update = updatesByName.get(skill.name);
       if (!update) {

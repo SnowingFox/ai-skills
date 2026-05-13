@@ -53,5 +53,9 @@ export const DETAILED_HELP: [command: string, description: string][] = [
     'Show grouped plugin management, init, and install flows',
   ],
   ['ai-pkgs help plugins add', 'Show detailed usage for adding plugins'],
+  [
+    'ai-pkgs workspace -h',
+    'Show workspace iteration commands (link, push, pull)',
+  ],
   ['ai-pkgs help cache clear', 'Show cache cleanup options'],
 ];

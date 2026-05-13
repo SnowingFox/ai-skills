@@ -1,0 +1,25 @@
+# `ai-pkgs skills vercel-migrate [options]`
+
+Migrates a legacy Vercel-style `skills-lock.json` (or compatible lockfile)
+into `ai-package.json`. Resolves each lockfile entry to a manifest skill
+entry with a pinned `<ref>@<commitSha>` version.
+
+## Flags
+
+- `--lockfile <path>`: path to the legacy `skills-lock.json`
+- `--remove-lock`: remove the lockfile after a successful migration
+- `--install`: install the migrated manifest after writing
+- `--force`: overwrite existing manifest entries on collision
+- `--skip-existing`: skip existing manifest entries on collision
+- `-C, --dir <path>`: project directory
+- `-m, --manifest <path>`: path to `ai-package.json`
+- `-y, --yes`: skip confirmation prompts
+- `--ai`: strict non-interactive mode
+
+## Examples
+
+```bash
+ai-pkgs skills vercel-migrate
+ai-pkgs skills vercel-migrate --lockfile ./skills-lock.json --remove-lock --install
+ai-pkgs skills vercel-migrate --force --yes
+```
