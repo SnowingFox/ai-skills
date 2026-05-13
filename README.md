@@ -100,7 +100,7 @@ bun run db:studio        # Open Drizzle Studio GUI (browser)
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. Use Conventional Commits
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines. Use Conventional Commits
 (`feat:`, `fix:`, `chore:`) for all commit messages.
 
 ## License
