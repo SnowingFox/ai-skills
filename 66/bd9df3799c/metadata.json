@@ -1,0 +1,17 @@
+{
+  "checkpoint_id": "66bd9df3799c",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "README.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/66/bd9df3799c/0/metadata.json",
+      "prompt": "/66/bd9df3799c/0/prompt.txt",
+      "transcript": "/66/bd9df3799c/0/full.jsonl",
+      "content_hash": "/66/bd9df3799c/0/content_hash.txt"
+    }
+  ]
+}
