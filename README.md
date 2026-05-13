@@ -77,7 +77,7 @@ bun run dev              # Start apps/web Next.js dev server
 bun run dev:cli          # Run apps/cli in watch mode
 bun run build            # Production build for apps/web
 bun run build:cli        # Production build for apps/cli
-bun run lint             # Biome checks across the workspace
+bun run lint             # Biome linter + formatter across the workspace
 bun run format           # Biome formatter across the workspace
 bun run type-check:cli   # Type-check apps/cli
 ```
