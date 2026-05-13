@@ -95,7 +95,7 @@ bun run --cwd apps/cli test:e2e
 bun run db:generate      # Generate Drizzle migration files
 bun run db:migrate       # Apply pending migrations
 bun run db:push          # Push schema directly (dev only)
-bun run db:studio        # Open Drizzle Studio GUI
+bun run db:studio        # Open Drizzle Studio GUI (browser)
 ```
 
 ## Contributing
