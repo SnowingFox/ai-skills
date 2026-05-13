@@ -1,5 +1,8 @@
 # AI Skills
 
+[![npm](https://img.shields.io/npm/v/ai-pkgs)](https://www.npmjs.com/package/ai-pkgs)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D20.19-brightgreen)](https://nodejs.org)
+
 AI Skills is a platform for distributing and managing AI agent components —
 skills, plugins, and workspace iteration — across 47+ AI coding assistants.
 
@@ -8,13 +11,21 @@ This is a Bun workspace containing:
 - **`apps/web`** — The AI Skills website (Next.js, deployed on Cloudflare)
 - **`apps/cli`** — The `ai-pkgs` CLI package manager
 
-## ai-pkgs CLI
+## Install
 
-Install skills, plugins, and iterate on skills locally with Git push/pull.
+```bash
+npm i -g ai-pkgs
+```
+
+Or run directly:
 
 ```bash
 npx ai-pkgs@latest --help
 ```
+
+## ai-pkgs CLI
+
+Manage skills, plugins, and iterate on skills locally with Git push/pull.
 
 ### Skills
 
@@ -49,6 +60,13 @@ ai-pkgs install --agent cursor --force --yes
 ```
 
 See [`apps/cli/README.md`](apps/cli/README.md) for the full CLI documentation.
+
+## Supported agents
+
+Cursor, Claude Code, Codex, Windsurf, GitHub Copilot, Gemini CLI, Cline,
+Roo Code, Amp, Continue, Kilo Code, Trae, Devin, Goose, and 30+ more.
+
+Run `ai-pkgs skills -h` to see all 47+ supported agents.
 
 ## Development
 
