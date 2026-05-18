@@ -1,0 +1,5 @@
+https://www.npmjs.com/package/ai-pkgs?activeTab=readme 给 package.json 加上 github 地址: https://github.com/SnowingFox/ai-skills
+
+---
+
+不小心 discard 了，重新来
