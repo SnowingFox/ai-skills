@@ -1,6 +1,6 @@
 {
   "name": "ai-pkgs",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "A package manager for installing and managing AI agent skills.",
   "module": "dist/cli.js",
   "type": "module",
@@ -25,6 +25,15 @@
     "cli",
     "skills"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SnowingFox/ai-skills.git",
+    "directory": "apps/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/SnowingFox/ai-skills/issues"
+  },
+  "homepage": "https://github.com/SnowingFox/ai-skills#readme",
   "scripts": {
     "bump": "bumpp --commit \"chore: release ai-pkgs v%s\" --tag \"ai-pkgs-v%s\" --no-push",
     "build": "tsup",
