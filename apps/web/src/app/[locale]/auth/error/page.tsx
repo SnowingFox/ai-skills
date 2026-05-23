@@ -18,6 +18,7 @@ export async function generateMetadata({
     description: t('description'),
     locale,
     pathname: '/auth/error',
+    noIndex: true,
   });
 }
 

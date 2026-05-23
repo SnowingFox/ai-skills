@@ -21,6 +21,7 @@ export async function generateMetadata({
     description: t('description'),
     locale,
     pathname: '/auth/forgot-password',
+    noIndex: true,
   });
 }
 

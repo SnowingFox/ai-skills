@@ -20,6 +20,7 @@ export async function generateMetadata({
     description: t('description'),
     locale,
     pathname: '/auth/login',
+    noIndex: true,
   });
 }
 

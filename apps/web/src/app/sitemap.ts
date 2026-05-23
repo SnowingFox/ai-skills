@@ -1,6 +1,7 @@
 import { getLocalePathname } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 import { generateHreflangUrls } from '@/lib/hreflang';
+import { fetchAllTimeSkills } from '@/lib/skills-api';
 import { getBaseUrl } from '@/lib/urls';
 import type { MetadataRoute } from 'next';
 import type { Locale } from 'next-intl';
@@ -17,8 +18,6 @@ const staticRoutes = [
   '/privacy',
   '/terms',
   '/cookie',
-  '/auth/login',
-  '/auth/register',
 ];
 
 /**
@@ -43,10 +42,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   );
 
+  const skills = await fetchAllTimeSkills(0);
+  sitemapList.push(
+    ...skills.skills.flatMap((skill) => {
+      const url = getSkillUrl(skill.source, skill.skillId);
+      return url ? [{ url }] : [];
+    })
+  );
+
   return sitemapList;
 }
 
 function getUrl(href: Href, locale: Locale) {
   const pathname = getLocalePathname({ locale, href });
   return getBaseUrl() + pathname;
+}
+
+function getSkillUrl(source: string, skillId: string) {
+  const [owner, repo] = source.split('/');
+  if (!owner || !repo) {
+    return null;
+  }
+
+  const encodedPath = [owner, repo, skillId].map(encodeURIComponent).join('/');
+
+  return `${getBaseUrl()}/skills/${encodedPath}`;
 }
