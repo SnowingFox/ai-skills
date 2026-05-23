@@ -1,0 +1,21 @@
+/grill-me 
+```/Users/bytedance/dev/ai-skills/.cursor/settings.json:1:7
+{
+  "plugins": {
+    "cloudflare": {
+      "enabled": true
+    }
+  }
+}
+```
+好像 cursor 也支持了这种 enable 的形式，咱们要不要也支持一下，和 claude 一样
+
+你也可以搜索 cursor 的  DOCS 来确认
+
+---
+
+遵循 /tdd
+
+---
+
+更新一下 llms.txt 和文档的 help 说明这个情况
