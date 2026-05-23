@@ -1,0 +1,99 @@
+https://www.npmjs.com/package/ai-pkgs?activeTab=readme 给 package.json 加上 github 地址: https://github.com/SnowingFox/ai-skills
+
+---
+
+不小心 discard 了，重新来
+
+---
+
+Show me how the Cloudflare plugin works
+
+---
+
+Show me how the Cloudflare plugin works
+
+---
+
+Show me how the Cloudflare plugin works
+
+---
+
+能帮我看看 ai-skills.sh 这个域名的 CDN 的配置吗
+
+---
+
+cloudflare plugin 没有这玩意吗
+
+---
+
+/wrangler 帮忙部署一下 apps/web 同时做 SSR + SEO 优化，确保可以被 google 收录进去
+
+---
+
+/wrangler 帮忙部署一下 apps/web 同时做 SSR + SEO 优化，确保可以被 google 收录进去
+
+---
+
+/wrangler 帮忙部署一下 apps/web 同时做 SSR + SEO 优化，确保可以被 google 收录进去
+
+---
+
+/wrangler 帮忙部署一下 apps/web 同时做 SSR + SEO 优化，确保可以被 google 收录进去
+
+---
+
+/wrangler 帮忙部署一下 apps/web 同时做 SSR + SEO 优化，确保可以被 google 收录进去
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+resume
+
+---
+
+wrangler 怎么 login？这玩意我是加入别人的组织了
+
+---
+
+对啊，是OceanZ的没问题，难道没付费？
+
+---
+
+那后续如果越来越大，咋办？我还要拆吗？
+
+---
+
+那如果真的真的没办法，真的超过了10MB咋办？就等死吗
+
+---
+
+这样感觉好累啊，社区的解法是什么，cloudflare 给的解法又是什么
+
+---
+
+这是何意味
+
+---
+
+vercel 呢？
+
+---
+
+不过 Vercel 的感觉太贵了
+
+---
+
+再来部署一下看看
+
+---
+
+所以 SEO 优化原理是什么？你怎么优化的？
+
+---
+
+所以 SEO 优化原理是什么？你怎么优化的？怎么确保被收录？

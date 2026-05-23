@@ -2,7 +2,7 @@
   "checkpoint_id": "017bb5c5ff92",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 4,
+  "checkpoints_count": 27,
   "files_touched": [
     ".cursor/skills/grill-with-docs/SKILL.md"
   ],
@@ -18,13 +18,19 @@
       "prompt": "/01/7bb5c5ff92/1/prompt.txt",
       "transcript": "/01/7bb5c5ff92/1/full.jsonl",
       "content_hash": "/01/7bb5c5ff92/1/content_hash.txt"
+    },
+    {
+      "metadata": "/01/7bb5c5ff92/2/metadata.json",
+      "prompt": "/01/7bb5c5ff92/2/prompt.txt",
+      "transcript": "/01/7bb5c5ff92/2/full.jsonl",
+      "content_hash": "/01/7bb5c5ff92/2/content_hash.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 658185,
+    "input_tokens": 1257302,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 12235776,
-    "output_tokens": 30618,
-    "api_call_count": 3
+    "cache_read_tokens": 17797280,
+    "output_tokens": 58604,
+    "api_call_count": 20
   }
 }
