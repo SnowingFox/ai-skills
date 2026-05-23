@@ -1,0 +1,73 @@
+{
+  "checkpoint_id": "861709ad9335",
+  "session_id": "c2dd074c-7f76-4d7e-8698-0c5fea166a94",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-23T08:46:03.592Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "apps/web/src/app/[locale]/(marketing)/(home)/page.tsx",
+    "apps/web/src/app/[locale]/auth/error/page.tsx",
+    "apps/web/src/app/[locale]/auth/forgot-password/page.tsx",
+    "apps/web/src/app/[locale]/auth/login/page.tsx",
+    "apps/web/src/app/[locale]/auth/register/page.tsx",
+    "apps/web/src/app/[locale]/auth/reset-password/page.tsx",
+    "apps/web/src/app/robots.ts",
+    "apps/web/src/app/sitemap.ts"
+  ],
+  "agent": "Cursor",
+  "model": "gpt-5.5-extra-high",
+  "turn_id": "5aa54b682f9c",
+  "is_task": false,
+  "tool_use_id": "",
+  "transcript_identifier_at_start": "",
+  "checkpoint_transcript_start": 0,
+  "transcript_lines_at_start": 0,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "duration_ms": 1174381,
+    "turn_count": 3,
+    "context_tokens": 0,
+    "context_window_size": 0,
+    "active_duration_ms": 940947,
+    "turn_metrics": [
+      {
+        "turn_id": "aede9437362c",
+        "started_at": "2026-05-22T14:29:00.000Z",
+        "ended_at": "2026-05-22T14:35:38.432Z",
+        "duration_ms": 398432
+      },
+      {
+        "turn_id": "03f7252c4162",
+        "started_at": "2026-05-22T14:35:50.000Z",
+        "ended_at": "2026-05-22T14:42:00.181Z",
+        "duration_ms": 370181
+      },
+      {
+        "turn_id": "5aa54b682f9c",
+        "started_at": "2026-05-22T14:45:43.000Z",
+        "ended_at": "2026-05-22T14:48:35.334Z",
+        "duration_ms": 172334
+      }
+    ]
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-23T08:46:03.553Z",
+    "agent_lines": 143,
+    "agent_removed": 82,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 143,
+    "total_lines_changed": 225,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": null
+}
