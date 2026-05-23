@@ -1,0 +1,17 @@
+{
+  "checkpoint_id": "017bb5c5ff92",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".cursor/skills/grill-with-docs/SKILL.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/01/7bb5c5ff92/0/metadata.json",
+      "prompt": "/01/7bb5c5ff92/0/prompt.txt",
+      "transcript": "/01/7bb5c5ff92/0/full.jsonl",
+      "content_hash": "/01/7bb5c5ff92/0/content_hash.txt"
+    }
+  ]
+}
