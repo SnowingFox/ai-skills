@@ -65,13 +65,22 @@ export default function DatabasePage() {
 
   useEffect(() => {
     fetch('/api/admin/tables')
-      .then((r) => r.json() as Promise<{ tables?: TableInfo[] }>)
+      .then(async (r) => {
+        if (!r.ok) {
+          throw new Error(`HTTP ${r.status}`);
+        }
+        return r.json() as Promise<{
+          tables?: TableInfo[];
+          connected?: boolean;
+        }>;
+      })
       .then((d) => {
         setTables(d.tables ?? []);
         if (d.tables?.length && !selectedTable) {
           setSelectedTable(d.tables[0].name);
         }
       })
+      .catch(() => setTables([]))
       .finally(() => setTablesLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -333,9 +342,27 @@ export default function DatabasePage() {
             </>
           ) : (
             <div className="flex flex-1 items-center justify-center text-muted-foreground">
-              <div className="text-center">
+              <div className="max-w-md text-center">
                 <Database className="mx-auto mb-2 size-8 opacity-40" />
-                <p className="text-sm">选择一个表开始浏览</p>
+                {tablesLoading ? (
+                  <p className="text-sm">加载中…</p>
+                ) : tables.length === 0 ? (
+                  <>
+                    <p className="text-sm font-medium text-foreground">
+                      数据库已连接，但未找到任何表
+                    </p>
+                    <p className="mt-2 text-xs leading-relaxed">
+                      生产库可能尚未执行 migration。请在项目根目录运行{' '}
+                      <code className="rounded bg-muted px-1 py-0.5">
+                        bun run db:migrate
+                      </code>{' '}
+                      （需配置 DATABASE_URL）。网站 Skills 数据目前来自
+                      skills.sh 上游缓存，不依赖本地表。
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-sm">选择一个表开始浏览</p>
+                )}
               </div>
             </div>
           )}

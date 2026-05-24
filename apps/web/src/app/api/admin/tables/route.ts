@@ -15,7 +15,7 @@ export async function GET() {
 
   const db = await getDb();
 
-  const tables = await db.execute(sql`
+  const tablesResult = await db.execute(sql`
     SELECT
       t.table_name,
       COALESCE(
@@ -26,9 +26,14 @@ export async function GET() {
     WHERE t.table_schema = 'public'
       AND t.table_type = 'BASE TABLE'
     ORDER BY t.table_name
-  `) as unknown as { table_name: string; row_estimate: string }[];
+  `);
+
+  const tables = Array.from(
+    tablesResult as Iterable<{ table_name: string; row_estimate: string }>
+  );
 
   return NextResponse.json({
+    connected: true,
     tables: tables.map((t) => ({
       name: t.table_name,
       rowEstimate: Number(t.row_estimate),
