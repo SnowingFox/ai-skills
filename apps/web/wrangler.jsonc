@@ -73,10 +73,22 @@
    * Note: Use secrets to store sensitive data.
    * https://developers.cloudflare.com/workers/configuration/secrets/
    */
+  // Activate after enabling R2 in Cloudflare Dashboard:
+  //   wrangler r2 bucket create ai-skills-next-cache
+  // "r2_buckets": [
+  //   {
+  //     "binding": "NEXT_INC_CACHE_R2_BUCKET",
+  //     "bucket_name": "ai-skills-next-cache"
+  //   }
+  // ],
   "kv_namespaces": [
     {
       "binding": "ANALYTICS_KV",
       "id": "2b37599734f84fdb95e2065c6c7fbfa9"
+    },
+    {
+      "binding": "SKILLS_KV",
+      "id": "d4dc7f2bbc7c4406be1975ad19c1d710"
     }
   ]
 }

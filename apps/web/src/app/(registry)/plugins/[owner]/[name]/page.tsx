@@ -17,6 +17,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+export const revalidate = 86400;
+
 interface PluginDetailPageProps {
   params: Promise<{ owner: string; name: string }>;
 }

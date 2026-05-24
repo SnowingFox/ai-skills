@@ -17,6 +17,8 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
 
+export const revalidate = 86400;
+
 interface SkillDetailPageProps {
   params: Promise<{
     owner: string;

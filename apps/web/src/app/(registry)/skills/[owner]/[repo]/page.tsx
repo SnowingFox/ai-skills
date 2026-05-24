@@ -14,6 +14,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+export const revalidate = 10800;
+
 interface RepoSkillView {
   id: string;
   skillId: string;

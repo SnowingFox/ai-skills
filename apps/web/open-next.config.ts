@@ -1,9 +1,9 @@
 import { defineCloudflareConfig } from '@opennextjs/cloudflare';
+import r2IncrementalCache from '@opennextjs/cloudflare/overrides/incremental-cache/r2-incremental-cache';
 
 export default defineCloudflareConfig({
-  // Uncomment to enable R2 cache,
-  // It should be imported as:
-  // `import r2IncrementalCache from "@opennextjs/cloudflare/overrides/incremental-cache/r2-incremental-cache";`
-  // See https://opennext.js.org/cloudflare/caching for more details
+  // Activate after enabling R2 in Cloudflare Dashboard and creating the bucket:
+  //   wrangler r2 bucket create ai-skills-next-cache
+  // Then uncomment:
   // incrementalCache: r2IncrementalCache,
 });

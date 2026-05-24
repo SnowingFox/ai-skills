@@ -3,17 +3,31 @@ import { fetchAllTimeSkills, type SkillsApiResponse } from '@/lib/skills-api';
 import type { CursorPlugin } from '@/skills/cursor-upstream';
 import { getCursorPlugins } from '@/skills/get-cursor-upstream';
 import { getSkillRepository } from '@/skills/get-skill-repository';
+import {
+  shouldCacheResponse,
+  shouldUseCachedResponse,
+} from '@/skills/kv-cache';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 
 const INITIAL_PAGE_SIZE = 200;
+const KV_KEY = 'skills:all-time:0';
 
 async function loadInitialSkills(): Promise<SkillsApiResponse> {
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    if (env.SKILLS_KV) {
+      const cached = await env.SKILLS_KV.get<SkillsApiResponse>(KV_KEY, 'json');
+      if (shouldUseCachedResponse(cached)) return cached;
+    }
+  } catch {}
+
   try {
     const repo = await getSkillRepository();
     const rows = await repo.listTopByInstalls({ limit: INITIAL_PAGE_SIZE });
     if (rows.length === 0) {
       return fetchAllTimeSkills(0);
     }
-    return {
+    const result: SkillsApiResponse = {
       skills: rows.map((row) => ({
         source: row.source,
         skillId: row.skillId,
@@ -28,6 +42,21 @@ async function loadInitialSkills(): Promise<SkillsApiResponse> {
       hasMore: rows.length === INITIAL_PAGE_SIZE,
       page: 0,
     };
+
+    if (shouldCacheResponse(result)) {
+      try {
+        const { env, ctx } = await getCloudflareContext({ async: true });
+        if (env.SKILLS_KV) {
+          ctx.waitUntil(
+            env.SKILLS_KV.put(KV_KEY, JSON.stringify(result), {
+              expirationTtl: 10800,
+            })
+          );
+        }
+      } catch {}
+    }
+
+    return result;
   } catch {
     return fetchAllTimeSkills(0);
   }

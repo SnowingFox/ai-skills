@@ -9,6 +9,8 @@ import type { Locale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
+export const revalidate = 10800;
+
 export async function generateMetadata({
   params,
 }: {

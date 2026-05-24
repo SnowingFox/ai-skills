@@ -1,10 +1,20 @@
 import type { SkillEntry, SkillsApiResponse } from '@/lib/skills-api';
 import { getSkillRepository } from '@/skills/get-skill-repository';
+import {
+  shouldCacheResponse,
+  shouldUseCachedResponse,
+} from '@/skills/kv-cache';
 import { searchUpstream } from '@/skills/upstream-fallback';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { NextResponse } from 'next/server';
 
 const MAX_LIMIT = 100;
 const DEFAULT_LIMIT = 50;
+
+const CACHE_HEADERS = {
+  'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+  'CDN-Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+};
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -26,8 +36,20 @@ export async function GET(request: Request) {
   };
 
   if (!q) {
-    return NextResponse.json(empty);
+    return NextResponse.json(empty, { headers: CACHE_HEADERS });
   }
+
+  const kvKey = `skills:search:${q}:${limit}:${offset}`;
+
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    if (env.SKILLS_KV) {
+      const cached = await env.SKILLS_KV.get<SkillsApiResponse>(kvKey, 'json');
+      if (shouldUseCachedResponse(cached)) {
+        return NextResponse.json(cached, { headers: CACHE_HEADERS });
+      }
+    }
+  } catch {}
 
   try {
     const repo = await getSkillRepository();
@@ -49,13 +71,26 @@ export async function GET(request: Request) {
         hasMore: rows.length === limit,
         page: Math.floor(offset / limit),
       };
-      return NextResponse.json(response);
+
+      if (shouldCacheResponse(response)) {
+        try {
+          const { env, ctx } = await getCloudflareContext({ async: true });
+          if (env.SKILLS_KV) {
+            ctx.waitUntil(
+              env.SKILLS_KV.put(kvKey, JSON.stringify(response), {
+                expirationTtl: 3600,
+              })
+            );
+          }
+        } catch {}
+      }
+
+      return NextResponse.json(response, { headers: CACHE_HEADERS });
     }
   } catch (error) {
     console.warn('[search] DB read failed', error);
   }
 
-  // DB returned no matches (or threw) — fall back to upstream search.
   const upstream: SkillEntry[] = await searchUpstream(q);
   const window = upstream.slice(offset, offset + limit);
   const response: SkillsApiResponse = {
@@ -64,5 +99,19 @@ export async function GET(request: Request) {
     hasMore: upstream.length > offset + limit,
     page: Math.floor(offset / limit),
   };
-  return NextResponse.json(response);
+
+  if (shouldCacheResponse(response)) {
+    try {
+      const { env, ctx } = await getCloudflareContext({ async: true });
+      if (env.SKILLS_KV) {
+        ctx.waitUntil(
+          env.SKILLS_KV.put(kvKey, JSON.stringify(response), {
+            expirationTtl: 3600,
+          })
+        );
+      }
+    } catch {}
+  }
+
+  return NextResponse.json(response, { headers: CACHE_HEADERS });
 }
