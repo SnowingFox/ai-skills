@@ -1,0 +1,76 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "0197b43ef2fd",
+  "session_id": "d305a67d-f315-4d5b-9481-8b86594e1c44",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-24T09:30:00.421566Z",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "apps/web/package.json",
+    "apps/web/src/app/(admin-panel)/admin/database/layout.tsx",
+    "apps/web/src/app/(admin-panel)/admin/database/page.tsx",
+    "apps/web/src/app/(admin-panel)/admin/login/page.tsx",
+    "apps/web/src/app/(admin-panel)/layout.tsx",
+    "apps/web/src/app/api/admin/auth/route.ts",
+    "apps/web/src/app/api/admin/tables/[table]/route.ts",
+    "apps/web/src/app/api/admin/tables/route.ts",
+    "apps/web/src/lib/admin-auth.ts",
+    "bun.lock"
+  ],
+  "agent": "Cursor",
+  "model": "composer-2.5-fast",
+  "turn_id": "d8d64789ac51",
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-24T09:30:00.394773Z",
+    "agent_lines": 710,
+    "agent_removed": 1,
+    "human_added": 13,
+    "human_modified": 1,
+    "human_removed": 0,
+    "total_committed": 724,
+    "total_lines_changed": 725,
+    "agent_percentage": 98.06896551724138,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 38,
+      "user_lines_removed": 10,
+      "agent_lines_added": 711,
+      "agent_lines_removed": 1,
+      "user_added_per_file": {
+        ".cursor/hooks.json": 31,
+        ".cursor/settings.json": 7
+      },
+      "user_removed_per_file": {
+        ".cursor/hooks.json": 10
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 38,
+      "user_lines_removed": 10,
+      "agent_lines_added": 711,
+      "agent_lines_removed": 1,
+      "user_added_per_file": {
+        ".cursor/hooks.json": 31,
+        ".cursor/settings.json": 7
+      },
+      "user_removed_per_file": {
+        ".cursor/hooks.json": 10
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "0197b43ef2fd",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "apps/web/package.json",
+    "apps/web/src/app/(admin-panel)/admin/database/layout.tsx",
+    "apps/web/src/app/(admin-panel)/admin/database/page.tsx",
+    "apps/web/src/app/(admin-panel)/admin/login/page.tsx",
+    "apps/web/src/app/(admin-panel)/layout.tsx",
+    "apps/web/src/app/api/admin/auth/route.ts",
+    "apps/web/src/app/api/admin/tables/[table]/route.ts",
+    "apps/web/src/app/api/admin/tables/route.ts",
+    "apps/web/src/lib/admin-auth.ts",
+    "bun.lock"
+  ],
+  "sessions": [
+    {
+      "metadata": "/01/97b43ef2fd/0/metadata.json",
+      "transcript": "/01/97b43ef2fd/0/full.jsonl",
+      "content_hash": "/01/97b43ef2fd/0/content_hash.txt",
+      "prompt": "/01/97b43ef2fd/0/prompt.txt"
+    }
+  ]
+}
