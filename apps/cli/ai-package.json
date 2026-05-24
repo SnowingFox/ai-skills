@@ -11,9 +11,7 @@
       "source": "github:entireio/skills",
       "path": ".",
       "version": "main@c376dc971045eb38c094802ca43875d1cfa00ea4",
-      "targets": [
-        "cursor"
-      ]
+      "targets": ["cursor"]
     }
   }
 }

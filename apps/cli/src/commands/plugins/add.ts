@@ -165,7 +165,8 @@ export const runPluginsAddCommand = async (
         target,
         options.scope ?? 'user',
         resolved.root.rootDir,
-        rawSource
+        rawSource,
+        isGlobal ? undefined : manifestScope.projectDir
       );
 
       if (aiMode) {

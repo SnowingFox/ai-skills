@@ -6,9 +6,12 @@ installs to the selected agents, and writes entries (including the persisted
 
 The target selector detects vendor directories (`.claude-plugin/`,
 `.cursor-plugin/`, `.codex-plugin/`, `.agents/plugins/marketplace.json`) to
-determine compatible agents. For project-scope installs targeting Claude
-Code, also writes `enabledPlugins` to `.claude/settings.json` in the project
-root.
+determine compatible agents. For project-scope installs targeting Claude Code,
+also writes `enabledPlugins` to `.claude/settings.json` in the project root.
+For project-scope installs targeting Cursor, installs the plugin contents into
+`~/.cursor/plugins/local/<plugin>` and writes
+`plugins.<name>.enabled = true` to the project's `.cursor/settings.json`.
+Cursor global installs only write `~/.cursor/plugins/local/<plugin>`.
 
 ## Flags
 

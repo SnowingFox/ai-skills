@@ -66,7 +66,8 @@ export const uninstallFromClaude = async (
  */
 export const uninstallFromCursor = async (
   pluginName: string,
-  marketplaceName: string
+  marketplaceName: string,
+  projectDir?: string
 ): Promise<void> => {
   if (process.platform === 'win32') {
     const home = homedir();
@@ -100,12 +101,16 @@ export const uninstallFromCursor = async (
         // corrupted file – skip
       }
     }
+    await disableCursorPluginForProject(pluginName, projectDir);
     return;
   }
 
-  // On macOS/Linux, Cursor shares the Claude plugin cache so uninstalling
-  // a Cursor plugin also removes it from ~/.claude/settings.json.
-  await uninstallFromClaude(pluginName, marketplaceName);
+  const home = homedir();
+  await rm(join(home, '.cursor', 'plugins', 'local', pluginName), {
+    recursive: true,
+    force: true,
+  });
+  await disableCursorPluginForProject(pluginName, projectDir);
 };
 
 /**
@@ -181,7 +186,7 @@ export const uninstallPlugins = async (
       await uninstallFromClaude(pluginName, marketplaceName, projectDir);
       break;
     case 'cursor':
-      await uninstallFromCursor(pluginName, marketplaceName);
+      await uninstallFromCursor(pluginName, marketplaceName, projectDir);
       break;
     case 'codex':
       await uninstallFromCodex(pluginName, marketplaceName);
@@ -193,3 +198,24 @@ export const uninstallPlugins = async (
 
 const escapeRegex = (str: string): string =>
   str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+const disableCursorPluginForProject = async (
+  pluginName: string,
+  projectDir?: string
+): Promise<void> => {
+  if (!projectDir) return;
+
+  const settingsPath = join(projectDir, '.cursor', 'settings.json');
+  if (!existsSync(settingsPath)) return;
+
+  try {
+    const settings = JSON.parse(await readFile(settingsPath, 'utf-8'));
+    const plugins = settings.plugins as Record<string, unknown> | undefined;
+    if (!plugins) return;
+
+    delete plugins[pluginName];
+    await writeFile(settingsPath, JSON.stringify(settings, null, 2));
+  } catch {
+    // corrupted file – skip
+  }
+};

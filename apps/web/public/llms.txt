@@ -29,9 +29,9 @@
 
 ## Plugin commands (`ai-pkgs plugins ...`)
 
-- [plugins](/llms/plugins/index.txt): Plugin command group overview, per-plugin `targets` model
+- [plugins](/llms/plugins/index.txt): Plugin command group overview, per-plugin `targets` model, Cursor project/global install behavior
 - [plugins init](/llms/plugins/init.txt): Scaffold a plugin template with vendor manifests and `.agents/plugins/marketplace.json`
-- [plugins add](/llms/plugins/add.txt): Discover plugins in a source, select target agents, install, write the manifest
+- [plugins add](/llms/plugins/add.txt): Discover plugins in a source, select target agents, install, write the manifest, enable Cursor project plugins
 - [plugins list](/llms/plugins/list.txt): List manifest plugins as grouped text or `--json`
 - [plugins targets](/llms/plugins/targets.txt): Manage per-plugin agent targets (add / remove / list)
 - [plugins outdated](/llms/plugins/outdated.txt): Report-only check for newer Git commits

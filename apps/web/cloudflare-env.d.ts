@@ -4,6 +4,7 @@
 declare namespace Cloudflare {
 	interface Env {
 		HYPERDRIVE: Hyperdrive;
+		ANALYTICS_KV: KVNamespace;
 		ASSETS: Fetcher;
 		NEXT_PUBLIC_BASE_URL: string;
 		BETTER_AUTH_SECRET: string;

@@ -6,6 +6,7 @@ import {
   fontNotoSerif,
 } from '@/assets/fonts';
 import { TailwindIndicator } from '@/components/layout/tailwind-indicator';
+import { TrackPageView } from '@/components/track-page-view';
 import { routing } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 import { type Locale, NextIntlClientProvider, hasLocale } from 'next-intl';
@@ -61,6 +62,7 @@ export default async function LocaleLayout({
             <Providers>
               {children}
 
+              <TrackPageView />
               <Toaster richColors position="top-right" offset={64} />
               <TailwindIndicator />
               <Analytics />

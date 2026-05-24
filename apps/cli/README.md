@@ -45,6 +45,10 @@ Add plugins from a source and select target agents:
 ai-pkgs plugins add vercel/vercel-plugin --yes
 ```
 
+Cursor plugin installs use Cursor's local plugin directory. Project installs
+also enable the plugin in `.cursor/settings.json`; global installs only write
+to `~/.cursor/plugins/local/<plugin>`.
+
 Manage per-plugin targets:
 
 ```bash
@@ -170,7 +174,7 @@ interactive selector, or pass `--agent <id>`.
 | Target | Cache | Settings |
 |--------|-------|----------|
 | `claude-code` | `~/.claude/plugins/cache/` | `~/.claude/settings.json` or `.claude/settings.json` |
-| `cursor` | Shares Claude cache (macOS/Linux); `~/.cursor/extensions/` (Windows) | — |
+| `cursor` | `~/.cursor/plugins/local/<plugin>` | project `.cursor/settings.json`; global installs do not write a Cursor settings file |
 | `codex` | `~/.codex/plugins/cache/` | `~/.codex/config.toml` |
 
 ## Commands

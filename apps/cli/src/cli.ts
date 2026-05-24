@@ -80,14 +80,13 @@ export const isSupportedNodeVersion = (version: string): boolean => {
  * formatUnsupportedNodeVersionMessage('18.19.1');
  * // Includes the current version and the minimum required version.
  */
-export const formatUnsupportedNodeVersionMessage = (
-  version: string
-): string => [
-  `ai-pkgs requires Node.js >= ${MIN_NODE_VERSION}.`,
-  `Current Node.js version: ${version}.`,
-  'Please upgrade Node.js and run ai-pkgs again.',
-  '',
-].join('\n');
+export const formatUnsupportedNodeVersionMessage = (version: string): string =>
+  [
+    `ai-pkgs requires Node.js >= ${MIN_NODE_VERSION}.`,
+    `Current Node.js version: ${version}.`,
+    'Please upgrade Node.js and run ai-pkgs again.',
+    '',
+  ].join('\n');
 
 const exitCode = await runCli();
 process.exitCode = exitCode;

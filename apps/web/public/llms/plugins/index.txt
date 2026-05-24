@@ -26,8 +26,14 @@ Only three agents currently support plugins:
 | Target | Cache | Settings |
 |--------|-------|----------|
 | `claude-code` | `~/.claude/plugins/cache/` | global `~/.claude/settings.json` or project `.claude/settings.json` |
-| `cursor` | shares Claude cache on macOS/Linux; `~/.cursor/extensions/` on Windows | n/a |
+| `cursor` | `~/.cursor/plugins/local/<plugin>` | project `.cursor/settings.json` stores `plugins.<name>.enabled = true`; global installs only write the local plugin directory |
 | `codex` | `~/.codex/plugins/cache/` | `~/.codex/config.toml` and `~/.agents/plugins/marketplace.json` |
+
+Cursor uses the documented local plugin directory for installed plugin
+contents. Project installs also enable the plugin in the current workspace's
+`.cursor/settings.json`; global installs do not write a global settings file
+because Cursor's public docs do not define a global
+`plugins.<name>.enabled` settings schema.
 
 ## Common flags
 

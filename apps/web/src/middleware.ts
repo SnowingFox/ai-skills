@@ -34,9 +34,16 @@ export default async function middleware(req: NextRequest) {
 
   if (
     nextUrl.pathname === '/skills' ||
-    nextUrl.pathname.startsWith('/skills/')
+    nextUrl.pathname.startsWith('/skills/') ||
+    nextUrl.pathname === '/plugins' ||
+    nextUrl.pathname.startsWith('/plugins/') ||
+    nextUrl.pathname === '/admin' ||
+    nextUrl.pathname.startsWith('/admin/') ||
+    nextUrl.pathname === '/about'
   ) {
-    console.log('<< middleware end, registry route, skipping intlMiddleware');
+    console.log(
+      '<< middleware end, registry/admin route, skipping intlMiddleware'
+    );
     return NextResponse.next();
   }
 

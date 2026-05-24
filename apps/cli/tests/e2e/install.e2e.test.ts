@@ -478,6 +478,148 @@ describe('ai-pkgs install e2e', () => {
     ).rejects.toThrow();
   });
 
+  it('installs and enables Cursor plugins for a project', async () => {
+    const projectDir = join(tempRoot, 'cursor-plugin-project');
+    const sourceDir = join(tempRoot, 'cursor-plugin-source');
+    const homeDir = join(tempRoot, 'cursor-plugin-home');
+    await mkdir(projectDir, { recursive: true });
+    await mkdir(homeDir, { recursive: true });
+    await mkdir(join(sourceDir, '.cursor-plugin'), { recursive: true });
+    await mkdir(join(sourceDir, 'skills/review'), { recursive: true });
+    await writeFile(
+      join(sourceDir, '.cursor-plugin/plugin.json'),
+      JSON.stringify({
+        name: 'review-pack',
+        description: 'Review helper plugin',
+        version: '1.0.0',
+      })
+    );
+    await writeFile(
+      join(sourceDir, 'skills/review/SKILL.md'),
+      '# Review Skill'
+    );
+
+    const result = await runCliProcess(projectDir, { HOME: homeDir }, [
+      'plugins',
+      'add',
+      sourceDir,
+      '--agent',
+      'cursor',
+      '--yes',
+    ]);
+
+    expect(result.code).toBe(0);
+    await expect(
+      readFile(
+        join(
+          homeDir,
+          '.cursor/plugins/local/review-pack/.cursor-plugin/plugin.json'
+        ),
+        'utf-8'
+      )
+    ).resolves.toContain('"name":"review-pack"');
+    await expect(
+      readFile(join(projectDir, '.cursor/settings.json'), 'utf-8')
+    ).resolves.toContain('"review-pack"');
+  });
+
+  it('installs global Cursor plugins without project settings', async () => {
+    const projectDir = join(tempRoot, 'cursor-global-plugin-project');
+    const sourceDir = join(tempRoot, 'cursor-global-plugin-source');
+    const homeDir = join(tempRoot, 'cursor-global-plugin-home');
+    await mkdir(projectDir, { recursive: true });
+    await mkdir(homeDir, { recursive: true });
+    await mkdir(join(sourceDir, '.cursor-plugin'), { recursive: true });
+    await mkdir(join(sourceDir, 'skills/search'), { recursive: true });
+    await writeFile(
+      join(sourceDir, '.cursor-plugin/plugin.json'),
+      JSON.stringify({
+        name: 'search-pack',
+        description: 'Search helper plugin',
+        version: '1.0.0',
+      })
+    );
+    await writeFile(
+      join(sourceDir, 'skills/search/SKILL.md'),
+      '# Search Skill'
+    );
+
+    const result = await runCliProcess(projectDir, { HOME: homeDir }, [
+      'plugins',
+      'add',
+      sourceDir,
+      '--agent',
+      'cursor',
+      '--global',
+      '--yes',
+    ]);
+
+    expect(result.code).toBe(0);
+    await expect(
+      readFile(
+        join(
+          homeDir,
+          '.cursor/plugins/local/search-pack/.cursor-plugin/plugin.json'
+        ),
+        'utf-8'
+      )
+    ).resolves.toContain('"name":"search-pack"');
+    await expect(
+      readFile(join(projectDir, '.cursor/settings.json'), 'utf-8')
+    ).rejects.toThrow();
+  });
+
+  it('uninstalls Cursor plugins from local plugins and project settings', async () => {
+    const projectDir = join(tempRoot, 'cursor-plugin-remove-project');
+    const sourceDir = join(tempRoot, 'cursor-plugin-remove-source');
+    const homeDir = join(tempRoot, 'cursor-plugin-remove-home');
+    await mkdir(projectDir, { recursive: true });
+    await mkdir(homeDir, { recursive: true });
+    await mkdir(join(sourceDir, '.cursor-plugin'), { recursive: true });
+    await mkdir(join(sourceDir, 'skills/audit'), { recursive: true });
+    await writeFile(
+      join(sourceDir, '.cursor-plugin/plugin.json'),
+      JSON.stringify({
+        name: 'audit-pack',
+        description: 'Audit helper plugin',
+        version: '1.0.0',
+      })
+    );
+    await writeFile(join(sourceDir, 'skills/audit/SKILL.md'), '# Audit Skill');
+
+    const added = await runCliProcess(projectDir, { HOME: homeDir }, [
+      'plugins',
+      'add',
+      sourceDir,
+      '--agent',
+      'cursor',
+      '--yes',
+    ]);
+    const removed = await runCliProcess(projectDir, { HOME: homeDir }, [
+      'plugins',
+      'remove',
+      'audit-pack',
+      '--uninstall',
+      '--agent',
+      'cursor',
+    ]);
+
+    expect(added.code).toBe(0);
+    expect(removed.code).toBe(0);
+    await expect(
+      readFile(
+        join(
+          homeDir,
+          '.cursor/plugins/local/audit-pack/.cursor-plugin/plugin.json'
+        ),
+        'utf-8'
+      )
+    ).rejects.toThrow();
+    await expect(
+      readFile(join(projectDir, '.cursor/settings.json'), 'utf-8')
+    ).resolves.not.toContain('audit-pack');
+  });
+
   it('installs all discovered skills into project scope', async () => {
     const projectDir = join(tempRoot, 'all-project');
     const sourceDir = join(tempRoot, 'all-source');

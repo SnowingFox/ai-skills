@@ -24,7 +24,10 @@
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
-    "knip": "knip"
+    "knip": "knip",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "sync-skills": "bun scripts/sync-skills.ts"
   },
   "dependencies": {
     "@beehiiv/sdk": "^0.1.9",
@@ -130,6 +133,7 @@
     "@types/node": "^25.0.10",
     "@types/react": "^19.2.9",
     "@types/react-dom": "^19.2.3",
+    "@vitest/coverage-v8": "^4.1.7",
     "bun-types": "^1.3.13",
     "drizzle-kit": "^0.30.4",
     "knip": "^5.82.1",
@@ -137,6 +141,7 @@
     "react-email": "5.2.5",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
+    "vitest": "^4.1.7",
     "wrangler": "^4.61.1"
   }
 }

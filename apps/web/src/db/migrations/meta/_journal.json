@@ -64,6 +64,20 @@
       "when": 1770309934776,
       "tag": "0008_curious_patch",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1779551215840,
+      "tag": "0009_faithful_flatman",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1779605885404,
+      "tag": "0010_plain_starfox",
+      "breakpoints": true
     }
   ]
 }

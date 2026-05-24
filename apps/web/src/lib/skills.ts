@@ -28,7 +28,7 @@ export interface SkillDetail {
   hash: string | null;
 }
 
-interface SkillDownloadPayload {
+export interface SkillDownloadPayload {
   files: SkillDownloadFile[];
   hash?: string;
 }

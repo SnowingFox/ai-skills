@@ -73,5 +73,10 @@
    * Note: Use secrets to store sensitive data.
    * https://developers.cloudflare.com/workers/configuration/secrets/
    */
-  "kv_namespaces": []
+  "kv_namespaces": [
+    {
+      "binding": "ANALYTICS_KV",
+      "id": "2b37599734f84fdb95e2065c6c7fbfa9"
+    }
+  ]
 }

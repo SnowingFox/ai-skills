@@ -3,6 +3,8 @@ export interface SkillEntry {
   skillId: string;
   name: string;
   installs: number;
+  weeklyInstalls?: number[];
+  isOfficial?: boolean;
 }
 
 export interface SkillsApiResponse {

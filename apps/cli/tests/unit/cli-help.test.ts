@@ -125,6 +125,17 @@ describe('cli/help', () => {
     expect(output).toContain('ai-pkgs install --agent cursor --force');
   });
 
+  it('renders Cursor plugin scope notes', () => {
+    const cli = buildHelpCli();
+    const output = stripAnsi(renderHelp(cli, 'plugins'));
+
+    expect(output).toContain('Cursor: ~/.cursor/plugins/local/');
+    expect(output).toContain(
+      'project installs enable plugins in .cursor/settings.json'
+    );
+    expect(output).not.toContain('Cursor: shares Claude cache');
+  });
+
   it('renders skills outdated help', () => {
     const cli = buildHelpCli();
     const output = stripAnsi(renderHelp(cli, 'skills outdated'));

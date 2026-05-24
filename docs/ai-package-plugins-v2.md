@@ -198,10 +198,11 @@ $ ai-pkgs plugins add vercel/vercel-plugin
 │  ◇  Staged workspace for claude-code
 │  ◆  Installed vercel-plugin to Claude Code cache
 │  ◇  Staged workspace for cursor
-│  ◆  Installed vercel-plugin to Cursor cache
+│  ◆  Installed vercel-plugin to ~/.cursor/plugins/local/vercel-plugin
 │
 ◆  Wrote 1 plugin(s) to ai-package.json
 ◆  Enabled vercel-plugin in .claude/settings.json
+◆  Enabled vercel-plugin in .cursor/settings.json
 ```
 
 Target selector behavior:
@@ -272,7 +273,8 @@ $ ai-pkgs plugins targets add vercel-plugin cursor
 │  ○ No (run ai-pkgs install later)
 
 ◇  Staged workspace for cursor
-◆  Installed vercel-plugin to Cursor cache
+◆  Installed vercel-plugin to ~/.cursor/plugins/local/vercel-plugin
+◆  Enabled vercel-plugin in .cursor/settings.json
 ```
 
 ```
@@ -350,7 +352,8 @@ $ ai-pkgs plugins remove vercel-plugin --uninstall
 │  ◆  Removed from Claude Code cache
 │  ◆  Removed from installed_plugins.json
 │  ◆  Removed from .claude/settings.json enabledPlugins
-│  ◆  Removed from Cursor cache
+│  ◆  Removed from ~/.cursor/plugins/local/vercel-plugin
+│  ◆  Removed from .cursor/settings.json plugins.vercel-plugin
 ◆  Uninstalled vercel-plugin from 2 agent(s)
 ```
 
@@ -446,7 +449,7 @@ Only 3 agents support plugins:
 | Target | Binary | Cache Directory |
 |--------|--------|-----------------|
 | `claude-code` | `claude` | `~/.claude/plugins/cache/` |
-| `cursor` | `cursor` | Shares Claude cache (non-Windows) or `~/.cursor/extensions/` (Windows) |
+| `cursor` | `cursor` | `~/.cursor/plugins/local/<plugin>` |
 | `codex` | `codex` | `~/.codex/plugins/cache/` |
 
 Target detection uses `which <binary>` to check installed agents.
@@ -469,9 +472,15 @@ Target detection uses `which <binary>` to check installed agents.
 
 #### Cursor
 
-- **Non-Windows**: reuses Claude Code plugin cache. Skips if Claude Code
-  already populated the cache.
-- **Windows**: installs to `~/.cursor/extensions/`, updates `extensions.json`.
+1. Stage a working copy via `stageInstallWorkspace`.
+2. Prepare `.cursor-plugin/` vendor directory (generate if missing).
+3. Translate env vars to `${CURSOR_PLUGIN_ROOT}`.
+4. Copy to `~/.cursor/plugins/local/<plugin>`.
+5. Project scope: write `plugins.<name>.enabled = true` to
+   `.cursor/settings.json` in the project root.
+6. Global scope: do not write Cursor settings; Cursor's public docs define the
+   local plugin directory but not a global `plugins.<name>.enabled` settings
+   schema.
 
 #### Codex
 
@@ -540,7 +549,8 @@ picker is shown — targets are already persisted.
 2. **Target detection** — `detectPluginTargets()`, `detectPluginVendorDirs()`.
 3. **Target selector** — multi-select with vendor-dir-aware enable/disable.
 4. **Wire `plugins add`** — discovery → target selector → install → manifest.
-5. **Project-scope enablement** — Claude Code `.claude/settings.json`.
+5. **Project-scope enablement** — Claude Code `.claude/settings.json` and
+   Cursor `.cursor/settings.json`.
 6. **Replace `.plugin/`** — use `.agents/plugins/` in discovery, init, vendor
    prep.
 7. **`plugins targets` subcommand** — add/remove/list with install/uninstall
@@ -556,4 +566,4 @@ picker is shown — targets are already persisted.
 - Auto-update scheduling.
 - Telemetry integration.
 - `plugins search` command (requires backend).
-- Project-scoped plugin enablement for Codex and Cursor (blocked on upstream).
+- Project-scoped plugin enablement for Codex (blocked on upstream).

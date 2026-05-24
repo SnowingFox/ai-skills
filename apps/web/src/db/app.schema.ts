@@ -1,6 +1,11 @@
-import { boolean, integer, pgTable, text, timestamp, index } from "drizzle-orm/pg-core";
-import { user } from "./auth.schema";
-import type { PaymentScene, PaymentStatus, PaymentType, PlanInterval } from "@/payment/types";
+import { boolean, date, integer, pgTable, serial, text, timestamp, index, uniqueIndex } from 'drizzle-orm/pg-core';
+import { user } from './auth.schema';
+import type {
+  PaymentScene,
+  PaymentStatus,
+  PaymentType,
+  PlanInterval,
+} from '@/payment/types';
 
 export const payment = pgTable("payment", {
 	id: text("id").primaryKey(),
@@ -62,3 +67,45 @@ export const creditTransaction = pgTable("credit_transaction", {
 	creditTransactionUserIdIdx: index("credit_transaction_user_id_idx").on(table.userId),
 	creditTransactionTypeIdx: index("credit_transaction_type_idx").on(table.type),
 }));
+
+export const skill = pgTable(
+  'skill',
+  {
+    id: text('id').primaryKey(),
+    source: text('source').notNull(),
+    owner: text('owner').notNull(),
+    repo: text('repo').notNull(),
+    skillId: text('skill_id').notNull(),
+    name: text('name').notNull(),
+    description: text('description'),
+    installs: integer('installs').notNull().default(0),
+    weeklyInstalls: text('weekly_installs'),
+    isOfficial: boolean('is_official').notNull().default(false),
+    markdownContent: text('markdown_content'),
+    metadataSyncedAt: timestamp('metadata_synced_at').defaultNow(),
+    markdownSyncedAt: timestamp('markdown_synced_at'),
+  },
+  (table) => ({
+    skillInstallsIdx: index('skill_installs_idx').on(table.installs),
+    skillSourceIdx: index('skill_source_idx').on(table.source),
+    skillOwnerIdx: index('skill_owner_idx').on(table.owner),
+    skillNameIdx: index('skill_name_idx').on(table.name),
+  }),
+);
+
+export const pageViewEvent = pgTable(
+  'page_view_event',
+  {
+    id: serial('id').primaryKey(),
+    visitorId: text('visitor_id').notNull(),
+    path: text('path').notNull(),
+    day: date('day').notNull(),
+    referrer: text('referrer'),
+    createdAt: timestamp('created_at').defaultNow(),
+  },
+  (table) => ({
+    dayIdx: index('pve_day_idx').on(table.day),
+    dayPathIdx: index('pve_day_path_idx').on(table.day, table.path),
+    visitorDayIdx: index('pve_visitor_day_idx').on(table.visitorId, table.day),
+  }),
+);

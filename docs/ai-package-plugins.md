@@ -251,16 +251,15 @@ ai-pkgs plugins remove vercel-plugin --uninstall
 ai-pkgs plugins remove vercel-plugin --uninstall --agent cursor
 ```
 
-Default behavior removes the entry from `ai-package.json` only. The installed
-files in agent cache directories remain.
+Default behavior removes the entry from `ai-package.json` only. Installed
+agent plugin files remain.
 
 `--uninstall` also cleans agent directories:
 
 - Claude Code: removes from `~/.claude/plugins/cache/`, updates
   `installed_plugins.json`, removes from `settings.json` `enabledPlugins`.
-- Cursor (non-Windows): removes from Claude plugin cache.
-- Cursor (Windows): removes from `~/.cursor/extensions/`, updates
-  `extensions.json`.
+- Cursor: removes from `~/.cursor/plugins/local/<plugin>` and, for project
+  installs, removes `plugins.<name>` from `.cursor/settings.json`.
 - Codex: removes from `~/.codex/plugins/cache/`, updates `config.toml`,
   updates `~/.agents/plugins/marketplace.json`.
 
@@ -403,12 +402,15 @@ install.
 
 #### Cursor
 
-- **Non-Windows**: reuses the Claude Code plugin cache path
-  (`~/.claude/plugins/cache/`). Runs the same preparation and cache steps as
-  Claude Code. Skips if Claude Code installation already populated the cache.
-- **Windows**: installs to `~/.cursor/extensions/`. Updates
-  `~/.cursor/extensions/extensions.json` with extension entries including
-  identifier, version, location URI, and metadata.
+1. Stage a working copy of the plugin via `stageInstallWorkspace`.
+2. Prepare vendor directory: ensure `.cursor-plugin/plugin.json` exists.
+3. Translate env vars to `${CURSOR_PLUGIN_ROOT}`.
+4. Copy each plugin to `~/.cursor/plugins/local/<plugin>`.
+5. For project installs, merge `plugins.<name>.enabled = true` into the
+   project's `.cursor/settings.json`.
+6. For global installs, do not write a Cursor settings file; Cursor's public
+   docs define the local plugin directory but not a global
+   `plugins.<name>.enabled` settings schema.
 
 #### Codex
 

@@ -30,18 +30,12 @@ const PLUGINS_GROUP_EXAMPLES: HelpExampleGroup[] = [
   {
     title: 'Inspect and maintain the manifest',
     examples: [
-      [
-        'ai-pkgs plugins list',
-        'List plugins declared in ai-package.json.',
-      ],
+      ['ai-pkgs plugins list', 'List plugins declared in ai-package.json.'],
       [
         'ai-pkgs plugins outdated',
         'Check all Git-backed plugins for newer commits.',
       ],
-      [
-        'ai-pkgs plugins update --yes',
-        'Refresh all outdated plugin Git pins.',
-      ],
+      ['ai-pkgs plugins update --yes', 'Refresh all outdated plugin Git pins.'],
       [
         'ai-pkgs plugins remove vercel-plugin',
         'Remove a plugin entry from ai-package.json.',
@@ -116,10 +110,7 @@ const PLUGINS_LIST_EXAMPLES: HelpExampleGroup[] = [
         'ai-pkgs plugins list',
         'Print declared plugins with source and version info.',
       ],
-      [
-        'ai-pkgs plugins list --json',
-        'Print a machine-readable plugin list.',
-      ],
+      ['ai-pkgs plugins list --json', 'Print a machine-readable plugin list.'],
       [
         'ai-pkgs plugins list --global',
         'List plugins in ~/.ai-pkgs/ai-package.json.',
@@ -168,10 +159,7 @@ const PLUGINS_UPDATE_EXAMPLES: HelpExampleGroup[] = [
         'ai-pkgs plugins update --yes',
         'Update all outdated Git-backed plugins without prompts.',
       ],
-      [
-        'ai-pkgs plugins update vercel-plugin --yes',
-        'Update one plugin pin.',
-      ],
+      ['ai-pkgs plugins update vercel-plugin --yes', 'Update one plugin pin.'],
     ],
   },
 ];
@@ -198,10 +186,7 @@ export const PLUGINS_GROUP_COMMAND: HelpCommand = {
       'plugins remove <plugin...> [options]',
       'Remove plugins from the manifest',
     ],
-    [
-      'plugins outdated [plugin...] [options]',
-      'Check for Git plugin updates',
-    ],
+    ['plugins outdated [plugin...] [options]', 'Check for Git plugin updates'],
     [
       'plugins update [plugin...] [options]',
       'Update pinned Git plugin versions',
@@ -225,10 +210,7 @@ export const PLUGINS_GROUP_COMMAND: HelpCommand = {
         ['-a, --agent <agent>', 'Target agent (repeatable)'],
         ['--scope <scope>', 'Install scope: user, project, local'],
         ['--install-only', 'Install without writing ai-package.json'],
-        [
-          '-g, --global',
-          'Use ~/.ai-pkgs/ai-package.json',
-        ],
+        ['-g, --global', 'Use ~/.ai-pkgs/ai-package.json'],
         ['--uninstall', 'Also clean agent directories on remove'],
         ['-y, --yes', 'Skip confirmation prompts'],
         ['--ai', 'Strict non-interactive mode for AI/automation'],
@@ -245,7 +227,7 @@ export const PLUGINS_GROUP_COMMAND: HelpCommand = {
   exampleGroups: PLUGINS_GROUP_EXAMPLES,
   notes: [
     'Plugins are installed into agent plugin caches, not skill directories.',
-    'Claude Code: ~/.claude/plugins/cache/, Cursor: shares Claude cache (non-Windows) or ~/.cursor/extensions/ (Windows), Codex: ~/.codex/plugins/cache/.',
+    'Claude Code: ~/.claude/plugins/cache/, Cursor: ~/.cursor/plugins/local/ with project installs enable plugins in .cursor/settings.json, Codex: ~/.codex/plugins/cache/.',
     '`plugins init` scaffolds vendor-specific manifests (.claude-plugin/, .cursor-plugin/, .codex-plugin/) based on selected agents.',
     '`plugins add` writes to the `plugins` key in ai-package.json alongside existing skills.',
     '`plugins remove` only removes manifest entries by default; add `--uninstall` to also clean agent directories.',
@@ -295,10 +277,7 @@ export const PLUGINS_COMMANDS: HelpCommand[] = [
           ['-a, --agent <agent>', 'Target agent (repeatable)'],
           ['--scope <scope>', 'Install scope: user, project, local'],
           ['--install-only', 'Install without writing ai-package.json'],
-          [
-            '-g, --global',
-            'Use ~/.ai-pkgs/ai-package.json',
-          ],
+          ['-g, --global', 'Use ~/.ai-pkgs/ai-package.json'],
           ['-y, --yes', 'Skip confirmation prompts'],
           ['--ai', 'Strict non-interactive mode'],
         ],

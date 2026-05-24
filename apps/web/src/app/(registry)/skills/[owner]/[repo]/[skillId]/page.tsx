@@ -11,12 +11,11 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Separator } from '@/components/ui/separator';
 import { constructMetadata } from '@/lib/metadata';
-import { getSkillDetail } from '@/lib/skills';
+import { loadSkillDetail } from '@/skills/load-skill-detail';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { cache } from 'react';
 
 interface SkillDetailPageProps {
   params: Promise<{
@@ -25,8 +24,6 @@ interface SkillDetailPageProps {
     skillId: string;
   }>;
 }
-
-const getCachedSkillDetail = cache(getSkillDetail);
 
 function formatHash(hash: string | null) {
   return hash ? hash.slice(0, 8) : 'Unknown';
@@ -61,7 +58,7 @@ export async function generateMetadata({
   params,
 }: SkillDetailPageProps): Promise<Metadata | undefined> {
   const { owner, repo, skillId } = await params;
-  const detail = await getCachedSkillDetail({ owner, repo, skillId });
+  const detail = await loadSkillDetail({ owner, repo, skillId });
 
   if (!detail) {
     return undefined;
@@ -79,7 +76,7 @@ export default async function SkillDetailPage({
   params,
 }: SkillDetailPageProps) {
   const { owner, repo, skillId } = await params;
-  const detail = await getCachedSkillDetail({ owner, repo, skillId });
+  const detail = await loadSkillDetail({ owner, repo, skillId });
 
   if (!detail) {
     notFound();
@@ -104,11 +101,25 @@ export default async function SkillDetailPage({
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem className="min-w-0">
-              <span className="truncate text-muted-foreground">{owner}</span>
+              <BreadcrumbLink asChild>
+                <Link
+                  className="truncate text-muted-foreground transition-colors hover:text-foreground"
+                  href={`/skills/${encodeURIComponent(owner)}`}
+                >
+                  {owner}
+                </Link>
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem className="min-w-0">
-              <span className="truncate text-muted-foreground">{repo}</span>
+              <BreadcrumbLink asChild>
+                <Link
+                  className="truncate text-muted-foreground transition-colors hover:text-foreground"
+                  href={`/skills/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`}
+                >
+                  {repo}
+                </Link>
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem className="min-w-0">

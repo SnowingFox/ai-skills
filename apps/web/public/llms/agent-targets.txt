@@ -77,8 +77,9 @@ Only three agents currently support plugins:
 
 - `claude-code`: cache at `~/.claude/plugins/cache/`, settings at
   `~/.claude/settings.json` (global) or `.claude/settings.json` (project).
-- `cursor`: shares the Claude plugin cache on macOS / Linux; uses
-  `~/.cursor/extensions/` on Windows.
+- `cursor`: installs plugin contents to `~/.cursor/plugins/local/<plugin>`.
+  Project installs also write `plugins.<name>.enabled = true` to
+  `.cursor/settings.json`; global installs do not write Cursor settings.
 - `codex`: cache at `~/.codex/plugins/cache/`, registers each plugin in
   `~/.codex/config.toml` and `~/.agents/plugins/marketplace.json`.
 

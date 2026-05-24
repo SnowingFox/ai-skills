@@ -45,6 +45,9 @@ ai-pkgs plugins add vercel/vercel-plugin --yes
 ai-pkgs plugins list
 ```
 
+Cursor project plugin installs are enabled in `.cursor/settings.json` and
+plugin contents are stored under `~/.cursor/plugins/local/<plugin>`.
+
 ### Workspace
 
 ```bash

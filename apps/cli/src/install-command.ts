@@ -228,14 +228,10 @@ export const runInstallCommand = async (
 
         if (aiMode) {
           process.stdout.write(
-            renderAiStep(
-              `${plugin.name} -> ${pluginTargets.join(', ')}`
-            )
+            renderAiStep(`${plugin.name} -> ${pluginTargets.join(', ')}`)
           );
         } else {
-          p.log.info(
-            `${plugin.name} -> ${pluginTargets.join(', ')}`
-          );
+          p.log.info(`${plugin.name} -> ${pluginTargets.join(', ')}`);
         }
       }
     }

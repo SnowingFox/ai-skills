@@ -63,7 +63,9 @@ export const installPlugins = async (
         workspace.plugins,
         scope,
         workspace.repoPath,
-        source
+        source,
+        false,
+        projectDir
       );
       break;
     }

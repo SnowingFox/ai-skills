@@ -1,14 +1,11 @@
-import { join, relative } from 'node:path';
+import { join } from 'node:path';
 import { existsSync } from 'node:fs';
-import { cp, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { execSync } from 'node:child_process';
 import { homedir } from 'node:os';
 import type { DiscoveredPlugin } from '../types';
-import {
-  deriveMarketplaceName,
-  installToPluginCache,
-  prepareForClaudeCode,
-} from './claude';
+import { deriveMarketplaceName, prepareForClaudeCode } from './claude';
+import { preparePluginDirForVendor } from './vendor';
 
 /**
  * Install plugins into the Cursor extensions directory on Windows.
@@ -17,7 +14,7 @@ import {
  */
 export const installToCursorExtensions = async (
   plugins: DiscoveredPlugin[],
-  scope: string,
+  _scope: string,
   repoPath: string,
   source: string
 ): Promise<void> => {
@@ -99,7 +96,8 @@ export const installToCursor = async (
   scope: string,
   repoPath: string,
   source: string,
-  cachePopulated = false
+  cachePopulated = false,
+  projectDir?: string
 ): Promise<void> => {
   if (cachePopulated) return;
 
@@ -108,7 +106,75 @@ export const installToCursor = async (
     return;
   }
 
-  // Side-effect: this writes enabledPlugins into ~/.claude/settings.json
-  // because Cursor reads from the shared Claude plugin cache on macOS/Linux.
-  await installToPluginCache(plugins, scope, repoPath, source);
+  await installToCursorLocalPlugins(plugins);
+  if (projectDir) {
+    await enableCursorPluginsForProject(plugins, projectDir);
+  }
+};
+
+/**
+ * Install plugins into Cursor's documented local plugin directory.
+ *
+ * @example
+ * ```ts
+ * await installToCursorLocalPlugins([plugin]);
+ * // ~/.cursor/plugins/local/<plugin> now contains .cursor-plugin/plugin.json
+ * // and the plugin assets copied from the staged install workspace.
+ * ```
+ */
+export const installToCursorLocalPlugins = async (
+  plugins: DiscoveredPlugin[]
+): Promise<void> => {
+  const localDir = join(homedir(), '.cursor', 'plugins', 'local');
+
+  for (const plugin of plugins) {
+    await preparePluginDirForVendor(
+      plugin,
+      '.cursor-plugin',
+      'CURSOR_PLUGIN_ROOT'
+    );
+    const destDir = join(localDir, plugin.name);
+    await rm(destDir, { recursive: true, force: true });
+    await mkdir(localDir, { recursive: true });
+    await cp(plugin.path, destDir, { recursive: true });
+  }
+};
+
+/**
+ * Enable project-scoped Cursor plugins in `.cursor/settings.json`.
+ *
+ * Existing settings are preserved and `plugins.<name>.enabled` is merged.
+ */
+export const enableCursorPluginsForProject = async (
+  plugins: DiscoveredPlugin[],
+  projectDir: string
+): Promise<void> => {
+  const settingsPath = join(projectDir, '.cursor', 'settings.json');
+  let settings: Record<string, unknown> = {};
+
+  if (existsSync(settingsPath)) {
+    try {
+      settings = JSON.parse(await readFile(settingsPath, 'utf-8'));
+    } catch {
+      return;
+    }
+  }
+
+  const pluginSettings =
+    settings.plugins && typeof settings.plugins === 'object'
+      ? (settings.plugins as Record<string, unknown>)
+      : {};
+
+  for (const plugin of plugins) {
+    const current =
+      pluginSettings[plugin.name] &&
+      typeof pluginSettings[plugin.name] === 'object'
+        ? (pluginSettings[plugin.name] as Record<string, unknown>)
+        : {};
+    pluginSettings[plugin.name] = { ...current, enabled: true };
+  }
+
+  settings.plugins = pluginSettings;
+  await mkdir(join(settingsPath, '..'), { recursive: true });
+  await writeFile(settingsPath, JSON.stringify(settings, null, 2));
 };
