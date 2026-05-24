@@ -1,0 +1,9 @@
+/grill-me 做一个 admin 页面可以看见数据库的 table，类似于 drizzle studio，有没有现成的库？
+
+然后放 admin/database 下面，需要输入 snowingfox@1224 然后才给进，并且所有的 API 也加上鉴权，需要我输入 snowingfox@1224 后给一个临时的管理员身份，遵循 better-auth，然后才可以进入
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
