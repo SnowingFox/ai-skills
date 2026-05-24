@@ -91,6 +91,7 @@
     "drizzle-orm": "^0.39.3",
     "embla-carousel-react": "^8.6.0",
     "input-otp": "^1.4.2",
+    "jose": "^6.2.3",
     "lucide-react": "^0.563.0",
     "motion": "^12.4.3",
     "nanoid": "^5.1.6",
