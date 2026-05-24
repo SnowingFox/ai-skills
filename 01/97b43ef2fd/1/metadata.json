@@ -1,0 +1,41 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "0197b43ef2fd",
+  "session_id": "e252a9fb-dd1e-475b-9cd3-f89d8348178a",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-24T09:30:00.519751Z",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "apps/web/package.json",
+    "apps/web/src/app/(admin-panel)/admin/database/layout.tsx",
+    "apps/web/src/app/(admin-panel)/admin/database/page.tsx",
+    "apps/web/src/app/(admin-panel)/admin/login/page.tsx",
+    "apps/web/src/app/(admin-panel)/layout.tsx",
+    "apps/web/src/app/api/admin/auth/route.ts",
+    "apps/web/src/app/api/admin/tables/[table]/route.ts",
+    "apps/web/src/app/api/admin/tables/route.ts",
+    "apps/web/src/lib/admin-auth.ts",
+    "bun.lock"
+  ],
+  "agent": "Cursor",
+  "model": "claude-4.6-opus-max-thinking",
+  "turn_id": "1e8f8f95b201",
+  "checkpoint_transcript_start": 64,
+  "transcript_lines_at_start": 64,
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-24T09:30:00.510795Z",
+    "agent_lines": 710,
+    "agent_removed": 1,
+    "human_added": 13,
+    "human_modified": 1,
+    "human_removed": 0,
+    "total_committed": 724,
+    "total_lines_changed": 725,
+    "agent_percentage": 98.06896551724138,
+    "metric_version": 2
+  }
+}
