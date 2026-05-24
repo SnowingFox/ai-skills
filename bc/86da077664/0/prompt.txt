@@ -1,13 +1,1 @@
-my paassword is snowingfox@1224 fix it
-
----
-
-[Image]
-<image_files>
-The following images were provdied by the user and saved to the workspace for future use:
-1. /Users/bytedance/.cursor/projects/Users-bytedance-dev-ai-skills/assets/image-c5d84dfd-085e-42a4-bad8-3529e3826fec.png
-
-These images can be copied for use in other locations.
-</image_files>
-
-why table are all empty, is i disconnected it/
+你不能直接搞么？
