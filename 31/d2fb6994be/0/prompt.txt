@@ -1,0 +1,331 @@
+https://www.npmjs.com/package/ai-pkgs?activeTab=readme 给 package.json 加上 github 地址: https://github.com/SnowingFox/ai-skills
+
+---
+
+不小心 discard 了，重新来
+
+---
+
+Show me how the Cloudflare plugin works
+
+---
+
+Show me how the Cloudflare plugin works
+
+---
+
+Show me how the Cloudflare plugin works
+
+---
+
+能帮我看看 ai-skills.sh 这个域名的 CDN 的配置吗
+
+---
+
+cloudflare plugin 没有这玩意吗
+
+---
+
+/wrangler 帮忙部署一下 apps/web 同时做 SSR + SEO 优化，确保可以被 google 收录进去
+
+---
+
+/wrangler 帮忙部署一下 apps/web 同时做 SSR + SEO 优化，确保可以被 google 收录进去
+
+---
+
+/wrangler 帮忙部署一下 apps/web 同时做 SSR + SEO 优化，确保可以被 google 收录进去
+
+---
+
+/wrangler 帮忙部署一下 apps/web 同时做 SSR + SEO 优化，确保可以被 google 收录进去
+
+---
+
+/wrangler 帮忙部署一下 apps/web 同时做 SSR + SEO 优化，确保可以被 google 收录进去
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+resume
+
+---
+
+wrangler 怎么 login？这玩意我是加入别人的组织了
+
+---
+
+对啊，是OceanZ的没问题，难道没付费？
+
+---
+
+那后续如果越来越大，咋办？我还要拆吗？
+
+---
+
+那如果真的真的没办法，真的超过了10MB咋办？就等死吗
+
+---
+
+这样感觉好累啊，社区的解法是什么，cloudflare 给的解法又是什么
+
+---
+
+这是何意味
+
+---
+
+vercel 呢？
+
+---
+
+不过 Vercel 的感觉太贵了
+
+---
+
+再来部署一下看看
+
+---
+
+所以 SEO 优化原理是什么？你怎么优化的？
+
+---
+
+所以 SEO 优化原理是什么？你怎么优化的？怎么确保被收录？
+
+---
+
+Execute the selected diff-tab commit action.
+
+---
+
+部署一下试试
+
+---
+
+Execute the selected diff-tab commit action.
+
+---
+
+Execute the selected diff-tab commit action.
+
+---
+
+/grill-me 用 cloudflare skills 和 plugin 去把 skills.sh 借口里面前 5000 个 skill 存到我们的 database 里面去，以及是不是可以先建 prisma model？跑通全流程，确保这些数据都存到我们的数据库里面，来试试
+
+---
+
+/tdd  你 review 一下这个 plan 看看有没有问题，也可以再深入看看
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+/tdd 稍等一下，我们还有 owner 页面和 owner/repo 页面可以看见下面有多少 skill，你这个支持吗？现有的建模?
+
+---
+
+这样分别是 owner 和 owner/repo页面
+
+可以参考 ~/dev/skills/next 来
+
+---
+
+resume
+
+---
+
+resume
+
+---
+
+现在情况咋样了
+
+---
+
+sitemap.xml 是不是可以更新一下了
+
+---
+
+sitemap.xml 是不是可以更新一下了，前5000条，以及做 SSR 优化
+
+---
+
+线上数据库能跑通了么？
+
+---
+
+/grill-me 
+1. 骨架屏再好好加一下，以及 skill 详情页也可点击面包屑导航 + 没有右上角的 DOCS，统一保持一个 site app bar
+2. 加个 tab 给 plugin 吧，just for cursor，然后 icon 也可以参考 ~/dev/skills 下面的
+curl 'https://cursor.com/api/dashboard/list-marketplace-plugins' \
+  -H 'accept: */*' \
+  -H 'accept-language: zh-CN,zh;q=0.9' \
+  -H 'content-type: application/json' \
+  -b 'generaltranslation.locale-routing-enabled=true; generaltranslation.referrer-locale=cn; GCLB="cb69e6c3bc9c30d1"' \
+  -H 'origin: https://cursor.com' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://cursor.com/cn/marketplace' \
+  -H 'sec-ch-ua: "Chromium";v="148", "Google Chrome";v="148", "Not/A)Brand";v="99"' \
+  -H 'sec-ch-ua-arch: "arm"' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-ch-ua-platform-version: "26.3.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36' \
+  --data-raw '{"tags":[]}'
+
+这是 cursor 的 marketplace 接口，以及在首页再加个 tab 给 claude offical plugin  & cursor offical plugin 的 tab 和 skill 并存，当然这个没有下载量，然后这个详情页也可以参考 ~/dev/skills 里面的那样，期望复刻但是遵循我们现有的设计
+
+首页的 tab + 列表页可以就像图1一样，plugin 的详情页可以像图2那样
+
+头像其实可以直接获取 github 的，样式可以参考原有的代码
+
+3. 隐藏 siteappbar 吧，其实我们都没有这玩意，不需要 login 啥的，上面那些可以直接删了，同时页支持 plugin 的 detail 页面其实和 skill detail 一样，只不过我们可以自己识别出来，这个有办法吗？
+
+4. 优化首页头部布局，参考，不过我们支持 PLUGIN 的分发，说明清楚这个
+<div class="overflow-hidden" style="opacity: 1; height: auto;"><div class="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-10 lg:gap-14 mx-auto my-4 sm:my-5 lg:my-7 w-full max-w-6xl"><div class="py-1 grid grid-cols-1 gap-1"><h1 class="absolute hidden">Skills</h1><div class="relative w-full flex items-start justify-center lg:justify-start overflow-hidden"><div class="relative max-w-[320px] lg:max-w-[390px] overflow-hidden"><pre class="text-[12px] lg:text-[15px] tracking-[-1px] leading-[125%] text-(--ds-gray-700) select-none whitespace-pre font-[family-name:'Fira_Mono']">███████╗██╗  ██╗██╗██╗     ██╗     ███████╗
+██╔════╝██║ ██╔╝██║██║     ██║     ██╔════╝
+███████╗█████╔╝ ██║██║     ██║     ███████╗
+╚════██║██╔═██╗ ██║██║     ██║     ╚════██║
+███████║██║  ██╗██║███████╗███████╗███████║
+╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚══════╝</pre><pre class="absolute top-0 left-0 text-[12px] lg:text-[15px] tracking-[-1px] leading-[125%] text-foreground select-none whitespace-pre font-[family-name:'Fira_Mono']">███████ ██   ██ ██ ██      ██      ███████
+██      ██  ██  ██ ██      ██      ██
+███████ █████   ██ ██      ██      ███████
+     ██ ██  ██  ██ ██      ██           ██
+███████ ██   ██ ██ ███████ ███████ ███████
+                                              </pre></div></div><p class="text-[15px] lg:text-[19px] tracking-tight text-primary font-mono font-medium text-center lg:text-left uppercase">The Open Agent Skills Ecosystem</p></div><div><p class="text-(--ds-gray-600) text-xl sm:text-2xl lg:text-3xl leading-tight tracking-tight text-center lg:text-left text-balance">Skills are reusable capabilities for AI agents. Install them with a single command to enhance your agents with access to procedural knowledge.</p></div><div><h2 class="text-sm font-mono font-medium tracking-normal text-foreground uppercase w-full text-left sm:text-center lg:text-left mb-3.5">Try it now</h2><div class="bg-(--ds-gray-100)/80 border-none rounded-md px-4 py-3 font-mono text-sm text-foreground flex items-center justify-between gap-4 w-full sm:max-w-[348px] mx-auto lg:mx-0 cursor-pointer"><code class="truncate flex items-center"><span class="text-muted-foreground">$</span><span class="ml-[1ch]">npx skills</span><span class="relative overflow-hidden inline-flex ml-[1ch]" style="height: 1lh;"><span class="inline-flex items-center whitespace-nowrap" style="opacity: 1; filter: blur(0px); transform: none;">find<span class="text-muted-foreground ml-[1ch]">&lt;query&gt;</span></span></span></code><button class="p-1.5 rounded cursor-pointer transition-colors text-muted-foreground hover:text-foreground" title="Copy to clipboard"><svg viewBox="0 0 16 16" height="16" width="16" data-slot="geist-icon" class="h-4 w-4" style="color: currentcolor;"><path fill="currentColor" fill-rule="evenodd" d="M2.75.5C1.78.5 1 1.28 1 2.25v7.5c0 .97.78 1.75 1.75 1.75H4.5V10H2.75a.25.25 0 0 1-.25-.25v-7.5c0-.14.11-.25.25-.25h5.5c.14 0 .25.11.25.25V3H10v-.75C10 1.28 9.22.5 8.25.5zm5 4C6.78 4.5 6 5.28 6 6.25v7.5c0 .97.78 1.75 1.75 1.75h5.5c.97 0 1.75-.78 1.75-1.75v-7.5c0-.97-.78-1.75-1.75-1.75zM7.5 6.25c0-.14.11-.25.25-.25h5.5c.14 0 .25.11.25.25v7.5q-.02.23-.25.25h-5.5a.25.25 0 0 1-.25-.25z" clip-rule="evenodd"></path></svg></button></div></div><div class="grid grid-cols-1 items-center"><h2 class="text-sm font-mono font-medium tracking-normal text-foreground uppercase w-full text-left sm:text-center lg:text-left">Available for these agents</h2><div class="relative w-full overflow-hidden"><div class="absolute left-0 top-0 bottom-0 w-24 sm:w-32 lg:w-48 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"></div><div class="absolute right-0 top-0 bottom-0 w-24 sm:w-32 lg:w-48 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div><div class="flex gap-2 sm:gap-3 w-max animate-carousel"><a aria-label="Skills for Claude Code" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/claude-code"><img alt="Claude Code" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/claude-code.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Cursor" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/cursor"><img alt="Cursor" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/cursor.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Codex" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/codex"><img alt="Codex" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/codex.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for GitHub Copilot" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/github-copilot"><img alt="GitHub Copilot" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/copilot.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Windsurf" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/windsurf"><img alt="Windsurf" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/windsurf.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Gemini" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/gemini"><img alt="Gemini" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/gemini.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Cline" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/cline"><img alt="Cline" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/cline.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for AMP" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/amp"><img alt="AMP" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/amp.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Antigravity" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/antigravity"><img alt="Antigravity" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/antigravity.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for ClawdBot" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/clawdbot"><img alt="ClawdBot" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/clawdbot.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Droid" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/droid"><img alt="Droid" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/droid.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Goose" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/goose"><img alt="Goose" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/goose.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Kilo" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/kilo"><img alt="Kilo" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/kilo.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Kiro CLI" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/kiro-cli"><img alt="Kiro CLI" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/kiro-cli.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Nous Research" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/nous-research"><img alt="Nous Research" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/nous-research.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for OpenCode" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/opencode"><img alt="OpenCode" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/opencode.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Roo" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/roo"><img alt="Roo" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/roo.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Trae" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/trae"><img alt="Trae" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/trae.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for VS Code" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/vscode"><img alt="VS Code" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/vscode.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Claude Code" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/claude-code"><img alt="Claude Code" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/claude-code.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Cursor" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/cursor"><img alt="Cursor" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/cursor.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Codex" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/codex"><img alt="Codex" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/codex.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for GitHub Copilot" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/github-copilot"><img alt="GitHub Copilot" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/copilot.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Windsurf" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/windsurf"><img alt="Windsurf" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/windsurf.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Gemini" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/gemini"><img alt="Gemini" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/gemini.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Cline" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/cline"><img alt="Cline" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/cline.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for AMP" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/amp"><img alt="AMP" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/amp.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Antigravity" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/antigravity"><img alt="Antigravity" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/antigravity.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for ClawdBot" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/clawdbot"><img alt="ClawdBot" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/clawdbot.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Droid" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/droid"><img alt="Droid" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/droid.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Goose" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/goose"><img alt="Goose" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/goose.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Kilo" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/kilo"><img alt="Kilo" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/kilo.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Kiro CLI" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/kiro-cli"><img alt="Kiro CLI" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/kiro-cli.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Nous Research" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/nous-research"><img alt="Nous Research" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/nous-research.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for OpenCode" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/opencode"><img alt="OpenCode" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/opencode.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Roo" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/roo"><img alt="Roo" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/roo.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for Trae" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/trae"><img alt="Trae" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/trae.svg?REDACTED" style="color: transparent;"></a><a aria-label="Skills for VS Code" class="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300" href="/agent/vscode"><img alt="VS Code" loading="eager" width="100" height="100" decoding="sync" data-nimg="1" class="h-[72px] sm:h-[72px] lg:h-[88px] w-auto object-contain" src="/agents/vscode.svg?REDACTED" style="color: transparent;"></a></div></div></div></div></div>
+
+---
+
+/tdd review 这个 plan 看看有没有问题，有的话改改
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+404 了，以及没有合理的骨架屏
+
+---
+
+Start multitasking
+
+---
+
+resume
+
+---
+
+resume
+
+---
+
+resume
+
+---
+
+/grill-me 参考 ~/dev/skills 做一个站点埋点统计，统计 UV 和 PV，并且在 admin 目录下可以看见（不鉴权）遵循 /shadcn 
+
+以及这里的样式应该参考 ~/dev/skills 下面的，得分开，不是现在这样，加上一个什么 link icon 跳转，太丑了
+
+---
+
+确定确定，还有 tab 的切换也太慢了，应该加个骨架屏 + 缓存的，要不然真的太慢了，调研好了就开干吧，记得看看 ~/dev/skills/next 下面的样式
+
+---
+
+确定确定，还有 tab 的切换也太慢了，应该加个骨架屏 + 缓存的，要不然真的太慢了，调研好了就开干吧，记得看看 ~/dev/skills/next 下面的样式
+
+---
+
+确定确定，还有 tab 的切换也太慢了，应该加个骨架屏 + 缓存的，要不然真的太慢了，调研好了就开干吧，记得看看 ~/dev/skills/next 下面的样式
+
+---
+
+确定确定，还有 tab 的切换也太慢了，应该加个骨架屏 + 缓存的，要不然真的太慢了，调研好了就开干吧，记得看看 ~/dev/skills/next 下面的样式
+
+---
+
+部署了吗
+
+---
+
+这个改改，说点我们的 vision 
+我觉得 skills.sh 太过单一，并且安装 plugins 还需要另外一个 CLI 并且体验不好，没有真实的贴合开发者的需求和理念
+
+所以我想，我们需要一个全新的工具来支撑 SKILL 的分发与迭代，所有的一切都是基于 git 分发的，完全免费的，并且有 ai-package.json 作为 skills 和 plugins 的管理，以及团队的管理，这才是合理的
+
+以及推特是 x.com/foxsnowing，mail 是 gsnowingfox@gmail.com
+
+来吧，以及埋点 API 走 KV 吧，能直接申请么？
+/cloudflare
+
+---
+
+这个做 About 页面去吧，不做首页里面
+
+---
+
+加上一下 why not vercel skills.sh
+
+---
+
+/grill-me 加上一下 why not vercel skills.sh 可以写的详细些，以及你觉得我们是不是的确有优势呢？你客观的分析一下他们的 CLI 代码，都在 submodule 里面，然后对比我们的
+
+以及交互上的，可以一起聊聊
+
+---
+
+resume
+
+---
+
+Execute the selected diff-tab commit-and-push action.
+
+---
+
+性能感觉很差，不管是查询还是渲染，还是点击，都感觉卡卡的，骨架屏 + SSR 优化 + 性能优化，能做到吗？来吧
+
+---
+
+/grill-me 性能感觉很差，不管是查询还是渲染，还是点击，都感觉卡卡的，骨架屏 + SSR 优化 + 性能优化，能做到吗？来吧
+
+用 /cloudflare 所有能用的东西去优化
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+/tdd 修一下，然后加上单测吧
+
+---
+
+部署 + commit + push
+
+---
+
+why?
+
+---
+
+my paassword is snowingfox@1224 fix it

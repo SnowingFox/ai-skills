@@ -1,0 +1,418 @@
+{
+  "checkpoint_id": "31d2fb6994be",
+  "session_id": "d305a67d-f315-4d5b-9481-8b86594e1c44",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-24T12:06:50.068Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "apps/web/src/app/(admin-panel)/admin/database/page.tsx",
+    "apps/web/src/app/api/admin/tables/route.ts"
+  ],
+  "agent": "Cursor",
+  "model": "composer-2.5-fast",
+  "turn_id": "d846a53496ca",
+  "is_task": false,
+  "tool_use_id": "",
+  "transcript_identifier_at_start": "",
+  "checkpoint_transcript_start": 0,
+  "transcript_lines_at_start": 0,
+  "token_usage": {
+    "input_tokens": 8156,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 2059840,
+    "output_tokens": 6374,
+    "api_call_count": 1
+  },
+  "session_metrics": {
+    "duration_ms": 524415871,
+    "turn_count": 64,
+    "context_tokens": 193043,
+    "context_window_size": 200000,
+    "active_duration_ms": 12290114,
+    "turn_metrics": [
+      {
+        "turn_id": "9419ba22e759",
+        "started_at": "2026-05-18T07:53:06.000Z",
+        "ended_at": "2026-05-18T07:53:35.815Z",
+        "duration_ms": 29815
+      },
+      {
+        "turn_id": "5935f962124c",
+        "started_at": "2026-05-18T07:54:04.000Z",
+        "ended_at": "2026-05-18T07:54:27.752Z",
+        "duration_ms": 23752
+      },
+      {
+        "turn_id": "8dccc31f753f",
+        "started_at": "2026-05-22T14:23:02.000Z",
+        "ended_at": "2026-05-22T14:23:02.193Z",
+        "duration_ms": 193
+      },
+      {
+        "turn_id": "8dccc31f753f",
+        "started_at": "2026-05-22T14:23:03.000Z",
+        "ended_at": "2026-05-22T14:23:03.381Z",
+        "duration_ms": 381
+      },
+      {
+        "turn_id": "e7e8ac984e0a",
+        "started_at": "2026-05-22T14:23:54.000Z",
+        "ended_at": "2026-05-22T14:24:42.420Z",
+        "duration_ms": 48420
+      },
+      {
+        "turn_id": "d9d719b81355",
+        "started_at": "2026-05-22T14:25:00.000Z",
+        "ended_at": "2026-05-22T14:25:19.468Z",
+        "duration_ms": 19468
+      },
+      {
+        "turn_id": "1458f33dafbc",
+        "started_at": "2026-05-22T14:27:09.000Z",
+        "ended_at": "2026-05-22T14:27:09.173Z",
+        "duration_ms": 173
+      },
+      {
+        "turn_id": "1458f33dafbc",
+        "started_at": "2026-05-22T14:27:10.000Z",
+        "ended_at": "2026-05-22T14:27:10.473Z",
+        "duration_ms": 473
+      },
+      {
+        "turn_id": "5b76fdedab61",
+        "started_at": "2026-05-22T14:28:15.000Z",
+        "ended_at": "2026-05-22T14:30:25.280Z",
+        "duration_ms": 130280
+      },
+      {
+        "turn_id": "83fc1dec6b87",
+        "started_at": "2026-05-22T14:30:26.000Z",
+        "ended_at": "2026-05-22T14:31:34.933Z",
+        "duration_ms": 68933
+      },
+      {
+        "turn_id": "bef1c22d1ce0",
+        "started_at": "2026-05-22T14:31:47.000Z",
+        "ended_at": "2026-05-22T14:33:04.492Z",
+        "duration_ms": 77492
+      },
+      {
+        "turn_id": "07f9f62b6644",
+        "started_at": "2026-05-22T14:33:09.000Z",
+        "ended_at": "2026-05-22T14:38:29.965Z",
+        "duration_ms": 320965
+      },
+      {
+        "turn_id": "dce855e7dbca",
+        "started_at": "2026-05-22T14:41:32.000Z",
+        "ended_at": "2026-05-22T14:41:44.698Z",
+        "duration_ms": 12698
+      },
+      {
+        "turn_id": "3a0b4cf71919",
+        "started_at": "2026-05-22T14:42:08.000Z",
+        "ended_at": "2026-05-22T14:42:31.256Z",
+        "duration_ms": 23256
+      },
+      {
+        "turn_id": "ca6d17b2676e",
+        "started_at": "2026-05-22T14:42:55.000Z",
+        "ended_at": "2026-05-22T14:43:25.155Z",
+        "duration_ms": 30155
+      },
+      {
+        "turn_id": "fe374b8f2c61",
+        "started_at": "2026-05-22T14:43:53.000Z",
+        "ended_at": "2026-05-22T14:44:10.838Z",
+        "duration_ms": 17838
+      },
+      {
+        "turn_id": "ba0e0f28754d",
+        "started_at": "2026-05-22T14:44:33.000Z",
+        "ended_at": "2026-05-22T14:45:13.742Z",
+        "duration_ms": 40742
+      },
+      {
+        "turn_id": "683d1be7abda",
+        "started_at": "2026-05-22T14:45:25.000Z",
+        "ended_at": "2026-05-22T14:45:39.805Z",
+        "duration_ms": 14805
+      },
+      {
+        "turn_id": "682287f83d1b",
+        "started_at": "2026-05-22T14:47:07.000Z",
+        "ended_at": "2026-05-22T14:47:22.944Z",
+        "duration_ms": 15944
+      },
+      {
+        "turn_id": "cd7fbb5c16be",
+        "started_at": "2026-05-22T14:47:43.000Z",
+        "ended_at": "2026-05-22T14:48:00.578Z",
+        "duration_ms": 17578
+      },
+      {
+        "turn_id": "3c2c30bff0c5",
+        "started_at": "2026-05-22T14:58:56.000Z",
+        "ended_at": "2026-05-22T15:00:21.141Z",
+        "duration_ms": 85141
+      },
+      {
+        "turn_id": "2129ffbad025",
+        "started_at": "2026-05-22T15:32:03.000Z",
+        "ended_at": "2026-05-22T15:32:03.119Z",
+        "duration_ms": 119
+      },
+      {
+        "turn_id": "cffc2cb632a9",
+        "started_at": "2026-05-23T04:22:59.000Z",
+        "ended_at": "2026-05-23T04:26:58.216Z",
+        "duration_ms": 239216
+      },
+      {
+        "turn_id": "440e08387639",
+        "started_at": "2026-05-23T04:27:59.000Z",
+        "ended_at": "2026-05-23T04:33:07.349Z",
+        "duration_ms": 308349
+      },
+      {
+        "turn_id": "713ab3a3080e",
+        "started_at": "2026-05-23T08:45:18.000Z",
+        "ended_at": "2026-05-23T08:46:08.316Z",
+        "duration_ms": 50316
+      },
+      {
+        "turn_id": "299e5cbe993d",
+        "started_at": "2026-05-23T14:35:37.000Z",
+        "ended_at": "2026-05-23T15:11:56.248Z",
+        "duration_ms": 2179248
+      },
+      {
+        "turn_id": "60290c817eb5",
+        "started_at": "2026-05-23T15:12:11.000Z",
+        "ended_at": "2026-05-23T15:15:11.855Z",
+        "duration_ms": 180855
+      },
+      {
+        "turn_id": "8066c4c0a0c3",
+        "started_at": "2026-05-23T15:15:28.000Z",
+        "ended_at": "2026-05-23T15:18:45.411Z",
+        "duration_ms": 197411
+      },
+      {
+        "turn_id": "d35dda6c40b1",
+        "started_at": "2026-05-23T15:19:41.000Z",
+        "ended_at": "2026-05-23T15:21:29.966Z",
+        "duration_ms": 108966
+      },
+      {
+        "turn_id": "661a6239485f",
+        "started_at": "2026-05-23T15:24:02.000Z",
+        "ended_at": "2026-05-23T15:24:48.182Z",
+        "duration_ms": 46182
+      },
+      {
+        "turn_id": "9cfb15b54624",
+        "started_at": "2026-05-23T15:25:52.000Z",
+        "ended_at": "2026-05-23T16:05:34.659Z",
+        "duration_ms": 2382659
+      },
+      {
+        "turn_id": "f427869ae03f",
+        "started_at": "2026-05-24T05:28:06.000Z",
+        "ended_at": "2026-05-24T05:29:12.997Z",
+        "duration_ms": 66997
+      },
+      {
+        "turn_id": "3c7908415d7f",
+        "started_at": "2026-05-24T05:30:48.000Z",
+        "ended_at": "2026-05-24T05:30:50.565Z",
+        "duration_ms": 2565
+      },
+      {
+        "turn_id": "19ab425556d9",
+        "started_at": "2026-05-24T05:30:58.000Z",
+        "ended_at": "2026-05-24T05:33:40.624Z",
+        "duration_ms": 162624
+      },
+      {
+        "turn_id": "23b2d3751155",
+        "started_at": "2026-05-24T05:52:26.000Z",
+        "ended_at": "2026-05-24T05:53:33.930Z",
+        "duration_ms": 67930
+      },
+      {
+        "turn_id": "6d9d96427e42",
+        "started_at": "2026-05-24T06:04:30.000Z",
+        "ended_at": "2026-05-24T06:17:22.078Z",
+        "duration_ms": 772078
+      },
+      {
+        "turn_id": "adb5fed11474",
+        "started_at": "2026-05-24T06:18:24.000Z",
+        "ended_at": "2026-05-24T06:21:37.495Z",
+        "duration_ms": 193495
+      },
+      {
+        "turn_id": "883acd846aa1",
+        "started_at": "2026-05-24T06:22:46.000Z",
+        "ended_at": "2026-05-24T06:39:59.632Z",
+        "duration_ms": 1033632
+      },
+      {
+        "turn_id": "db748d745f74",
+        "started_at": "2026-05-24T06:46:14.000Z",
+        "ended_at": "2026-05-24T06:46:14.432Z",
+        "duration_ms": 432
+      },
+      {
+        "turn_id": "82e168558774",
+        "started_at": "2026-05-24T06:47:02.000Z",
+        "ended_at": "2026-05-24T06:47:03.119Z",
+        "duration_ms": 1119
+      },
+      {
+        "turn_id": "d0d345f0ebd2",
+        "started_at": "2026-05-24T06:47:07.000Z",
+        "ended_at": "2026-05-24T06:47:07.551Z",
+        "duration_ms": 551
+      },
+      {
+        "turn_id": "507eb465fd4a",
+        "started_at": "2026-05-24T06:49:54.000Z",
+        "ended_at": "2026-05-24T06:49:54.804Z",
+        "duration_ms": 804
+      },
+      {
+        "turn_id": "d84e0e63e48a",
+        "started_at": "2026-05-24T06:54:53.000Z",
+        "ended_at": "2026-05-24T06:55:00.938Z",
+        "duration_ms": 7938
+      },
+      {
+        "turn_id": "a826ff671039",
+        "started_at": "2026-05-24T06:55:08.000Z",
+        "ended_at": "2026-05-24T06:55:32.427Z",
+        "duration_ms": 24427
+      },
+      {
+        "turn_id": "4536751f5147",
+        "started_at": "2026-05-24T06:56:13.000Z",
+        "ended_at": "2026-05-24T06:56:54.679Z",
+        "duration_ms": 41679
+      },
+      {
+        "turn_id": "1850a1bd6bf9",
+        "started_at": "2026-05-24T06:56:57.000Z",
+        "ended_at": "2026-05-24T07:04:24.497Z",
+        "duration_ms": 447497
+      },
+      {
+        "turn_id": "beacd2cf6217",
+        "started_at": "2026-05-24T07:04:46.000Z",
+        "ended_at": "2026-05-24T07:07:53.129Z",
+        "duration_ms": 187129
+      },
+      {
+        "turn_id": "edf69758f1a2",
+        "started_at": "2026-05-24T07:10:12.000Z",
+        "ended_at": "2026-05-24T07:13:56.435Z",
+        "duration_ms": 224435
+      },
+      {
+        "turn_id": "9d50b935821f",
+        "started_at": "2026-05-24T08:00:23.000Z",
+        "ended_at": "2026-05-24T08:02:46.096Z",
+        "duration_ms": 143096
+      },
+      {
+        "turn_id": "0a90abe04f98",
+        "started_at": "2026-05-24T08:08:47.000Z",
+        "ended_at": "2026-05-24T08:09:21.496Z",
+        "duration_ms": 34496
+      },
+      {
+        "turn_id": "b2ed87205634",
+        "started_at": "2026-05-24T08:39:48.000Z",
+        "ended_at": "2026-05-24T08:42:01.712Z",
+        "duration_ms": 133712
+      },
+      {
+        "turn_id": "583b1925cd59",
+        "started_at": "2026-05-24T08:45:17.000Z",
+        "ended_at": "2026-05-24T08:46:49.100Z",
+        "duration_ms": 92100
+      },
+      {
+        "turn_id": "62ed71afcbbd",
+        "started_at": "2026-05-24T08:49:22.000Z",
+        "ended_at": "2026-05-24T09:00:10.193Z",
+        "duration_ms": 648193
+      },
+      {
+        "turn_id": "0815a598920d",
+        "started_at": "2026-05-24T09:00:58.000Z",
+        "ended_at": "2026-05-24T09:12:54.726Z",
+        "duration_ms": 716726
+      },
+      {
+        "turn_id": "642c5b0ab3ef",
+        "started_at": "2026-05-24T09:14:13.000Z",
+        "ended_at": "2026-05-24T09:14:13.576Z",
+        "duration_ms": 576
+      },
+      {
+        "turn_id": "d34772b10018",
+        "started_at": "2026-05-24T09:21:39.000Z",
+        "ended_at": "2026-05-24T09:27:15.480Z",
+        "duration_ms": 336480
+      },
+      {
+        "turn_id": "49fc5f1b66c7",
+        "started_at": "2026-05-24T09:28:15.000Z",
+        "ended_at": "2026-05-24T09:28:48.890Z",
+        "duration_ms": 33890
+      },
+      {
+        "turn_id": "1c44a373bb0b",
+        "started_at": "2026-05-24T09:29:19.000Z",
+        "ended_at": "2026-05-24T09:33:22.690Z",
+        "duration_ms": 243690
+      }
+    ],
+    "checkpoint_turn_start": 57,
+    "checkpoint_turn_end": 58,
+    "checkpoint_active_duration_ms": 243690,
+    "checkpoint_duration_ms": 243690
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-24T12:06:50.013Z",
+    "agent_lines": 37,
+    "agent_removed": 5,
+    "human_added": 177,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 214,
+    "total_lines_changed": 220,
+    "agent_percentage": 19.090909090909093,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 84,
+      "agent_lines_removed": 18,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    }
+  ]
+}
