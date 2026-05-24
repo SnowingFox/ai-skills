@@ -1,0 +1,820 @@
+{
+  "checkpoint_id": "d34b0f9ca1a7",
+  "session_id": "d305a67d-f315-4d5b-9481-8b86594e1c44",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-24T08:46:21.869Z",
+  "branch": "main",
+  "checkpoints_count": 30,
+  "files_touched": [
+    "README.md",
+    "apps/cli/README.md",
+    "apps/cli/ai-package.json",
+    "apps/cli/src/cli.ts",
+    "apps/cli/src/cli/help-data/plugins.ts",
+    "apps/cli/src/commands/plugins/add.ts",
+    "apps/cli/src/install-command.ts",
+    "apps/cli/src/plugins/installer/cursor.ts",
+    "apps/cli/src/plugins/installer/index.ts",
+    "apps/cli/src/plugins/installer/uninstall.ts",
+    "apps/cli/tests/e2e/install.e2e.test.ts",
+    "apps/cli/tests/unit/cli-help.test.ts",
+    "apps/web/cloudflare-env.d.ts",
+    "apps/web/package.json",
+    "apps/web/public/agents/amp.svg",
+    "apps/web/public/agents/antigravity.svg",
+    "apps/web/public/agents/claude-code.svg",
+    "apps/web/public/agents/clawdbot.svg",
+    "apps/web/public/agents/cline.svg",
+    "apps/web/public/agents/codex.svg",
+    "apps/web/public/agents/copilot.svg",
+    "apps/web/public/agents/cursor.svg",
+    "apps/web/public/agents/droid.svg",
+    "apps/web/public/agents/gemini.svg",
+    "apps/web/public/agents/goose.svg",
+    "apps/web/public/agents/kilo.svg",
+    "apps/web/public/agents/kiro-cli.svg",
+    "apps/web/public/agents/nous-research.svg",
+    "apps/web/public/agents/opencode.svg",
+    "apps/web/public/agents/roo.svg",
+    "apps/web/public/agents/trae.svg",
+    "apps/web/public/agents/vscode.svg",
+    "apps/web/public/agents/windsurf.svg",
+    "apps/web/public/llms.txt",
+    "apps/web/public/llms/agent-targets.txt",
+    "apps/web/public/llms/plugins/add.txt",
+    "apps/web/public/llms/plugins/index.txt",
+    "apps/web/scripts/sync-skills.ts",
+    "apps/web/src/app/(registry)/about/page.tsx",
+    "apps/web/src/app/(registry)/admin/analytics/page.tsx",
+    "apps/web/src/app/(registry)/layout.tsx",
+    "apps/web/src/app/(registry)/plugins/[owner]/[name]/loading.tsx",
+    "apps/web/src/app/(registry)/plugins/[owner]/[name]/page.tsx",
+    "apps/web/src/app/(registry)/plugins/[owner]/loading.tsx",
+    "apps/web/src/app/(registry)/plugins/[owner]/page.tsx",
+    "apps/web/src/app/(registry)/skills/[owner]/[repo]/[skillId]/loading.tsx",
+    "apps/web/src/app/(registry)/skills/[owner]/[repo]/[skillId]/page.tsx",
+    "apps/web/src/app/(registry)/skills/[owner]/[repo]/loading.tsx",
+    "apps/web/src/app/(registry)/skills/[owner]/[repo]/page.tsx",
+    "apps/web/src/app/(registry)/skills/[owner]/loading.tsx",
+    "apps/web/src/app/(registry)/skills/[owner]/page.tsx",
+    "apps/web/src/app/[locale]/(marketing)/(home)/page.tsx",
+    "apps/web/src/app/[locale]/(marketing)/layout.tsx",
+    "apps/web/src/app/[locale]/layout.tsx",
+    "apps/web/src/app/api/analytics/summary/route.ts",
+    "apps/web/src/app/api/analytics/track/route.ts",
+    "apps/web/src/app/api/skills/all-time/[page]/route.ts",
+    "apps/web/src/app/api/skills/search/route.ts",
+    "apps/web/src/app/sitemap.ts",
+    "apps/web/src/components/layout/registry-header.tsx",
+    "apps/web/src/components/skills/skills-leaderboard-server.tsx",
+    "apps/web/src/components/skills/skills-leaderboard-skeleton.tsx",
+    "apps/web/src/components/skills/skills-leaderboard.tsx",
+    "apps/web/src/components/track-page-view.tsx",
+    "apps/web/src/db/app.schema.ts",
+    "apps/web/src/db/migrations/0009_faithful_flatman.sql",
+    "apps/web/src/db/migrations/0010_plain_starfox.sql",
+    "apps/web/src/db/migrations/meta/0009_snapshot.json",
+    "apps/web/src/db/migrations/meta/0010_snapshot.json",
+    "apps/web/src/db/migrations/meta/_journal.json",
+    "apps/web/src/lib/skills-api.ts",
+    "apps/web/src/lib/skills.ts",
+    "apps/web/src/middleware.ts",
+    "apps/web/src/skills/cursor-upstream.ts",
+    "apps/web/src/skills/get-cursor-upstream.ts",
+    "apps/web/src/skills/get-skill-repository.ts",
+    "apps/web/src/skills/load-skill-detail.ts",
+    "apps/web/src/skills/parse-repository-url.ts",
+    "apps/web/src/skills/skill-repository.ts",
+    "apps/web/src/skills/sync.ts",
+    "apps/web/src/skills/upstream-fallback.ts",
+    "apps/web/src/skills/upstream.ts",
+    "apps/web/src/tests/skills/cursor-upstream.test.ts",
+    "apps/web/src/tests/skills/parse-repository-url.test.ts",
+    "apps/web/src/tests/skills/skill-repository.test.ts",
+    "apps/web/src/tests/skills/sync.test.ts",
+    "apps/web/src/tests/skills/upstream.test.ts",
+    "apps/web/src/tests/smoke.test.ts",
+    "apps/web/src/tests/with-test-db.ts",
+    "apps/web/vitest.config.ts",
+    "apps/web/wrangler.jsonc",
+    "bun.lock",
+    "docs/ai-package-plugins-v2.md",
+    "docs/ai-package-plugins.md"
+  ],
+  "agent": "Cursor",
+  "model": "composer-2.5-fast",
+  "turn_id": "583b1925cd59",
+  "is_task": false,
+  "tool_use_id": "",
+  "transcript_identifier_at_start": "",
+  "checkpoint_transcript_start": 0,
+  "transcript_lines_at_start": 0,
+  "token_usage": {
+    "input_tokens": 163345,
+    "cache_creation_tokens": 5126353,
+    "cache_read_tokens": 128558639,
+    "output_tokens": 178702,
+    "api_call_count": 18
+  },
+  "session_metrics": {
+    "duration_ms": 521334893,
+    "turn_count": 56,
+    "context_tokens": 193043,
+    "context_window_size": 200000,
+    "active_duration_ms": 10218459,
+    "turn_metrics": [
+      {
+        "turn_id": "9419ba22e759",
+        "started_at": "2026-05-18T07:53:06.000Z",
+        "ended_at": "2026-05-18T07:53:35.815Z",
+        "duration_ms": 29815
+      },
+      {
+        "turn_id": "5935f962124c",
+        "started_at": "2026-05-18T07:54:04.000Z",
+        "ended_at": "2026-05-18T07:54:27.752Z",
+        "duration_ms": 23752
+      },
+      {
+        "turn_id": "8dccc31f753f",
+        "started_at": "2026-05-22T14:23:02.000Z",
+        "ended_at": "2026-05-22T14:23:02.193Z",
+        "duration_ms": 193
+      },
+      {
+        "turn_id": "8dccc31f753f",
+        "started_at": "2026-05-22T14:23:03.000Z",
+        "ended_at": "2026-05-22T14:23:03.381Z",
+        "duration_ms": 381
+      },
+      {
+        "turn_id": "e7e8ac984e0a",
+        "started_at": "2026-05-22T14:23:54.000Z",
+        "ended_at": "2026-05-22T14:24:42.420Z",
+        "duration_ms": 48420
+      },
+      {
+        "turn_id": "d9d719b81355",
+        "started_at": "2026-05-22T14:25:00.000Z",
+        "ended_at": "2026-05-22T14:25:19.468Z",
+        "duration_ms": 19468
+      },
+      {
+        "turn_id": "1458f33dafbc",
+        "started_at": "2026-05-22T14:27:09.000Z",
+        "ended_at": "2026-05-22T14:27:09.173Z",
+        "duration_ms": 173
+      },
+      {
+        "turn_id": "1458f33dafbc",
+        "started_at": "2026-05-22T14:27:10.000Z",
+        "ended_at": "2026-05-22T14:27:10.473Z",
+        "duration_ms": 473
+      },
+      {
+        "turn_id": "5b76fdedab61",
+        "started_at": "2026-05-22T14:28:15.000Z",
+        "ended_at": "2026-05-22T14:30:25.280Z",
+        "duration_ms": 130280
+      },
+      {
+        "turn_id": "83fc1dec6b87",
+        "started_at": "2026-05-22T14:30:26.000Z",
+        "ended_at": "2026-05-22T14:31:34.933Z",
+        "duration_ms": 68933
+      },
+      {
+        "turn_id": "bef1c22d1ce0",
+        "started_at": "2026-05-22T14:31:47.000Z",
+        "ended_at": "2026-05-22T14:33:04.492Z",
+        "duration_ms": 77492
+      },
+      {
+        "turn_id": "07f9f62b6644",
+        "started_at": "2026-05-22T14:33:09.000Z",
+        "ended_at": "2026-05-22T14:38:29.965Z",
+        "duration_ms": 320965
+      },
+      {
+        "turn_id": "dce855e7dbca",
+        "started_at": "2026-05-22T14:41:32.000Z",
+        "ended_at": "2026-05-22T14:41:44.698Z",
+        "duration_ms": 12698
+      },
+      {
+        "turn_id": "3a0b4cf71919",
+        "started_at": "2026-05-22T14:42:08.000Z",
+        "ended_at": "2026-05-22T14:42:31.256Z",
+        "duration_ms": 23256
+      },
+      {
+        "turn_id": "ca6d17b2676e",
+        "started_at": "2026-05-22T14:42:55.000Z",
+        "ended_at": "2026-05-22T14:43:25.155Z",
+        "duration_ms": 30155
+      },
+      {
+        "turn_id": "fe374b8f2c61",
+        "started_at": "2026-05-22T14:43:53.000Z",
+        "ended_at": "2026-05-22T14:44:10.838Z",
+        "duration_ms": 17838
+      },
+      {
+        "turn_id": "ba0e0f28754d",
+        "started_at": "2026-05-22T14:44:33.000Z",
+        "ended_at": "2026-05-22T14:45:13.742Z",
+        "duration_ms": 40742
+      },
+      {
+        "turn_id": "683d1be7abda",
+        "started_at": "2026-05-22T14:45:25.000Z",
+        "ended_at": "2026-05-22T14:45:39.805Z",
+        "duration_ms": 14805
+      },
+      {
+        "turn_id": "682287f83d1b",
+        "started_at": "2026-05-22T14:47:07.000Z",
+        "ended_at": "2026-05-22T14:47:22.944Z",
+        "duration_ms": 15944
+      },
+      {
+        "turn_id": "cd7fbb5c16be",
+        "started_at": "2026-05-22T14:47:43.000Z",
+        "ended_at": "2026-05-22T14:48:00.578Z",
+        "duration_ms": 17578
+      },
+      {
+        "turn_id": "3c2c30bff0c5",
+        "started_at": "2026-05-22T14:58:56.000Z",
+        "ended_at": "2026-05-22T15:00:21.141Z",
+        "duration_ms": 85141
+      },
+      {
+        "turn_id": "2129ffbad025",
+        "started_at": "2026-05-22T15:32:03.000Z",
+        "ended_at": "2026-05-22T15:32:03.119Z",
+        "duration_ms": 119
+      },
+      {
+        "turn_id": "cffc2cb632a9",
+        "started_at": "2026-05-23T04:22:59.000Z",
+        "ended_at": "2026-05-23T04:26:58.216Z",
+        "duration_ms": 239216
+      },
+      {
+        "turn_id": "440e08387639",
+        "started_at": "2026-05-23T04:27:59.000Z",
+        "ended_at": "2026-05-23T04:33:07.349Z",
+        "duration_ms": 308349
+      },
+      {
+        "turn_id": "713ab3a3080e",
+        "started_at": "2026-05-23T08:45:18.000Z",
+        "ended_at": "2026-05-23T08:46:08.316Z",
+        "duration_ms": 50316
+      },
+      {
+        "turn_id": "299e5cbe993d",
+        "started_at": "2026-05-23T14:35:37.000Z",
+        "ended_at": "2026-05-23T15:11:56.248Z",
+        "duration_ms": 2179248
+      },
+      {
+        "turn_id": "60290c817eb5",
+        "started_at": "2026-05-23T15:12:11.000Z",
+        "ended_at": "2026-05-23T15:15:11.855Z",
+        "duration_ms": 180855
+      },
+      {
+        "turn_id": "8066c4c0a0c3",
+        "started_at": "2026-05-23T15:15:28.000Z",
+        "ended_at": "2026-05-23T15:18:45.411Z",
+        "duration_ms": 197411
+      },
+      {
+        "turn_id": "d35dda6c40b1",
+        "started_at": "2026-05-23T15:19:41.000Z",
+        "ended_at": "2026-05-23T15:21:29.966Z",
+        "duration_ms": 108966
+      },
+      {
+        "turn_id": "661a6239485f",
+        "started_at": "2026-05-23T15:24:02.000Z",
+        "ended_at": "2026-05-23T15:24:48.182Z",
+        "duration_ms": 46182
+      },
+      {
+        "turn_id": "9cfb15b54624",
+        "started_at": "2026-05-23T15:25:52.000Z",
+        "ended_at": "2026-05-23T16:05:34.659Z",
+        "duration_ms": 2382659
+      },
+      {
+        "turn_id": "f427869ae03f",
+        "started_at": "2026-05-24T05:28:06.000Z",
+        "ended_at": "2026-05-24T05:29:12.997Z",
+        "duration_ms": 66997
+      },
+      {
+        "turn_id": "3c7908415d7f",
+        "started_at": "2026-05-24T05:30:48.000Z",
+        "ended_at": "2026-05-24T05:30:50.565Z",
+        "duration_ms": 2565
+      },
+      {
+        "turn_id": "19ab425556d9",
+        "started_at": "2026-05-24T05:30:58.000Z",
+        "ended_at": "2026-05-24T05:33:40.624Z",
+        "duration_ms": 162624
+      },
+      {
+        "turn_id": "23b2d3751155",
+        "started_at": "2026-05-24T05:52:26.000Z",
+        "ended_at": "2026-05-24T05:53:33.930Z",
+        "duration_ms": 67930
+      },
+      {
+        "turn_id": "6d9d96427e42",
+        "started_at": "2026-05-24T06:04:30.000Z",
+        "ended_at": "2026-05-24T06:17:22.078Z",
+        "duration_ms": 772078
+      },
+      {
+        "turn_id": "adb5fed11474",
+        "started_at": "2026-05-24T06:18:24.000Z",
+        "ended_at": "2026-05-24T06:21:37.495Z",
+        "duration_ms": 193495
+      },
+      {
+        "turn_id": "883acd846aa1",
+        "started_at": "2026-05-24T06:22:46.000Z",
+        "ended_at": "2026-05-24T06:39:59.632Z",
+        "duration_ms": 1033632
+      },
+      {
+        "turn_id": "db748d745f74",
+        "started_at": "2026-05-24T06:46:14.000Z",
+        "ended_at": "2026-05-24T06:46:14.432Z",
+        "duration_ms": 432
+      },
+      {
+        "turn_id": "82e168558774",
+        "started_at": "2026-05-24T06:47:02.000Z",
+        "ended_at": "2026-05-24T06:47:03.119Z",
+        "duration_ms": 1119
+      },
+      {
+        "turn_id": "d0d345f0ebd2",
+        "started_at": "2026-05-24T06:47:07.000Z",
+        "ended_at": "2026-05-24T06:47:07.551Z",
+        "duration_ms": 551
+      },
+      {
+        "turn_id": "507eb465fd4a",
+        "started_at": "2026-05-24T06:49:54.000Z",
+        "ended_at": "2026-05-24T06:49:54.804Z",
+        "duration_ms": 804
+      },
+      {
+        "turn_id": "d84e0e63e48a",
+        "started_at": "2026-05-24T06:54:53.000Z",
+        "ended_at": "2026-05-24T06:55:00.938Z",
+        "duration_ms": 7938
+      },
+      {
+        "turn_id": "a826ff671039",
+        "started_at": "2026-05-24T06:55:08.000Z",
+        "ended_at": "2026-05-24T06:55:32.427Z",
+        "duration_ms": 24427
+      },
+      {
+        "turn_id": "4536751f5147",
+        "started_at": "2026-05-24T06:56:13.000Z",
+        "ended_at": "2026-05-24T06:56:54.679Z",
+        "duration_ms": 41679
+      },
+      {
+        "turn_id": "1850a1bd6bf9",
+        "started_at": "2026-05-24T06:56:57.000Z",
+        "ended_at": "2026-05-24T07:04:24.497Z",
+        "duration_ms": 447497
+      },
+      {
+        "turn_id": "beacd2cf6217",
+        "started_at": "2026-05-24T07:04:46.000Z",
+        "ended_at": "2026-05-24T07:07:53.129Z",
+        "duration_ms": 187129
+      },
+      {
+        "turn_id": "edf69758f1a2",
+        "started_at": "2026-05-24T07:10:12.000Z",
+        "ended_at": "2026-05-24T07:13:56.435Z",
+        "duration_ms": 224435
+      },
+      {
+        "turn_id": "9d50b935821f",
+        "started_at": "2026-05-24T08:00:23.000Z",
+        "ended_at": "2026-05-24T08:02:46.096Z",
+        "duration_ms": 143096
+      },
+      {
+        "turn_id": "0a90abe04f98",
+        "started_at": "2026-05-24T08:08:47.000Z",
+        "ended_at": "2026-05-24T08:09:21.496Z",
+        "duration_ms": 34496
+      },
+      {
+        "turn_id": "b2ed87205634",
+        "started_at": "2026-05-24T08:39:48.000Z",
+        "ended_at": "2026-05-24T08:42:01.712Z",
+        "duration_ms": 133712
+      }
+    ],
+    "checkpoint_turn_start": 24,
+    "checkpoint_turn_end": 51,
+    "checkpoint_active_duration_ms": 8692273,
+    "checkpoint_duration_ms": 86203712
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-24T08:46:21.812Z",
+    "agent_lines": 6196,
+    "agent_removed": 0,
+    "human_added": 689,
+    "human_modified": 858,
+    "human_removed": 0,
+    "total_committed": 7571,
+    "total_lines_changed": 7743,
+    "agent_percentage": 80.02066382539067,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 340,
+      "agent_lines_removed": 77,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 340,
+      "agent_lines_removed": 77,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 340,
+      "agent_lines_removed": 77,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 534,
+      "agent_lines_removed": 82,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 534,
+      "agent_lines_removed": 82,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 534,
+      "agent_lines_removed": 82,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 9,
+      "user_lines_added": 2,
+      "user_lines_removed": 1,
+      "agent_lines_added": 4511,
+      "agent_lines_removed": 146,
+      "user_added_per_file": {
+        "apps/web/vitest.config.ts": 2
+      },
+      "user_removed_per_file": {
+        "apps/web/vitest.config.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 10,
+      "user_lines_added": 2,
+      "user_lines_removed": 1,
+      "agent_lines_added": 4511,
+      "agent_lines_removed": 146,
+      "user_added_per_file": {
+        "apps/web/vitest.config.ts": 2
+      },
+      "user_removed_per_file": {
+        "apps/web/vitest.config.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 11,
+      "user_lines_added": 2,
+      "user_lines_removed": 1,
+      "agent_lines_added": 4511,
+      "agent_lines_removed": 146,
+      "user_added_per_file": {
+        "apps/web/vitest.config.ts": 2
+      },
+      "user_removed_per_file": {
+        "apps/web/vitest.config.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 12,
+      "user_lines_added": 2,
+      "user_lines_removed": 1,
+      "agent_lines_added": 4548,
+      "agent_lines_removed": 164,
+      "user_added_per_file": {
+        "apps/web/vitest.config.ts": 2
+      },
+      "user_removed_per_file": {
+        "apps/web/vitest.config.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 13,
+      "user_lines_added": 2,
+      "user_lines_removed": 1,
+      "agent_lines_added": 4548,
+      "agent_lines_removed": 164,
+      "user_added_per_file": {
+        "apps/web/vitest.config.ts": 2
+      },
+      "user_removed_per_file": {
+        "apps/web/vitest.config.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 14,
+      "user_lines_added": 2,
+      "user_lines_removed": 1,
+      "agent_lines_added": 4548,
+      "agent_lines_removed": 164,
+      "user_added_per_file": {
+        "apps/web/vitest.config.ts": 2
+      },
+      "user_removed_per_file": {
+        "apps/web/vitest.config.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 15,
+      "user_lines_added": 2,
+      "user_lines_removed": 1,
+      "agent_lines_added": 4548,
+      "agent_lines_removed": 164,
+      "user_added_per_file": {
+        "apps/web/vitest.config.ts": 2
+      },
+      "user_removed_per_file": {
+        "apps/web/vitest.config.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 16,
+      "user_lines_added": 29,
+      "user_lines_removed": 13,
+      "agent_lines_added": 5813,
+      "agent_lines_removed": 273,
+      "user_added_per_file": {
+        "apps/web/src/middleware.ts": 3,
+        "apps/web/src/components/skills/skills-leaderboard-server.tsx": 19,
+        "apps/web/src/components/skills/skills-leaderboard-skeleton.tsx": 4,
+        "apps/web/src/skills/upstream.ts": 1,
+        "apps/web/vitest.config.ts": 2
+      },
+      "user_removed_per_file": {
+        "apps/web/src/middleware.ts": 1,
+        "apps/web/src/components/skills/skills-leaderboard-server.tsx": 5,
+        "apps/web/src/components/skills/skills-leaderboard-skeleton.tsx": 5,
+        "apps/web/src/skills/upstream.ts": 1,
+        "apps/web/vitest.config.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 17,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 18,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5830,
+      "agent_lines_removed": 274,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 19,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5830,
+      "agent_lines_removed": 274,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 20,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5830,
+      "agent_lines_removed": 274,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 21,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 22,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5830,
+      "agent_lines_removed": 274,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 23,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5830,
+      "agent_lines_removed": 274,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 24,
+      "user_lines_added": 40,
+      "user_lines_removed": 13,
+      "agent_lines_added": 5830,
+      "agent_lines_removed": 274,
+      "user_added_per_file": {
+        ".cursor/hooks.json": 31,
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4
+      },
+      "user_removed_per_file": {
+        ".cursor/hooks.json": 10,
+        ".entire/settings.local.json": 3
+      }
+    },
+    {
+      "checkpoint_number": 25,
+      "user_lines_added": 9,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5861,
+      "agent_lines_removed": 287,
+      "user_added_per_file": {
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4
+      },
+      "user_removed_per_file": {}
+    },
+    {
+      "checkpoint_number": 26,
+      "user_lines_added": 102,
+      "user_lines_removed": 68,
+      "agent_lines_added": 8001,
+      "agent_lines_removed": 304,
+      "user_added_per_file": {
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4,
+        "apps/web/src/app/(registry)/plugins/[owner]/[name]/page.tsx": 93
+      },
+      "user_removed_per_file": {
+        "apps/web/src/app/(registry)/plugins/[owner]/[name]/page.tsx": 68
+      }
+    },
+    {
+      "checkpoint_number": 27,
+      "user_lines_added": 102,
+      "user_lines_removed": 68,
+      "agent_lines_added": 8001,
+      "agent_lines_removed": 304,
+      "user_added_per_file": {
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4,
+        "apps/web/src/app/(registry)/plugins/[owner]/[name]/page.tsx": 93
+      },
+      "user_removed_per_file": {
+        "apps/web/src/app/(registry)/plugins/[owner]/[name]/page.tsx": 68
+      }
+    },
+    {
+      "checkpoint_number": 28,
+      "user_lines_added": 199,
+      "user_lines_removed": 120,
+      "agent_lines_added": 8097,
+      "agent_lines_removed": 307,
+      "user_added_per_file": {
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4,
+        "apps/web/src/app/(registry)/plugins/[owner]/[name]/page.tsx": 93,
+        "apps/web/src/app/api/analytics/summary/route.ts": 65,
+        "apps/web/src/app/api/analytics/track/route.ts": 32
+      },
+      "user_removed_per_file": {
+        "apps/web/src/app/(registry)/plugins/[owner]/[name]/page.tsx": 68,
+        "apps/web/src/app/api/analytics/summary/route.ts": 42,
+        "apps/web/src/app/api/analytics/track/route.ts": 10
+      }
+    },
+    {
+      "checkpoint_number": 29,
+      "user_lines_added": 199,
+      "user_lines_removed": 120,
+      "agent_lines_added": 8132,
+      "agent_lines_removed": 306,
+      "user_added_per_file": {
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4,
+        "apps/web/src/app/(registry)/plugins/[owner]/[name]/page.tsx": 93,
+        "apps/web/src/app/api/analytics/summary/route.ts": 65,
+        "apps/web/src/app/api/analytics/track/route.ts": 32
+      },
+      "user_removed_per_file": {
+        "apps/web/src/app/(registry)/plugins/[owner]/[name]/page.tsx": 68,
+        "apps/web/src/app/api/analytics/summary/route.ts": 42,
+        "apps/web/src/app/api/analytics/track/route.ts": 10
+      }
+    },
+    {
+      "checkpoint_number": 30,
+      "user_lines_added": 199,
+      "user_lines_removed": 120,
+      "agent_lines_added": 8132,
+      "agent_lines_removed": 306,
+      "user_added_per_file": {
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4,
+        "apps/web/src/app/(registry)/plugins/[owner]/[name]/page.tsx": 93,
+        "apps/web/src/app/api/analytics/summary/route.ts": 65,
+        "apps/web/src/app/api/analytics/track/route.ts": 32
+      },
+      "user_removed_per_file": {
+        "apps/web/src/app/(registry)/plugins/[owner]/[name]/page.tsx": 68,
+        "apps/web/src/app/api/analytics/summary/route.ts": 42,
+        "apps/web/src/app/api/analytics/track/route.ts": 10
+      }
+    },
+    {
+      "checkpoint_number": 31,
+      "user_lines_added": 382,
+      "user_lines_removed": 170,
+      "agent_lines_added": 8132,
+      "agent_lines_removed": 306,
+      "user_added_per_file": {
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4,
+        "apps/web/src/app/(registry)/about/page.tsx": 183,
+        "apps/web/src/app/(registry)/plugins/[owner]/[name]/page.tsx": 93,
+        "apps/web/src/app/api/analytics/summary/route.ts": 65,
+        "apps/web/src/app/api/analytics/track/route.ts": 32
+      },
+      "user_removed_per_file": {
+        "apps/web/src/app/(registry)/about/page.tsx": 50,
+        "apps/web/src/app/(registry)/plugins/[owner]/[name]/page.tsx": 68,
+        "apps/web/src/app/api/analytics/summary/route.ts": 42,
+        "apps/web/src/app/api/analytics/track/route.ts": 10
+      }
+    }
+  ]
+}
