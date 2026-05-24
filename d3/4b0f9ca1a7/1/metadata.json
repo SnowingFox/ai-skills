@@ -1,0 +1,80 @@
+{
+  "checkpoint_id": "d34b0f9ca1a7",
+  "session_id": "c2dd074c-7f76-4d7e-8698-0c5fea166a94",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-24T08:46:21.546Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "README.md",
+    "apps/cli/README.md",
+    "apps/cli/src/cli/help-data/plugins.ts",
+    "apps/cli/src/commands/plugins/add.ts",
+    "apps/cli/src/plugins/installer/cursor.ts",
+    "apps/cli/src/plugins/installer/index.ts",
+    "apps/cli/src/plugins/installer/uninstall.ts",
+    "apps/cli/tests/e2e/install.e2e.test.ts",
+    "apps/cli/tests/unit/cli-help.test.ts",
+    "apps/web/public/llms.txt",
+    "apps/web/public/llms/agent-targets.txt",
+    "apps/web/public/llms/plugins/add.txt",
+    "apps/web/public/llms/plugins/index.txt",
+    "docs/ai-package-plugins-v2.md",
+    "docs/ai-package-plugins.md"
+  ],
+  "agent": "Cursor",
+  "model": "gpt-5.5-extra-high",
+  "turn_id": "5aa54b682f9c",
+  "is_task": false,
+  "tool_use_id": "",
+  "transcript_identifier_at_start": "",
+  "checkpoint_transcript_start": 0,
+  "transcript_lines_at_start": 0,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "duration_ms": 1174381,
+    "turn_count": 3,
+    "context_tokens": 0,
+    "context_window_size": 0,
+    "active_duration_ms": 940947,
+    "turn_metrics": [
+      {
+        "turn_id": "aede9437362c",
+        "started_at": "2026-05-22T14:29:00.000Z",
+        "ended_at": "2026-05-22T14:35:38.432Z",
+        "duration_ms": 398432
+      },
+      {
+        "turn_id": "03f7252c4162",
+        "started_at": "2026-05-22T14:35:50.000Z",
+        "ended_at": "2026-05-22T14:42:00.181Z",
+        "duration_ms": 370181
+      },
+      {
+        "turn_id": "5aa54b682f9c",
+        "started_at": "2026-05-22T14:45:43.000Z",
+        "ended_at": "2026-05-22T14:48:35.334Z",
+        "duration_ms": 172334
+      }
+    ]
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-24T08:46:21.470Z",
+    "agent_lines": 333,
+    "agent_removed": 77,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 333,
+    "total_lines_changed": 410,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": null
+}

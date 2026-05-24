@@ -2,15 +2,23 @@
   "checkpoint_id": "d34b0f9ca1a7",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
+    "README.md",
+    "apps/cli/README.md",
     "apps/cli/src/cli/help-data/plugins.ts",
     "apps/cli/src/commands/plugins/add.ts",
     "apps/cli/src/plugins/installer/cursor.ts",
     "apps/cli/src/plugins/installer/index.ts",
     "apps/cli/src/plugins/installer/uninstall.ts",
     "apps/cli/tests/e2e/install.e2e.test.ts",
-    "apps/cli/tests/unit/cli-help.test.ts"
+    "apps/cli/tests/unit/cli-help.test.ts",
+    "apps/web/public/llms.txt",
+    "apps/web/public/llms/agent-targets.txt",
+    "apps/web/public/llms/plugins/add.txt",
+    "apps/web/public/llms/plugins/index.txt",
+    "docs/ai-package-plugins-v2.md",
+    "docs/ai-package-plugins.md"
   ],
   "sessions": [
     {
@@ -18,6 +26,19 @@
       "prompt": "/d3/4b0f9ca1a7/0/prompt.txt",
       "transcript": "/d3/4b0f9ca1a7/0/full.jsonl",
       "content_hash": "/d3/4b0f9ca1a7/0/content_hash.txt"
+    },
+    {
+      "metadata": "/d3/4b0f9ca1a7/1/metadata.json",
+      "prompt": "/d3/4b0f9ca1a7/1/prompt.txt",
+      "transcript": "/d3/4b0f9ca1a7/1/full.jsonl",
+      "content_hash": "/d3/4b0f9ca1a7/1/content_hash.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
 }
