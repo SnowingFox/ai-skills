@@ -1,0 +1,33 @@
+{
+  "checkpoint_id": "42a16db28b27",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 8,
+  "files_touched": [
+    "apps/web/package.json",
+    "apps/web/src/app/(admin-panel)/admin/database/layout.tsx",
+    "apps/web/src/app/(admin-panel)/admin/database/page.tsx",
+    "apps/web/src/app/(admin-panel)/admin/login/page.tsx",
+    "apps/web/src/app/(admin-panel)/layout.tsx",
+    "apps/web/src/app/api/admin/auth/route.ts",
+    "apps/web/src/app/api/admin/tables/[table]/route.ts",
+    "apps/web/src/app/api/admin/tables/route.ts",
+    "apps/web/src/lib/admin-auth.ts",
+    "bun.lock"
+  ],
+  "sessions": [
+    {
+      "metadata": "/42/a16db28b27/0/metadata.json",
+      "prompt": "/42/a16db28b27/0/prompt.txt",
+      "transcript": "/42/a16db28b27/0/full.jsonl",
+      "content_hash": "/42/a16db28b27/0/content_hash.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 374040,
+    "cache_creation_tokens": 394495,
+    "cache_read_tokens": 8768542,
+    "output_tokens": 53599,
+    "api_call_count": 6
+  }
+}
