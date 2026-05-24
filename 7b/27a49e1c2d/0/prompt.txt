@@ -1,0 +1,39 @@
+确定确定，还有 tab 的切换也太慢了，应该加个骨架屏 + 缓存的，要不然真的太慢了，调研好了就开干吧，记得看看 ~/dev/skills/next 下面的样式
+
+---
+
+确定确定，还有 tab 的切换也太慢了，应该加个骨架屏 + 缓存的，要不然真的太慢了，调研好了就开干吧，记得看看 ~/dev/skills/next 下面的样式
+
+---
+
+部署了吗
+
+---
+
+这个改改，说点我们的 vision 
+我觉得 skills.sh 太过单一，并且安装 plugins 还需要另外一个 CLI 并且体验不好，没有真实的贴合开发者的需求和理念
+
+所以我想，我们需要一个全新的工具来支撑 SKILL 的分发与迭代，所有的一切都是基于 git 分发的，完全免费的，并且有 ai-package.json 作为 skills 和 plugins 的管理，以及团队的管理，这才是合理的
+
+以及推特是 x.com/foxsnowing，mail 是 gsnowingfox@gmail.com
+
+来吧，以及埋点 API 走 KV 吧，能直接申请么？
+/cloudflare
+
+---
+
+这个做 About 页面去吧，不做首页里面
+
+---
+
+加上一下 why not vercel skills.sh
+
+---
+
+/grill-me 加上一下 why not vercel skills.sh 可以写的详细些，以及你觉得我们是不是的确有优势呢？你客观的分析一下他们的 CLI 代码，都在 submodule 里面，然后对比我们的
+
+以及交互上的，可以一起聊聊
+
+---
+
+resume
