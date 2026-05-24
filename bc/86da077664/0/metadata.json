@@ -1,0 +1,49 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "bc86da077664",
+  "session_id": "d305a67d-f315-4d5b-9481-8b86594e1c44",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-24T12:06:44.580303Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "apps/web/src/app/(admin-panel)/admin/database/page.tsx",
+    "apps/web/src/app/api/admin/tables/route.ts"
+  ],
+  "agent": "Cursor",
+  "model": "composer-2.5-fast",
+  "turn_id": "f3aa9bf2dbb1",
+  "checkpoint_transcript_start": 735,
+  "transcript_lines_at_start": 735,
+  "session_metrics": {
+    "turn_count": 6
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-24T12:06:44.552481Z",
+    "agent_lines": 37,
+    "agent_removed": 5,
+    "human_added": 177,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 214,
+    "total_lines_changed": 220,
+    "agent_percentage": 19.090909090909093,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 75,
+      "agent_lines_removed": 15
+    }
+  ]
+}
