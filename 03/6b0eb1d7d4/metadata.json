@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "036b0eb1d7d4",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "apps/web/cloudflare-env.d.ts",
+    "apps/web/open-next.config.ts",
+    "apps/web/src/app/(registry)/about/page.tsx",
+    "apps/web/src/app/(registry)/plugins/[owner]/[name]/page.tsx",
+    "apps/web/src/app/(registry)/plugins/[owner]/page.tsx",
+    "apps/web/src/app/(registry)/skills/[owner]/[repo]/[skillId]/page.tsx",
+    "apps/web/src/app/(registry)/skills/[owner]/[repo]/page.tsx",
+    "apps/web/src/app/(registry)/skills/[owner]/page.tsx",
+    "apps/web/src/app/[locale]/(marketing)/(home)/page.tsx",
+    "apps/web/src/app/api/skills/all-time/[page]/route.ts",
+    "apps/web/src/app/api/skills/search/route.ts",
+    "apps/web/src/components/skills/skills-leaderboard-server.tsx",
+    "apps/web/src/skills/kv-cache.ts",
+    "apps/web/src/tests/skills/kv-cache.test.ts",
+    "apps/web/wrangler.jsonc"
+  ],
+  "sessions": [
+    {
+      "metadata": "/03/6b0eb1d7d4/0/metadata.json",
+      "transcript": "/03/6b0eb1d7d4/0/full.jsonl",
+      "content_hash": "/03/6b0eb1d7d4/0/content_hash.txt",
+      "prompt": "/03/6b0eb1d7d4/0/prompt.txt"
+    }
+  ]
+}
