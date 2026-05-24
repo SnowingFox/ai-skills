@@ -293,3 +293,7 @@ resume
 ---
 
 resume
+
+---
+
+Execute the selected diff-tab commit-and-push action.
