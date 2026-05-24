@@ -1,0 +1,23 @@
+{
+  "checkpoint_id": "d34b0f9ca1a7",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "apps/cli/src/cli/help-data/plugins.ts",
+    "apps/cli/src/commands/plugins/add.ts",
+    "apps/cli/src/plugins/installer/cursor.ts",
+    "apps/cli/src/plugins/installer/index.ts",
+    "apps/cli/src/plugins/installer/uninstall.ts",
+    "apps/cli/tests/e2e/install.e2e.test.ts",
+    "apps/cli/tests/unit/cli-help.test.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/d3/4b0f9ca1a7/0/metadata.json",
+      "prompt": "/d3/4b0f9ca1a7/0/prompt.txt",
+      "transcript": "/d3/4b0f9ca1a7/0/full.jsonl",
+      "content_hash": "/d3/4b0f9ca1a7/0/content_hash.txt"
+    }
+  ]
+}
