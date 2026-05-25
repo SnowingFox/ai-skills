@@ -4,7 +4,6 @@ import { formatCloneProgress } from '../../src/cli/clone-progress';
 import {
   formatGitCloneError,
   resolveInstallScope,
-  resolveRegistry,
   checkSkillUpdates,
   applySkillUpdates,
   formatSkillsList,
@@ -25,23 +24,6 @@ describe('skills command clone UX', () => {
     await expect(
       resolveInstallScope({ project: true, global: true }, false)
     ).rejects.toThrow('--project and --global are mutually exclusive');
-  });
-
-  it('resolves source registry from shorthand and clone URLs', () => {
-    expect(resolveRegistry('vercel-labs/skills')).toBe('github');
-    expect(resolveRegistry('https://github.com/mattpocock/skills')).toBe(
-      'github'
-    );
-    expect(resolveRegistry('https://gitlab.example.com/group/repo.git')).toBe(
-      'gitlab'
-    );
-    expect(resolveRegistry('https://git.example.com/team/skills.git')).toBe(
-      'gitlab'
-    );
-    expect(resolveRegistry('git@git.example.com:team/skills.git')).toBe(
-      'gitlab'
-    );
-    expect(resolveRegistry('lynx/skills', 'gitlab')).toBe('gitlab');
   });
 
   it('formats clone progress events', () => {

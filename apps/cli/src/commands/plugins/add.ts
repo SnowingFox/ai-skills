@@ -9,33 +9,13 @@ import { GitCommandError } from '../../git';
 import { normalizeList } from '../../install-command';
 import { createManifestStore, resolveManifestScope } from '../../manifest';
 import { createRegistries, getRegistry } from '../../registries';
-import type { RegistryKind } from '../../registries';
+import { resolveRegistry } from '../../registries/resolve';
 import type { PluginEntry } from '../../plugins/types';
 import { discoverPlugins } from '../../plugins/discover';
 import { selectPluginTargets } from '../../plugins/targets';
 import { installPlugins } from '../../plugins/installer';
 import type { PluginTarget } from '../../plugins/installer/types';
 import type { PluginsAddOptions, PluginsCommandRuntime } from './types';
-
-const resolveRegistry = (
-  source: string,
-  registry?: RegistryKind
-): RegistryKind => {
-  if (
-    source.startsWith('file:') ||
-    source.startsWith('.') ||
-    source.startsWith('/')
-  ) {
-    return 'file';
-  }
-  if (source.startsWith('github:') || source.includes('github.com/')) {
-    return 'github';
-  }
-  if (source.startsWith('gitlab:') || source.includes('gitlab')) {
-    return 'gitlab';
-  }
-  return registry ?? 'github';
-};
 
 /**
  * `ai-pkgs plugins add <source>` resolves a source, discovers plugins,

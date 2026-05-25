@@ -19,11 +19,8 @@ import {
 } from '../../install-command';
 import { installPlan } from '../../installer/install';
 import { createManifestStore, resolveManifestScope } from '../../manifest';
-import {
-  createRegistries,
-  getRegistry,
-  type RegistryKind,
-} from '../../registries';
+import { createRegistries, getRegistry } from '../../registries';
+import { resolveRegistry } from '../../registries/resolve';
 import type { ResolvedPackage } from '../../registries/types';
 import type { SkillEntry } from '../../types';
 import type { SkillsAddOptions, SkillsCommandRuntime } from './types';
@@ -262,45 +259,6 @@ export const formatGitCloneError = (error: GitCommandError): string => {
   const detail = error.stderr ? `\n\nGit output:\n${indent(error.stderr)}` : '';
   return `${base}${detail}`;
 };
-
-/**
- * Select the source registry for `skills add`.
- *
- * GitHub owner/repo shorthand remains the default, while complete non-GitHub
- * clone URLs route through the GitLab registry because it preserves arbitrary
- * HTTPS and SSH origins in the manifest.
- *
- * @example
- * ```ts
- * resolveRegistry('vercel-labs/skills'); // 'github'
- * resolveRegistry('https://self-hosted-gitlab.yourcompany.com/your-skills-repo/skills.git'); // 'gitlab'
- * ```
- */
-export const resolveRegistry = (
-  source: string,
-  registry?: RegistryKind
-): RegistryKind => {
-  if (
-    source.startsWith('file:') ||
-    source.startsWith('.') ||
-    source.startsWith('/')
-  ) {
-    return 'file';
-  }
-  if (source.startsWith('github:') || source.includes('github.com/')) {
-    return 'github';
-  }
-  if (source.startsWith('gitlab:') || source.includes('gitlab')) {
-    return 'gitlab';
-  }
-  if (isFullGitCloneUrl(source)) {
-    return registry ?? 'gitlab';
-  }
-  return registry ?? 'github';
-};
-
-const isFullGitCloneUrl = (source: string): boolean =>
-  /^https?:\/\//.test(source) || /^git@[^:]+:.+/.test(source);
 
 const resolveManifestSource = (
   resolved: ResolvedPackage,
