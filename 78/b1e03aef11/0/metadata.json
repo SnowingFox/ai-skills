@@ -1,0 +1,333 @@
+{
+  "checkpoint_id": "78b1e03aef11",
+  "session_id": "aa4135d3-01f4-40a4-9a12-669fe2201723",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-25T03:47:54.644Z",
+  "branch": "main",
+  "checkpoints_count": 7,
+  "files_touched": [
+    "apps/cli/src/commands/plugins/add.ts",
+    "apps/cli/src/commands/skills/add.ts",
+    "apps/cli/src/registries/resolve.ts",
+    "apps/cli/tests/unit/resolve-registry.test.ts",
+    "apps/cli/tests/unit/skills-command.test.ts"
+  ],
+  "agent": "Cursor",
+  "model": "claude-4.6-opus-max-thinking",
+  "turn_id": "349331a21372",
+  "is_task": false,
+  "tool_use_id": "",
+  "transcript_identifier_at_start": "",
+  "checkpoint_transcript_start": 0,
+  "transcript_lines_at_start": 0,
+  "token_usage": {
+    "input_tokens": 25,
+    "cache_creation_tokens": 258586,
+    "cache_read_tokens": 1170163,
+    "output_tokens": 8308,
+    "api_call_count": 4
+  },
+  "session_metrics": {
+    "duration_ms": 1957083,
+    "turn_count": 7,
+    "context_tokens": 0,
+    "context_window_size": 0,
+    "active_duration_ms": 670979,
+    "turn_metrics": [
+      {
+        "turn_id": "070ac39f2823",
+        "started_at": "2026-05-24T13:38:01.000Z",
+        "ended_at": "2026-05-24T13:39:48.034Z",
+        "duration_ms": 107034
+      },
+      {
+        "turn_id": "5726432827a0",
+        "started_at": "2026-05-24T13:39:48.000Z",
+        "ended_at": "2026-05-24T13:40:22.648Z",
+        "duration_ms": 34648
+      },
+      {
+        "turn_id": "4b5a3bc445ce",
+        "started_at": "2026-05-24T14:01:09.000Z",
+        "ended_at": "2026-05-24T14:04:30.883Z",
+        "duration_ms": 201883
+      },
+      {
+        "turn_id": "ddf45f085e9b",
+        "started_at": "2026-05-24T14:04:57.000Z",
+        "ended_at": "2026-05-24T14:05:23.771Z",
+        "duration_ms": 26771
+      },
+      {
+        "turn_id": "b57647a6823f",
+        "started_at": "2026-05-24T14:05:33.000Z",
+        "ended_at": "2026-05-24T14:05:37.024Z",
+        "duration_ms": 4024
+      },
+      {
+        "turn_id": "8058eb8ab165",
+        "started_at": "2026-05-24T14:05:40.000Z",
+        "ended_at": "2026-05-24T14:07:08.565Z",
+        "duration_ms": 88565
+      },
+      {
+        "turn_id": "99a37e718283",
+        "started_at": "2026-05-24T14:07:11.000Z",
+        "ended_at": "2026-05-24T14:10:39.054Z",
+        "duration_ms": 208054
+      }
+    ],
+    "checkpoint_turn_start": 0,
+    "checkpoint_turn_end": 7,
+    "checkpoint_active_duration_ms": 670979,
+    "checkpoint_duration_ms": 1958054
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-25T03:47:54.597Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 116,
+    "human_removed": 0,
+    "total_committed": 3,
+    "total_lines_changed": 116,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 1001,
+      "user_lines_removed": 113,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".cursor/hooks.json": 31,
+        "ai-package.json": 29,
+        ".agents/skills/explain/_s_k_i_l_l.md": 34,
+        ".agents/skills/search/_s_k_i_l_l.md": 70,
+        ".agents/skills/session-crosslink/_s_k_i_l_l.md": 141,
+        ".agents/skills/session-handoff/_s_k_i_l_l.md": 137,
+        ".agents/skills/session-to-skill/_s_k_i_l_l.md": 210,
+        ".agents/skills/what-happened/_s_k_i_l_l.md": 333,
+        ".cursor/settings.json": 7,
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4
+      },
+      "user_removed_per_file": {
+        ".cursor/hooks.json": 10,
+        ".entire/settings.local.json": 3,
+        "ai-package.json": 100
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 941,
+      "user_lines_removed": 941,
+      "agent_lines_added": 1001,
+      "agent_lines_removed": 113,
+      "user_added_per_file": {
+        ".agents/skills/explain/_s_k_i_l_l.md": 34,
+        ".agents/skills/search/_s_k_i_l_l.md": 70,
+        ".agents/skills/session-crosslink/_s_k_i_l_l.md": 141,
+        ".agents/skills/session-handoff/_s_k_i_l_l.md": 137,
+        ".agents/skills/session-to-skill/_s_k_i_l_l.md": 210,
+        ".agents/skills/what-happened/_s_k_i_l_l.md": 333,
+        ".cursor/settings.json": 7,
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4
+      },
+      "user_removed_per_file": {
+        ".agents/skills/explain/_s_k_i_l_l.md": 34,
+        ".agents/skills/search/_s_k_i_l_l.md": 70,
+        ".agents/skills/session-crosslink/_s_k_i_l_l.md": 141,
+        ".agents/skills/session-handoff/_s_k_i_l_l.md": 137,
+        ".agents/skills/session-to-skill/_s_k_i_l_l.md": 210,
+        ".agents/skills/what-happened/_s_k_i_l_l.md": 333,
+        ".cursor/settings.json": 7,
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 941,
+      "user_lines_removed": 941,
+      "agent_lines_added": 1001,
+      "agent_lines_removed": 113,
+      "user_added_per_file": {
+        ".agents/skills/explain/_s_k_i_l_l.md": 34,
+        ".agents/skills/search/_s_k_i_l_l.md": 70,
+        ".agents/skills/session-crosslink/_s_k_i_l_l.md": 141,
+        ".agents/skills/session-handoff/_s_k_i_l_l.md": 137,
+        ".agents/skills/session-to-skill/_s_k_i_l_l.md": 210,
+        ".agents/skills/what-happened/_s_k_i_l_l.md": 333,
+        ".cursor/settings.json": 7,
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4
+      },
+      "user_removed_per_file": {
+        ".agents/skills/explain/_s_k_i_l_l.md": 34,
+        ".agents/skills/search/_s_k_i_l_l.md": 70,
+        ".agents/skills/session-crosslink/_s_k_i_l_l.md": 141,
+        ".agents/skills/session-handoff/_s_k_i_l_l.md": 137,
+        ".agents/skills/session-to-skill/_s_k_i_l_l.md": 210,
+        ".agents/skills/what-happened/_s_k_i_l_l.md": 333,
+        ".cursor/settings.json": 7,
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 941,
+      "user_lines_removed": 941,
+      "agent_lines_added": 1001,
+      "agent_lines_removed": 113,
+      "user_added_per_file": {
+        ".agents/skills/explain/_s_k_i_l_l.md": 34,
+        ".agents/skills/search/_s_k_i_l_l.md": 70,
+        ".agents/skills/session-crosslink/_s_k_i_l_l.md": 141,
+        ".agents/skills/session-handoff/_s_k_i_l_l.md": 137,
+        ".agents/skills/session-to-skill/_s_k_i_l_l.md": 210,
+        ".agents/skills/what-happened/_s_k_i_l_l.md": 333,
+        ".cursor/settings.json": 7,
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4
+      },
+      "user_removed_per_file": {
+        ".agents/skills/explain/_s_k_i_l_l.md": 34,
+        ".agents/skills/search/_s_k_i_l_l.md": 70,
+        ".agents/skills/session-crosslink/_s_k_i_l_l.md": 141,
+        ".agents/skills/session-handoff/_s_k_i_l_l.md": 137,
+        ".agents/skills/session-to-skill/_s_k_i_l_l.md": 210,
+        ".agents/skills/what-happened/_s_k_i_l_l.md": 333,
+        ".cursor/settings.json": 7,
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 941,
+      "user_lines_removed": 941,
+      "agent_lines_added": 1001,
+      "agent_lines_removed": 113,
+      "user_added_per_file": {
+        ".agents/skills/explain/_s_k_i_l_l.md": 34,
+        ".agents/skills/search/_s_k_i_l_l.md": 70,
+        ".agents/skills/session-crosslink/_s_k_i_l_l.md": 141,
+        ".agents/skills/session-handoff/_s_k_i_l_l.md": 137,
+        ".agents/skills/session-to-skill/_s_k_i_l_l.md": 210,
+        ".agents/skills/what-happened/_s_k_i_l_l.md": 333,
+        ".cursor/settings.json": 7,
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4
+      },
+      "user_removed_per_file": {
+        ".agents/skills/explain/_s_k_i_l_l.md": 34,
+        ".agents/skills/search/_s_k_i_l_l.md": 70,
+        ".agents/skills/session-crosslink/_s_k_i_l_l.md": 141,
+        ".agents/skills/session-handoff/_s_k_i_l_l.md": 137,
+        ".agents/skills/session-to-skill/_s_k_i_l_l.md": 210,
+        ".agents/skills/what-happened/_s_k_i_l_l.md": 333,
+        ".cursor/settings.json": 7,
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4
+      }
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 941,
+      "user_lines_removed": 941,
+      "agent_lines_added": 1001,
+      "agent_lines_removed": 113,
+      "user_added_per_file": {
+        ".agents/skills/explain/_s_k_i_l_l.md": 34,
+        ".agents/skills/search/_s_k_i_l_l.md": 70,
+        ".agents/skills/session-crosslink/_s_k_i_l_l.md": 141,
+        ".agents/skills/session-handoff/_s_k_i_l_l.md": 137,
+        ".agents/skills/session-to-skill/_s_k_i_l_l.md": 210,
+        ".agents/skills/what-happened/_s_k_i_l_l.md": 333,
+        ".cursor/settings.json": 7,
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4
+      },
+      "user_removed_per_file": {
+        ".agents/skills/explain/_s_k_i_l_l.md": 34,
+        ".agents/skills/search/_s_k_i_l_l.md": 70,
+        ".agents/skills/session-crosslink/_s_k_i_l_l.md": 141,
+        ".agents/skills/session-handoff/_s_k_i_l_l.md": 137,
+        ".agents/skills/session-to-skill/_s_k_i_l_l.md": 210,
+        ".agents/skills/what-happened/_s_k_i_l_l.md": 333,
+        ".cursor/settings.json": 7,
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4
+      }
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 941,
+      "user_lines_removed": 941,
+      "agent_lines_added": 1001,
+      "agent_lines_removed": 113,
+      "user_added_per_file": {
+        ".agents/skills/explain/_s_k_i_l_l.md": 34,
+        ".agents/skills/search/_s_k_i_l_l.md": 70,
+        ".agents/skills/session-crosslink/_s_k_i_l_l.md": 141,
+        ".agents/skills/session-handoff/_s_k_i_l_l.md": 137,
+        ".agents/skills/session-to-skill/_s_k_i_l_l.md": 210,
+        ".agents/skills/what-happened/_s_k_i_l_l.md": 333,
+        ".cursor/settings.json": 7,
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4
+      },
+      "user_removed_per_file": {
+        ".agents/skills/explain/_s_k_i_l_l.md": 34,
+        ".agents/skills/search/_s_k_i_l_l.md": 70,
+        ".agents/skills/session-crosslink/_s_k_i_l_l.md": 141,
+        ".agents/skills/session-handoff/_s_k_i_l_l.md": 137,
+        ".agents/skills/session-to-skill/_s_k_i_l_l.md": 210,
+        ".agents/skills/what-happened/_s_k_i_l_l.md": 333,
+        ".cursor/settings.json": 7,
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4
+      }
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 1058,
+      "user_lines_removed": 1058,
+      "agent_lines_added": 1120,
+      "agent_lines_removed": 196,
+      "user_added_per_file": {
+        "apps/cli/package.json": 1,
+        ".agents/skills/explain/_s_k_i_l_l.md": 34,
+        ".agents/skills/search/_s_k_i_l_l.md": 70,
+        ".agents/skills/session-crosslink/_s_k_i_l_l.md": 141,
+        ".agents/skills/session-handoff/_s_k_i_l_l.md": 137,
+        ".agents/skills/session-to-skill/_s_k_i_l_l.md": 210,
+        ".agents/skills/what-happened/_s_k_i_l_l.md": 333,
+        ".cursor/settings.json": 7,
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4,
+        "apps/cli/src/registries/resolve.ts": 50,
+        "apps/cli/tests/unit/resolve-registry.test.ts": 66
+      },
+      "user_removed_per_file": {
+        ".agents/skills/explain/_s_k_i_l_l.md": 34,
+        ".agents/skills/search/_s_k_i_l_l.md": 70,
+        ".agents/skills/session-crosslink/_s_k_i_l_l.md": 141,
+        ".agents/skills/session-handoff/_s_k_i_l_l.md": 137,
+        ".agents/skills/session-to-skill/_s_k_i_l_l.md": 210,
+        ".agents/skills/what-happened/_s_k_i_l_l.md": 333,
+        ".cursor/settings.json": 7,
+        ".entire/.gitignore": 5,
+        ".entire/settings.json": 4,
+        "apps/cli/package.json": 1,
+        "apps/cli/src/registries/resolve.ts": 50,
+        "apps/cli/tests/unit/resolve-registry.test.ts": 66
+      }
+    }
+  ]
+}
