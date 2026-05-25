@@ -1,0 +1,43 @@
+/grill-me /tdd 修一下
+➜  ~ bunx ai-pkgs plugins add https://code.byted.org/story/skills
+┌  Plugin add
+Repository was not found.
+  - Check the owner/repo or clone URL.
+  - If it is private, confirm your Git credentials have access.
+
+Git output:
+  remote: Repository not found.
+  fatal: repository 'https://github.com/https:/code.byted.org.git/' not found
+Run ai-pkgs plugins -h for detailed usage.
+
+这个不太对吧？
+
+---
+
+h合并吧
+
+---
+
+在 plan 模式问
+
+---
+
+不提及 code.byted.org 哈，改成  code.my-gitlab.org
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.

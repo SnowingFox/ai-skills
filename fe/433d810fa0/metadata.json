@@ -1,0 +1,22 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "fe433d810fa0",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 7,
+  "files_touched": [
+    "apps/cli/src/commands/plugins/add.ts",
+    "apps/cli/src/commands/skills/add.ts",
+    "apps/cli/src/registries/resolve.ts",
+    "apps/cli/tests/unit/resolve-registry.test.ts",
+    "apps/cli/tests/unit/skills-command.test.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/fe/433d810fa0/0/metadata.json",
+      "transcript": "/fe/433d810fa0/0/full.jsonl",
+      "content_hash": "/fe/433d810fa0/0/content_hash.txt",
+      "prompt": "/fe/433d810fa0/0/prompt.txt"
+    }
+  ]
+}
