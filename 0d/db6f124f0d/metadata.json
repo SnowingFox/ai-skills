@@ -1,0 +1,43 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "0ddb6f124f0d",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    ".agents/skills/explain/SKILL.md",
+    ".agents/skills/search/SKILL.md",
+    ".agents/skills/session-crosslink/SKILL.md",
+    ".agents/skills/session-handoff/SKILL.md",
+    ".agents/skills/session-to-skill/SKILL.md",
+    ".agents/skills/what-happened/SKILL.md",
+    "ai-package.json",
+    "apps/cli/README.md",
+    "apps/cli/src/agents/registry.ts",
+    "apps/cli/src/cli/help-data/plugins.ts",
+    "apps/cli/src/commands/plugins/add.ts",
+    "apps/cli/src/commands/plugins/index.ts",
+    "apps/cli/src/commands/skills/add.ts",
+    "apps/cli/src/commands/skills/index.ts",
+    "apps/cli/src/lib/install-scope.ts",
+    "apps/cli/src/plugins/installer/claude.ts",
+    "apps/cli/src/plugins/installer/cursor.ts",
+    "apps/cli/tests/e2e/install.e2e.test.ts",
+    "apps/cli/tests/unit/agents.test.ts",
+    "apps/cli/tests/unit/cli-help.test.ts",
+    "apps/cli/tests/unit/cli.test.ts",
+    "apps/cli/tests/unit/install-scope.test.ts",
+    "apps/cli/tests/unit/plugins-claude-installer.test.ts",
+    "apps/cli/tests/unit/plugins-cursor-installer.test.ts",
+    "apps/cli/tests/unit/skills-command.test.ts",
+    "docs/ai-package-plugins-v2.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0d/db6f124f0d/0/metadata.json",
+      "transcript": "/0d/db6f124f0d/0/full.jsonl",
+      "content_hash": "/0d/db6f124f0d/0/content_hash.txt",
+      "prompt": "/0d/db6f124f0d/0/prompt.txt"
+    }
+  ]
+}
