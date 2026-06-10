@@ -113,6 +113,7 @@ export const runSkillsCommand = async (
 };
 
 export * from './add';
+export { resolveInstallScope } from '../../lib/install-scope';
 export * from './list';
 export * from './outdated';
 export * from './remove';

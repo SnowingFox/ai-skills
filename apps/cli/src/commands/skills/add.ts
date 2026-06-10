@@ -18,6 +18,7 @@ import {
   resolveInstallMode,
 } from '../../install-command';
 import { installPlan } from '../../installer/install';
+import { resolveInstallScope } from '../../lib/install-scope';
 import { createManifestStore, resolveManifestScope } from '../../manifest';
 import { createRegistries, getRegistry } from '../../registries';
 import { resolveRegistry } from '../../registries/resolve';
@@ -46,6 +47,11 @@ export const runSkillsAddCommand = async (
   if (options.global === true && options.manifest) {
     throw new SilentError('--global cannot be used with --manifest');
   }
+
+  const isGlobal = await resolveInstallScope(
+    { project: options.project, global: options.global },
+    promptAllowed
+  );
 
   const registryKind = resolveRegistry(rawSource, options.registry);
   const registries = createRegistries(projectDir);
@@ -89,7 +95,10 @@ export const runSkillsAddCommand = async (
     });
 
     if (options.installOnly !== true) {
-      const manifestScope = resolveManifestScope(runtime.cwd, options);
+      const manifestScope = resolveManifestScope(runtime.cwd, {
+        ...options,
+        global: isGlobal,
+      });
       const manifestSkills: SkillEntry[] = selected.map((skill) => ({
         name: skill.name,
         provider: resolved.provider,
@@ -112,7 +121,7 @@ export const runSkillsAddCommand = async (
     const targets = await resolveAgentTargets({
       agentIds: normalizeList(options.agent),
       cwd: projectDir,
-      global: await resolveInstallScope(options, promptAllowed),
+      global: isGlobal,
       yes: options.yes === true,
       canPrompt: promptAllowed,
     });
@@ -172,53 +181,6 @@ export const runSkillsAddCommand = async (
   } finally {
     await resolved.root.cleanup?.();
   }
-};
-
-/**
- * Resolve the install dimension for `skills add`.
- *
- * @example
- * ```ts
- * await resolveInstallScope({ global: true }, false); // true
- * await resolveInstallScope({}, false);               // false
- * ```
- */
-export const resolveInstallScope = async (
-  options: Pick<SkillsAddOptions, 'project' | 'global'>,
-  canPromptForScope: boolean
-): Promise<boolean> => {
-  if (options.project === true && options.global === true) {
-    throw new SilentError('--project and --global are mutually exclusive');
-  }
-  if (options.global === true) {
-    return true;
-  }
-  if (options.project === true || !canPromptForScope) {
-    return false;
-  }
-
-  const selected = await p.select({
-    message: 'Install scope',
-    options: [
-      {
-        label: 'Project',
-        value: 'project',
-        hint: 'Install inside this repository',
-      },
-      {
-        label: 'Global',
-        value: 'global',
-        hint: 'Install into user-level agent skills',
-      },
-    ],
-    initialValue: 'project',
-  });
-
-  if (p.isCancel(selected)) {
-    throw new SilentError('Install scope selection cancelled');
-  }
-
-  return selected === 'global';
 };
 
 /**

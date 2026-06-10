@@ -220,6 +220,32 @@ export const prepareForClaudeCode = async (
 };
 
 /**
+ * Read Claude settings JSON, treating missing, blank, or invalid files as `{}`.
+ */
+export const readClaudeSettingsFile = async (
+  settingsPath: string
+): Promise<Record<string, unknown>> => {
+  if (!existsSync(settingsPath)) {
+    return {};
+  }
+
+  const raw = await readFile(settingsPath, 'utf-8');
+  if (raw.trim().length === 0) {
+    return {};
+  }
+
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+      return parsed as Record<string, unknown>;
+    }
+    return {};
+  } catch {
+    return {};
+  }
+};
+
+/**
  * Install plugins into the Claude plugin cache at
  * `~/.claude/plugins/cache/<marketplace>/<plugin>/<versionKey>/`.
  *
@@ -338,27 +364,15 @@ export const installToPluginCache = async (
   const settingsPath = projectDir
     ? join(projectDir, '.claude', 'settings.json')
     : join(home, '.claude', 'settings.json');
-  let settings: Record<string, unknown> = {};
-  let settingsCorrupted = false;
-
-  if (existsSync(settingsPath)) {
-    try {
-      settings = JSON.parse(await readFile(settingsPath, 'utf-8'));
-    } catch {
-      settingsCorrupted = true;
-    }
+  const settings = await readClaudeSettingsFile(settingsPath);
+  const enabled = (settings.enabledPlugins as Record<string, boolean>) ?? {};
+  for (const plugin of plugins) {
+    const pluginKey = `${plugin.name}@${marketplaceName}`;
+    enabled[pluginKey] = true;
   }
-
-  if (!settingsCorrupted) {
-    const enabled = (settings.enabledPlugins as Record<string, boolean>) ?? {};
-    for (const plugin of plugins) {
-      const pluginKey = `${plugin.name}@${marketplaceName}`;
-      enabled[pluginKey] = true;
-    }
-    settings.enabledPlugins = enabled;
-    await mkdir(join(settingsPath, '..'), { recursive: true });
-    await writeFile(settingsPath, JSON.stringify(settings, null, 2));
-  }
+  settings.enabledPlugins = enabled;
+  await mkdir(join(settingsPath, '..'), { recursive: true });
+  await writeFile(settingsPath, JSON.stringify(settings, null, 2));
 };
 
 /**

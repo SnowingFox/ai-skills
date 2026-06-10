@@ -1,3 +1,4 @@
+import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { listAgents } from '../../src/agents/registry';
@@ -37,5 +38,40 @@ describe('agents', () => {
       },
     ]);
     expect(listAgents().map((agent) => agent.id)).toContain('universal');
+  });
+
+  it('resolves universal global installs to ~/.agents/skills', async () => {
+    const targets = await resolveAgentTargets({
+      agentIds: ['universal'],
+      cwd: '/repo/project',
+      global: true,
+      canPrompt: false,
+    });
+
+    expect(targets).toEqual([
+      {
+        agentId: 'universal',
+        displayName: 'Universal',
+        skillsDir: join(homedir(), '.agents/skills'),
+      },
+    ]);
+  });
+
+  it('keeps amp global installs on ~/.config/agents/skills', async () => {
+    const configHome = process.env.XDG_CONFIG_HOME || join(homedir(), '.config');
+    const targets = await resolveAgentTargets({
+      agentIds: ['amp'],
+      cwd: '/repo/project',
+      global: true,
+      canPrompt: false,
+    });
+
+    expect(targets).toEqual([
+      {
+        agentId: 'amp',
+        displayName: 'Amp',
+        skillsDir: join(configHome, 'agents/skills'),
+      },
+    ]);
   });
 });

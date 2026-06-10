@@ -81,12 +81,12 @@ export const installToCursorExtensions = async (
 };
 
 /**
- * Install plugins for Cursor.
+ * Install plugins for Cursor using the `global_with_enablement` model.
  *
- * On non-Windows platforms, Cursor reuses the Claude plugin cache so
- * we delegate to {@link installToPluginCache}. On Windows, we use
- * {@link installToCursorExtensions} to write into
- * `~/.cursor/extensions/`.
+ * Plugin files are always copied to `~/.cursor/plugins/local/<name>/`.
+ * Project scope additionally writes `<project>/.cursor/settings.json` with
+ * `plugins.<name>.enabled = true`. Global scope relies on the local plugin
+ * directory alone; Cursor has no user-level settings enable file.
  *
  * @param cachePopulated - When `true` (e.g. the Claude CLI already
  *   populated the cache), skip installation entirely.

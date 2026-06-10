@@ -131,7 +131,7 @@ describe('cli/help', () => {
 
     expect(output).toContain('Cursor: ~/.cursor/plugins/local/');
     expect(output).toContain(
-      'project installs enable plugins in .cursor/settings.json'
+      'project scope enabling plugins in .cursor/settings.json'
     );
     expect(output).not.toContain('Cursor: shares Claude cache');
   });

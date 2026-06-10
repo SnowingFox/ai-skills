@@ -24,7 +24,7 @@ export const agents: Record<string, AgentConfig> = {
     'universal',
     'Universal',
     '.agents/skills',
-    configPath('agents/skills')
+    homePath('.agents/skills')
   ),
   adal: agent('adal', 'AdaL', '.adal/skills'),
   'aider-desk': agent('aider-desk', 'AiderDesk', '.aider-desk/skills'),

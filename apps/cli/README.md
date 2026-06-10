@@ -164,7 +164,7 @@ Common targets:
 - `cursor` -> `.cursor/skills`
 - `claude-code` -> `.claude/skills`
 - `codex` -> `.codex/skills`
-- `universal` -> `.agents/skills`
+- `universal` -> project: `.agents/skills`, global: `~/.agents/skills`
 
 47+ agents are supported. Run `ai-pkgs skills add <source>` and pick from the
 interactive selector, or pass `--agent <id>`.

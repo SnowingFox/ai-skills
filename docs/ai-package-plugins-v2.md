@@ -80,20 +80,30 @@ installed to. Allowed values: `claude-code`, `cursor`, `codex`.
 
 ### Scope
 
-Project-local `ai-package.json` by default. `--global` writes to
+`plugins add` uses the same manifest scope model as `skills add`:
+
+- **TTY**: prompts for project vs global when neither `--project` nor `--global`
+  is passed.
+- **Non-TTY / `--ai`**: requires `--project` or `--global`.
+
+Project scope writes `ai-package.json` in the repository. Global scope writes
 `~/.ai-pkgs/ai-package.json`.
 
 Scope determines enablement:
 
-- **Project scope** (default): installs to global agent caches, enables in
-  project-level settings. For Claude Code, writes `enabledPlugins` to
+- **Project scope** (`--project`): copies plugin files to agent caches and, for
+  Cursor, writes `plugins.<name>.enabled = true` in
+  `.cursor/settings.json`. For Claude Code, writes `enabledPlugins` to
   `.claude/settings.json` in the project root.
-- **Global scope** (`--global`): installs to global agent caches, enables in
-  global settings. For Claude Code, writes to `~/.claude/settings.json`.
+- **Global scope** (`--global`): copies plugin files to agent caches. For
+  Claude Code, writes to `~/.claude/settings.json`. For Cursor, global enablement
+  is implicit: the plugin directory under `~/.cursor/plugins/local/` is the
+  source of truth. Cursor has no user-level `~/.cursor/settings.json` enable
+  file.
 
-Codex and Cursor do not yet support project-scoped plugin enablement natively.
-The manifest still records them in project-scope `ai-package.json`, and
-installation targets their global caches.
+For Cursor specifically, plugin assets always live under
+`~/.cursor/plugins/local/<plugin>/` (`global_with_enablement`). Project scope
+only adds the repo-local enablement file.
 
 ## Commands
 

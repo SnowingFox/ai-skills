@@ -355,7 +355,17 @@ describe('runCli', () => {
     });
 
     const code = await runCli(
-      ['node', 'ai-pkgs', 'skills', 'add', 'file:.', '--all', '--skill', 'tdd'],
+      [
+        'node',
+        'ai-pkgs',
+        'skills',
+        'add',
+        'file:.',
+        '--project',
+        '--all',
+        '--skill',
+        'tdd',
+      ],
       '/repo'
     );
 

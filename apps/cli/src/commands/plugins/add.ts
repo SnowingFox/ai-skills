@@ -7,6 +7,7 @@ import { createCloneProgressRenderer } from '../../cli/clone-progress';
 import { SilentError } from '../../errors';
 import { GitCommandError } from '../../git';
 import { normalizeList } from '../../install-command';
+import { resolveInstallScope } from '../../lib/install-scope';
 import { createManifestStore, resolveManifestScope } from '../../manifest';
 import { createRegistries, getRegistry } from '../../registries';
 import { resolveRegistry } from '../../registries/resolve';
@@ -40,6 +41,14 @@ export const runPluginsAddCommand = async (
   if (options.global === true && options.manifest) {
     throw new SilentError('--global cannot be used with --manifest');
   }
+  if (options.project === true && options.global === true) {
+    throw new SilentError('--project and --global are mutually exclusive');
+  }
+
+  const isGlobal = await resolveInstallScope(
+    { project: options.project, global: options.global },
+    promptAllowed
+  );
 
   const registryKind = resolveRegistry(rawSource, options.registry);
   const registries = createRegistries(projectDir);
@@ -123,8 +132,11 @@ export const runPluginsAddCommand = async (
       yes: options.yes === true,
     });
 
-    const manifestScope = resolveManifestScope(runtime.cwd, options);
-    const isGlobal = manifestScope.global;
+    const manifestScope = resolveManifestScope(runtime.cwd, {
+      ...options,
+      global: isGlobal,
+    });
+    const installProjectDir = isGlobal ? undefined : manifestScope.projectDir;
 
     for (const targetId of targetIds) {
       const target: PluginTarget = {
@@ -146,7 +158,7 @@ export const runPluginsAddCommand = async (
         options.scope ?? 'user',
         resolved.root.rootDir,
         rawSource,
-        isGlobal ? undefined : manifestScope.projectDir
+        installProjectDir
       );
 
       if (aiMode) {
@@ -188,17 +200,28 @@ export const runPluginsAddCommand = async (
       }
     }
 
-    // On non-Windows, Cursor shares the Claude plugin cache so installing
-    // to either target writes enabledPlugins into .claude/settings.json.
-    if (targetIds.includes('claude-code') || targetIds.includes('cursor')) {
-      const cursorOnly =
-        targetIds.includes('cursor') && !targetIds.includes('claude-code');
+    if (targetIds.includes('cursor')) {
+      const localNote = 'Installed to ~/.cursor/plugins/local/';
+      if (aiMode) {
+        process.stdout.write(renderAiStep(localNote));
+      } else {
+        p.log.success(localNote);
+      }
+      if (!isGlobal) {
+        const enableNote = 'Enabled in .cursor/settings.json';
+        if (aiMode) {
+          process.stdout.write(renderAiStep(enableNote));
+        } else {
+          p.log.success(enableNote);
+        }
+      }
+    }
+
+    if (targetIds.includes('claude-code')) {
       const settingsPath = isGlobal
         ? '~/.claude/settings.json'
         : '.claude/settings.json';
-      const settingsNote = cursorOnly
-        ? `Enabled in ${settingsPath} (Cursor shares Claude plugin cache)`
-        : `Enabled in ${settingsPath}`;
+      const settingsNote = `Enabled in ${settingsPath}`;
       if (aiMode) {
         process.stdout.write(renderAiStep(settingsNote));
       } else {

@@ -1,40 +1,61 @@
 {
-  "version": 1,
   "hooks": {
-    "sessionStart": [
-      {
-        "command": "sh -c 'if ! command -v story >/dev/null 2>&1; then exit 0; fi; exec story hooks cursor session-start'"
-      }
-    ],
-    "sessionEnd": [
-      {
-        "command": "sh -c 'if ! command -v story >/dev/null 2>&1; then exit 0; fi; exec story hooks cursor session-end'"
-      }
-    ],
     "beforeSubmitPrompt": [
       {
         "command": "sh -c 'if ! command -v story >/dev/null 2>&1; then exit 0; fi; exec story hooks cursor before-submit-prompt'"
-      }
-    ],
-    "stop": [
+      },
       {
-        "command": "sh -c 'if ! command -v story >/dev/null 2>&1; then exit 0; fi; exec story hooks cursor stop'"
+        "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks cursor before-submit-prompt'"
       }
     ],
     "preCompact": [
       {
         "command": "sh -c 'if ! command -v story >/dev/null 2>&1; then exit 0; fi; exec story hooks cursor pre-compact'"
+      },
+      {
+        "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks cursor pre-compact'"
+      }
+    ],
+    "sessionEnd": [
+      {
+        "command": "sh -c 'if ! command -v story >/dev/null 2>&1; then exit 0; fi; exec story hooks cursor session-end'"
+      },
+      {
+        "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks cursor session-end'"
+      }
+    ],
+    "sessionStart": [
+      {
+        "command": "sh -c 'if ! command -v story >/dev/null 2>&1; then exit 0; fi; exec story hooks cursor session-start'"
+      },
+      {
+        "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks cursor session-start'"
+      }
+    ],
+    "stop": [
+      {
+        "command": "sh -c 'if ! command -v story >/dev/null 2>&1; then exit 0; fi; exec story hooks cursor stop'"
+      },
+      {
+        "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks cursor stop'"
       }
     ],
     "subagentStart": [
       {
         "command": "sh -c 'if ! command -v story >/dev/null 2>&1; then exit 0; fi; exec story hooks cursor subagent-start'"
+      },
+      {
+        "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks cursor subagent-start'"
       }
     ],
     "subagentStop": [
       {
         "command": "sh -c 'if ! command -v story >/dev/null 2>&1; then exit 0; fi; exec story hooks cursor subagent-stop'"
+      },
+      {
+        "command": "sh -c 'if ! command -v entire >/dev/null 2>&1; then exit 0; fi; exec entire hooks cursor subagent-stop'"
       }
     ]
-  }
+  },
+  "version": 1
 }

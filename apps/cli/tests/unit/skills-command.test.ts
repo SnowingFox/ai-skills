@@ -20,7 +20,9 @@ describe('skills command clone UX', () => {
     await expect(resolveInstallScope({ project: true }, false)).resolves.toBe(
       false
     );
-    await expect(resolveInstallScope({}, false)).resolves.toBe(false);
+    await expect(resolveInstallScope({}, false)).rejects.toThrow(
+      'Install scope not specified. Use --project or --global.'
+    );
     await expect(
       resolveInstallScope({ project: true, global: true }, false)
     ).rejects.toThrow('--project and --global are mutually exclusive');

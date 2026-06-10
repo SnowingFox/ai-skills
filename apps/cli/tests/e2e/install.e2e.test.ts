@@ -463,6 +463,7 @@ describe('ai-pkgs install e2e', () => {
       'add',
       sourceDir,
       '--install-only',
+      '--project',
       '--yes',
       '--agent',
       'cursor',
@@ -505,6 +506,7 @@ describe('ai-pkgs install e2e', () => {
       sourceDir,
       '--agent',
       'cursor',
+      '--project',
       '--yes',
     ]);
 
@@ -521,6 +523,35 @@ describe('ai-pkgs install e2e', () => {
     await expect(
       readFile(join(projectDir, '.cursor/settings.json'), 'utf-8')
     ).resolves.toContain('"review-pack"');
+  });
+
+  it('requires explicit install scope for plugins add in non-TTY mode', async () => {
+    const projectDir = join(tempRoot, 'cursor-plugin-scope-project');
+    const sourceDir = join(tempRoot, 'cursor-plugin-scope-source');
+    const homeDir = join(tempRoot, 'cursor-plugin-scope-home');
+    await mkdir(projectDir, { recursive: true });
+    await mkdir(homeDir, { recursive: true });
+    await mkdir(join(sourceDir, '.cursor-plugin'), { recursive: true });
+    await writeFile(
+      join(sourceDir, '.cursor-plugin/plugin.json'),
+      JSON.stringify({
+        name: 'scope-pack',
+        description: 'Scope helper plugin',
+        version: '1.0.0',
+      })
+    );
+
+    const result = await runCliProcess(
+      projectDir,
+      { HOME: homeDir },
+      ['plugins', 'add', sourceDir, '--agent', 'cursor', '--yes'],
+      { allowFailure: true }
+    );
+
+    expect(result.code).not.toBe(0);
+    expect(result.output).toContain(
+      'Install scope not specified. Use --project or --global.'
+    );
   });
 
   it('installs global Cursor plugins without project settings', async () => {
@@ -593,6 +624,7 @@ describe('ai-pkgs install e2e', () => {
       sourceDir,
       '--agent',
       'cursor',
+      '--project',
       '--yes',
     ]);
     const removed = await runCliProcess(projectDir, { HOME: homeDir }, [
@@ -667,6 +699,7 @@ describe('ai-pkgs install e2e', () => {
         'add',
         sourceDir,
         '--install-only',
+        '--project',
         '--yes',
         '--skill',
         'tdd',
@@ -703,6 +736,7 @@ describe('ai-pkgs install e2e', () => {
         'add',
         sourceDir,
         '--install-only',
+        '--project',
         '--yes',
         '--skill',
         'write-a-prd',
@@ -784,6 +818,7 @@ describe('ai-pkgs install e2e', () => {
         'add',
         'acme/skills',
         '--install-only',
+        '--project',
         '--yes',
         '--skill',
         'github-skill',
@@ -821,6 +856,7 @@ describe('ai-pkgs install e2e', () => {
         'add',
         'acme/skills',
         '--install-only',
+        '--project',
         '--yes',
         '--skill',
         'github-skill',

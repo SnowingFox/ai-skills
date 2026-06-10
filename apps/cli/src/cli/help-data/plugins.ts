@@ -210,6 +210,7 @@ export const PLUGINS_GROUP_COMMAND: HelpCommand = {
         ['-a, --agent <agent>', 'Target agent (repeatable)'],
         ['--scope <scope>', 'Install scope: user, project, local'],
         ['--install-only', 'Install without writing ai-package.json'],
+        ['--project', 'Write ai-package.json in this repository'],
         ['-g, --global', 'Use ~/.ai-pkgs/ai-package.json'],
         ['--uninstall', 'Also clean agent directories on remove'],
         ['-y, --yes', 'Skip confirmation prompts'],
@@ -227,7 +228,9 @@ export const PLUGINS_GROUP_COMMAND: HelpCommand = {
   exampleGroups: PLUGINS_GROUP_EXAMPLES,
   notes: [
     'Plugins are installed into agent plugin caches, not skill directories.',
-    'Claude Code: ~/.claude/plugins/cache/, Cursor: ~/.cursor/plugins/local/ with project installs enable plugins in .cursor/settings.json, Codex: ~/.codex/plugins/cache/.',
+    'Claude Code: ~/.claude/plugins/cache/, Cursor: ~/.cursor/plugins/local/ with project scope enabling plugins in .cursor/settings.json, Codex: ~/.codex/plugins/cache/.',
+    'Cursor global scope copies plugins to ~/.cursor/plugins/local/ only; there is no user-level ~/.cursor/settings.json enable file.',
+    '`plugins add` prompts for project/global scope in TTY; non-TTY and `--ai` require `--project` or `--global`.',
     '`plugins init` scaffolds vendor-specific manifests (.claude-plugin/, .cursor-plugin/, .codex-plugin/) based on selected agents.',
     '`plugins add` writes to the `plugins` key in ai-package.json alongside existing skills.',
     '`plugins remove` only removes manifest entries by default; add `--uninstall` to also clean agent directories.',

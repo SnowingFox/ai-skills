@@ -51,6 +51,7 @@ export const registerPluginsCommand = (
     .option('-p, --plugin <plugin>', 'Plugin name to add (repeatable)')
     .option('-a, --agent <agent>', 'Target agent (repeatable)')
     .option('--install-only', 'Install without writing ai-package.json')
+    .option('--project', 'Write ai-package.json in this repository')
     .option('-g, --global', 'Use the global ai-pkgs manifest')
     .option('--refresh', 'Refresh Git cache before installing')
     .option('--json', 'Print machine-readable JSON')
