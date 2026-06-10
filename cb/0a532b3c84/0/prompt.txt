@@ -1,0 +1,66 @@
+检查一下有没有 /using-story 这个 SKILL
+
+---
+
+为什么没生效呢？entire 的倒是生效了🤔
+
+---
+
+你对比一下我们现在的安装是不是和 submodule/plugins 不一样？
+
+---
+
+/grill-me 不对，对于 cursor plugin install 我们的安装怎么没选要不要全局还是 scope，为什么默认都开启 settings.json ？检查一下的是不是也这样，同时也看看
+/Users/bytedance/dev/ai-skills/submodule/plugins/index.ts:L1-L1718 这个呢？对比一下这个最新的代码，我刚刚更新了，看看有没有不同，怎么支持的
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+
+To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+---
+
+/explain 这个 SKILL 目录在哪？
+
+---
+
+/review 这个呢
+
+---
+
+/review 这个呢
+
+---
+
+/review 我说这个
+
+---
+
+/grill-me /tdd 把 global 的 universal 也改成 .agents 吧
+
+---
+
+A
+
+---
+
+A
+
+---
+
+A
+
+---
+
+你自己决定吧，遵循 /tdd 就行
+
+---
+
+/grill-me 本地安装 plugin 貌似没写进 .claude/settings.json ？

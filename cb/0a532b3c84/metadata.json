@@ -1,0 +1,54 @@
+{
+  "checkpoint_id": "cb0a532b3c84",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    ".agents/skills/explain/SKILL.md",
+    ".agents/skills/search/SKILL.md",
+    ".agents/skills/session-crosslink/SKILL.md",
+    ".agents/skills/session-handoff/SKILL.md",
+    ".agents/skills/session-to-skill/SKILL.md",
+    ".agents/skills/what-happened/SKILL.md",
+    ".cursor/hooks.json",
+    ".cursor/settings.json",
+    ".entire/.gitignore",
+    ".entire/settings.json",
+    ".entire/settings.local.json",
+    "ai-package.json",
+    "apps/cli/README.md",
+    "apps/cli/src/agents/registry.ts",
+    "apps/cli/src/cli/help-data/plugins.ts",
+    "apps/cli/src/commands/plugins/add.ts",
+    "apps/cli/src/commands/plugins/index.ts",
+    "apps/cli/src/commands/skills/add.ts",
+    "apps/cli/src/commands/skills/index.ts",
+    "apps/cli/src/lib/install-scope.ts",
+    "apps/cli/src/plugins/installer/claude.ts",
+    "apps/cli/src/plugins/installer/cursor.ts",
+    "apps/cli/tests/e2e/install.e2e.test.ts",
+    "apps/cli/tests/unit/agents.test.ts",
+    "apps/cli/tests/unit/cli-help.test.ts",
+    "apps/cli/tests/unit/cli.test.ts",
+    "apps/cli/tests/unit/install-scope.test.ts",
+    "apps/cli/tests/unit/plugins-claude-installer.test.ts",
+    "apps/cli/tests/unit/plugins-cursor-installer.test.ts",
+    "apps/cli/tests/unit/skills-command.test.ts",
+    "docs/ai-package-plugins-v2.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/cb/0a532b3c84/0/metadata.json",
+      "prompt": "/cb/0a532b3c84/0/prompt.txt",
+      "transcript": "/cb/0a532b3c84/0/full.jsonl",
+      "content_hash": "/cb/0a532b3c84/0/content_hash.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 197107,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1381480,
+    "output_tokens": 7016,
+    "api_call_count": 2
+  }
+}
