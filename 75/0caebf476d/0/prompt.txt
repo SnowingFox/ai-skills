@@ -1,0 +1,5 @@
+直接 push 吧
+
+---
+
+/tdd 把 skills 全局的 universal 改成 ~/.agents 吧

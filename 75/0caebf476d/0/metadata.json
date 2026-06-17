@@ -1,0 +1,161 @@
+{
+  "checkpoint_id": "750caebf476d",
+  "session_id": "b3d351e0-4564-428f-b7a2-288314d06476",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-17T08:54:42.061Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "apps/cli/tests/e2e/install.e2e.test.ts"
+  ],
+  "agent": "Cursor",
+  "model": "composer-2.5",
+  "turn_id": "03efa9b58cb6",
+  "is_task": false,
+  "tool_use_id": "",
+  "transcript_identifier_at_start": "",
+  "checkpoint_transcript_start": 0,
+  "transcript_lines_at_start": 0,
+  "token_usage": {
+    "input_tokens": 9368,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1283851,
+    "output_tokens": 2718,
+    "api_call_count": 1
+  },
+  "session_metrics": {
+    "duration_ms": 642836,
+    "turn_count": 2,
+    "context_tokens": 0,
+    "context_window_size": 0,
+    "active_duration_ms": 219795,
+    "turn_metrics": [
+      {
+        "turn_id": "c0ad22bd4c03",
+        "started_at": "2026-06-17T08:43:15.000Z",
+        "ended_at": "2026-06-17T08:44:52.511Z",
+        "duration_ms": 97511
+      },
+      {
+        "turn_id": "03efa9b58cb6",
+        "started_at": "2026-06-17T08:51:57.000Z",
+        "ended_at": "2026-06-17T08:53:59.284Z",
+        "duration_ms": 122284
+      }
+    ],
+    "checkpoint_turn_start": 0,
+    "checkpoint_turn_end": 2,
+    "checkpoint_active_duration_ms": 219795,
+    "checkpoint_duration_ms": 644284
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-17T08:54:42.021Z",
+    "agent_lines": 31,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 31,
+    "total_lines_changed": 31,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {},
+      "user_removed_per_file": {}
+    }
+  ],
+  "skill_events": [
+    {
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "tdd"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "collapse": {
+        "target": "user_message",
+        "default_collapsed": true,
+        "label": "/tdd"
+      },
+      "id": "prompt-skill-cursor-tdd-2026-06-17T08:51:57.901Z",
+      "timestamp": "2026-06-17T08:51:57.901Z",
+      "native": {
+        "command": "/tdd"
+      }
+    },
+    {
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "using-story"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "skill_md_read",
+        "confidence": "explicit"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Read using-story/SKILL.md",
+        "default_collapsed": true
+      }
+    },
+    {
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "what-happened"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "skill_md_read",
+        "confidence": "explicit"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Read what-happened/SKILL.md",
+        "default_collapsed": true
+      }
+    },
+    {
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "tdd"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "skill_md_read",
+        "confidence": "explicit"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Read tdd/SKILL.md",
+        "default_collapsed": true
+      }
+    },
+    {
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "explain"
+      },
+      "source": {
+        "agent": "cursor",
+        "signal": "skill_md_read",
+        "confidence": "explicit"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Read explain/SKILL.md",
+        "default_collapsed": true
+      }
+    }
+  ]
+}
