@@ -120,6 +120,37 @@ describe('ai-pkgs install e2e', () => {
     expect(globalManifest).toContain(`"source": "file:${sourceDir}"`);
   });
 
+  it('installs global universal skills to ~/.agents/skills', async () => {
+    const projectDir = join(tempRoot, 'global-universal-project');
+    const sourceDir = join(tempRoot, 'global-universal-source');
+    const homeDir = join(tempRoot, 'global-universal-home');
+    await mkdir(projectDir, { recursive: true });
+    await mkdir(homeDir, { recursive: true });
+    await mkdir(join(sourceDir, 'skills/explain'), { recursive: true });
+    await writeFile(join(sourceDir, 'skills/explain/SKILL.md'), '# Explain');
+
+    const result = await runCliProcess(projectDir, { HOME: homeDir }, [
+      'skills',
+      'add',
+      sourceDir,
+      '--global',
+      '--skill',
+      'explain',
+      '--agent',
+      'universal',
+      '--force',
+      '--yes',
+    ]);
+
+    expect(result.code).toBe(0);
+    await expect(
+      readFile(join(homeDir, '.agents/skills/explain/SKILL.md'), 'utf-8')
+    ).resolves.toBe('# Explain');
+    await expect(
+      readFile(join(homeDir, '.config/agents/skills/explain/SKILL.md'), 'utf-8')
+    ).rejects.toThrow();
+  });
+
   it('supports global install-only without writing the global manifest', async () => {
     const projectDir = join(tempRoot, 'global-install-only-project');
     const sourceDir = join(tempRoot, 'global-install-only-source');
